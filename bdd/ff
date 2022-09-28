@@ -1,0 +1,61 @@
+Option Compare Database
+'Put this function in new/existing MS-Access module.
+'' Version History:
+'' 2014-02-09 - Seamus Casey
+' a modification to Ivan's handy Access to MySQL relationship/constraint generator
+'https://en.latindevelopers.com/ivancp/2012/ms-access-to-mysql-with-relationships/
+' changes include:
+'  1) skip Access system tables (TableDefAttributeEnum.dbSystemObjec)
+'  2) add support for cascading updates/deletes
+ 
+Public Sub printRelations()
+    Dim sql, fk As String
+    Dim I, J As Integer
+    Dim db As Database
+    Dim Table As TableDef
+    Dim TableName As String
+ 
+    ' grab a reference to this once, otherwise when we retrieve a table below,
+    ' we will get an 'Object Invalid or No Longer Set' error.
+    Set db = CurrentDb
+    
+    Debug.Print "test clef:"
+ 
+    For I = 0 To db.Relations.Count - 1
+ 
+        Set Table = db.TableDefs.Item(db.Relations(I).Table)
+ 
+        If ((Table.Attributes And TableDefAttributeEnum.dbSystemObject) = 0) Then
+ 
+           sql = "ALTER TABLE `" & db.Relations(I).ForeignTable & _
+               "` ADD CONSTRAINT `" & "fk_" & db.Relations(I).ForeignTable & "_to_" & db.Relations(I).Table & "` FOREIGN KEY ("
+           fk = "("
+           For J = 0 To db.Relations(I).Fields.Count - 1
+               sql = sql & "`" & db.Relations(I).Fields(J).ForeignName & "` ,"
+               fk = fk & "`" & db.Relations(I).Fields(J).Name & "` ,"
+           Next J
+ 
+           sql = Left(sql, Len(sql) - 1)
+           fk = Left(fk, Len(fk) - 1)
+           fk = fk & ")"
+           sql = sql & ") REFERENCES `" & db.Relations(I).Table & "`" & fk
+ 
+           If (db.Relations(I).Attributes And RelationAttributeEnum.dbRelationUpdateCascade) Then
+               sql = sql & " ON UPDATE CASCADE"
+           End If
+ 
+           If (db.Relations(I).Attributes And RelationAttributeEnum.dbRelationDeleteCascade) Then
+               sql = sql & " ON DELETE CASCADE"
+           End If
+ 
+           sql = sql & ";"
+ 
+           Debug.Print sql
+        End If
+    Next I
+    
+    Debug.Print ":end:"
+End Sub
+
+
+
