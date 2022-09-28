@@ -1,4 +1,5 @@
 <?php
+
     require_once ('modele/medicament.modele.inc.php');
    
     require_once ('modele/connexion.modele.inc.php');
@@ -8,6 +9,7 @@
     else{
         $uc = $_REQUEST['uc'];
     }
+
 ?>    
 <?php
     if(empty($_SESSION['login'])){
