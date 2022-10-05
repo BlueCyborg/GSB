@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS `composant` (
   `CMP_CODE` varchar(4) NOT NULL,
   `CMP_LIBELLE` varchar(25) DEFAULT NULL,
   PRIMARY KEY (`CMP_CODE`)
-) ENGINE=InnoDB DEFAULT CHARSET=urf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -48,7 +48,7 @@ CREATE TABLE IF NOT EXISTS `constituer` (
   PRIMARY KEY (`MED_DEPOTLEGAL`,`CMP_CODE`),
   KEY `MED_DEPOTLEGAL` (`MED_DEPOTLEGAL`),
   KEY `CMP_CODE` (`CMP_CODE`)
-) ENGINE=InnoDB DEFAULT CHARSET=urf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -62,7 +62,7 @@ CREATE TABLE IF NOT EXISTS `dosage` (
   `DOS_QUANTITE` varchar(10) DEFAULT NULL,
   `DOS_UNITE` varchar(10) DEFAULT NULL,
   PRIMARY KEY (`DOS_CODE`)
-) ENGINE=InnoDB DEFAULT CHARSET=urf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -75,7 +75,7 @@ CREATE TABLE IF NOT EXISTS `etat_rapport` (
   `ETAT_ID` char(1) NOT NULL,
   `ETAT_LIB` varchar(60) NOT NULL,
   PRIMARY KEY (`ETAT_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=urf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Déchargement des données de la table `etat_rapport`
@@ -97,7 +97,7 @@ CREATE TABLE IF NOT EXISTS `famille` (
   `FAM_CODE` varchar(3) NOT NULL,
   `FAM_LIBELLE` varchar(80) DEFAULT NULL,
   PRIMARY KEY (`FAM_CODE`)
-) ENGINE=InnoDB DEFAULT CHARSET=urf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Déchargement des données de la table `famille`
@@ -138,7 +138,7 @@ CREATE TABLE IF NOT EXISTS `formuler` (
   PRIMARY KEY (`MED_DEPOTLEGAL`,`PRE_CODE`),
   KEY `MED_DEPOTLEGAL` (`MED_DEPOTLEGAL`),
   KEY `PRE_CODE` (`PRE_CODE`)
-) ENGINE=InnoDB DEFAULT CHARSET=urf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -153,7 +153,7 @@ CREATE TABLE IF NOT EXISTS `interagir` (
   PRIMARY KEY (`MED_PERTURBATEUR`,`MED_MED_PERTURBE`),
   KEY `MED_MED_PERTURBE` (`MED_MED_PERTURBE`),
   KEY `MED_PERTURBATEUR` (`MED_PERTURBATEUR`)
-) ENGINE=InnoDB DEFAULT CHARSET=urf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -170,7 +170,7 @@ CREATE TABLE IF NOT EXISTS `login` (
   PRIMARY KEY (`LOG_ID`),
   UNIQUE KEY `LOG_LOGIN` (`LOG_LOGIN`),
   KEY `FK_VLOGIN_TO_VISITEUR` (`VIS_MATRICULE`)
-) ENGINE=InnoDB DEFAULT CHARSET=urf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -189,7 +189,7 @@ CREATE TABLE IF NOT EXISTS `medicament` (
   `MED_PRIXECHANTILLON` float DEFAULT NULL,
   PRIMARY KEY (`MED_DEPOTLEGAL`),
   KEY `FAM_CODE` (`FAM_CODE`)
-) ENGINE=InnoDB DEFAULT CHARSET=urf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Déchargement des données de la table `medicament`
@@ -236,7 +236,7 @@ CREATE TABLE IF NOT EXISTS `motif_visite` (
   `MOT_ID` char(3) NOT NULL,
   `MOT_LIB` varchar(60) NOT NULL,
   PRIMARY KEY (`MOT_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=urf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Déchargement des données de la table `motif_visite`
@@ -265,7 +265,7 @@ CREATE TABLE IF NOT EXISTS `offrir` (
   PRIMARY KEY (`VIS_MATRICULE`,`RAP_NUM`,`MED_DEPOTLEGAL`),
   KEY `MED_DEPOTLEGAL` (`MED_DEPOTLEGAL`),
   KEY `VIS_MATRICULE` (`VIS_MATRICULE`,`RAP_NUM`)
-) ENGINE=InnoDB DEFAULT CHARSET=urf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Déchargement des données de la table `offrir`
@@ -290,7 +290,7 @@ CREATE TABLE IF NOT EXISTS `posseder` (
   PRIMARY KEY (`PRA_NUM`,`SPE_CODE`),
   KEY `PRA_NUM` (`PRA_NUM`),
   KEY `SPE_CODE` (`SPE_CODE`)
-) ENGINE=InnoDB DEFAULT CHARSET=urf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -311,7 +311,7 @@ CREATE TABLE IF NOT EXISTS `praticien` (
   `PRA_COEFCONFIANCE` float NOT NULL DEFAULT 0,
   PRIMARY KEY (`PRA_NUM`),
   KEY `TYP_CODE` (`TYP_CODE`)
-) ENGINE=InnoDB DEFAULT CHARSET=urf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Déchargement des données de la table `praticien`
@@ -422,7 +422,7 @@ CREATE TABLE IF NOT EXISTS `prescrire` (
   KEY `MED_DEPOTLEGAL` (`MED_DEPOTLEGAL`),
   KEY `TIN_CODE` (`TIN_CODE`),
   KEY `DOS_CODE` (`DOS_CODE`)
-) ENGINE=InnoDB DEFAULT CHARSET=urf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -435,7 +435,7 @@ CREATE TABLE IF NOT EXISTS `presentation` (
   `PRE_CODE` varchar(2) NOT NULL,
   `PRE_LIBELLE` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`PRE_CODE`)
-) ENGINE=InnoDB DEFAULT CHARSET=urf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -450,7 +450,7 @@ CREATE TABLE IF NOT EXISTS `presenter` (
   `MED_DEPOTLEGAL` varchar(10) NOT NULL,
   PRIMARY KEY (`VIS_MATRICULE`,`RAP_NUM`,`MED_DEPOTLEGAL`),
   KEY `fk_PRESENTER_to_MEDICAMENT` (`MED_DEPOTLEGAL`)
-) ENGINE=InnoDB DEFAULT CHARSET=urf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -477,7 +477,7 @@ CREATE TABLE IF NOT EXISTS `rapport_visite` (
   KEY `fk_remplacent` (`REMP_NUM`),
   KEY `fk_RAP_to_MOT` (`MOT_ID`),
   KEY `fk_RAP_to_ETAT` (`ETAT_ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=urf8;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 
 --
 -- Déchargement des données de la table `rapport_visite`
@@ -501,7 +501,7 @@ CREATE TABLE IF NOT EXISTS `region` (
   `REG_NOM` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`REG_CODE`),
   KEY `SEC_CODE` (`SEC_CODE`)
-) ENGINE=InnoDB DEFAULT CHARSET=urf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Déchargement des données de la table `region`
@@ -542,7 +542,7 @@ CREATE TABLE IF NOT EXISTS `secteur` (
   `SEC_CODE` varchar(1) NOT NULL,
   `SEC_LIBELLE` varchar(15) DEFAULT NULL,
   PRIMARY KEY (`SEC_CODE`)
-) ENGINE=InnoDB DEFAULT CHARSET=urf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Déchargement des données de la table `secteur`
@@ -566,7 +566,7 @@ CREATE TABLE IF NOT EXISTS `specialite` (
   `SPE_CODE` varchar(5) NOT NULL,
   `SPE_LIBELLE` varchar(150) DEFAULT NULL,
   PRIMARY KEY (`SPE_CODE`)
-) ENGINE=InnoDB DEFAULT CHARSET=urf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Déchargement des données de la table `specialite`
@@ -632,7 +632,7 @@ CREATE TABLE IF NOT EXISTS `travailler` (
   PRIMARY KEY (`VIS_MATRICULE`,`REG_CODE`),
   KEY `VIS_MATRICULE` (`VIS_MATRICULE`),
   KEY `REG_CODE` (`REG_CODE`)
-) ENGINE=InnoDB DEFAULT CHARSET=urf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Déchargement des données de la table `travailler`
@@ -718,7 +718,7 @@ CREATE TABLE IF NOT EXISTS `type_individu` (
   `TIN_LIBELLE` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`TIN_CODE`),
   KEY `TIN_CODE` (`TIN_CODE`)
-) ENGINE=InnoDB DEFAULT CHARSET=urf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -732,7 +732,7 @@ CREATE TABLE IF NOT EXISTS `type_praticien` (
   `TYP_LIBELLE` varchar(25) DEFAULT NULL,
   `TYP_LIEU` varchar(35) DEFAULT NULL,
   PRIMARY KEY (`TYP_CODE`)
-) ENGINE=InnoDB DEFAULT CHARSET=urf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Déchargement des données de la table `type_praticien`
@@ -763,7 +763,7 @@ CREATE TABLE IF NOT EXISTS `visiteur` (
   `SEC_CODE` varchar(1) DEFAULT NULL,
   PRIMARY KEY (`VIS_MATRICULE`),
   KEY `SEC_CODE` (`SEC_CODE`)
-) ENGINE=InnoDB DEFAULT CHARSET=urf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Déchargement des données de la table `visiteur`
