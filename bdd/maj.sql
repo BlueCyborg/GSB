@@ -45,10 +45,18 @@ CREATE TABLE MOTIF_VISITE (
 
 
 INSERT INTO ETAT_RAPPORT(ETAT_ID, ETAT_LIB) VALUES
-('V', 'Rapport Validé');
+('V', 'Rapport Validé'),
+('C', 'En cours de saisie'),
+('D', 'Consulté par le délégué');
 
 INSERT INTO MOTIF_VISITE(MOT_ID, MOT_LIB) VALUES
-('OTH', 'Autre');
+('OTH', 'Autre'),
+('PER', 'Périodicité'),
+('NVT', 'Nouveauté'),
+('ACT', 'Actualité'),
+('REM', 'Remontage'),
+('SOL', 'Solicitation');
+
 
 
 ALTER TABLE rapport_visite
