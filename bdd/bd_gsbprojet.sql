@@ -460,20 +460,20 @@ CREATE TABLE IF NOT EXISTS `presenter` (
 
 DROP TABLE IF EXISTS `rapport_visite`;
 CREATE TABLE IF NOT EXISTS `rapport_visite` (
-  `VIS_MATRICULE` varchar(10) NOT NULL,
+  `COL_MATRICULE` varchar(10) NOT NULL,
   `RAP_NUM` int(11) NOT NULL AUTO_INCREMENT,
   `PRA_NUM` int(11) NOT NULL,
-  `RAP_DATE_VISITE` datetime DEFAULT NULL,
+  `RAP_DATE_VISITE` datetime DEFAULT NOW(),
   `RAP_BILAN` varchar(255) DEFAULT NULL,
   `RAP_MOTIF_AUTRE` varchar(255) DEFAULT NULL,
   `REMP_NUM` int(11) NOT NULL DEFAULT 0,
   `MOT_ID` char(3) NOT NULL DEFAULT 'OTH',
   `ETAT_ID` char(1) NOT NULL DEFAULT 'V',
-  `RAP_DATE_SAISIE` datetime DEFAULT NULL,
-  PRIMARY KEY (`VIS_MATRICULE`,`RAP_NUM`),
+  `RAP_DATE_SAISIE` datetime DEFAULT NOW(),
+  PRIMARY KEY (`COL_MATRICULE`,`RAP_NUM`),
   KEY `PRA_NUM` (`PRA_NUM`),
   KEY `RAP_NUM` (`RAP_NUM`),
-  KEY `VIS_MATRICULE` (`VIS_MATRICULE`),
+  KEY `VIS_MATRICULE` (`COL_MATRICULE`),
   KEY `fk_remplacent` (`REMP_NUM`),
   KEY `fk_RAP_to_MOT` (`MOT_ID`),
   KEY `fk_RAP_to_ETAT` (`ETAT_ID`)
@@ -483,7 +483,7 @@ CREATE TABLE IF NOT EXISTS `rapport_visite` (
 -- Déchargement des données de la table `rapport_visite`
 --
 
-INSERT INTO `rapport_visite` (`VIS_MATRICULE`, `RAP_NUM`, `PRA_NUM`, `RAP_DATE_VISITE`, `RAP_BILAN`, `RAP_MOTIF_AUTRE`, `REMP_NUM`, `MOT_ID`, `ETAT_ID`, `RAP_DATE_SAISIE`) VALUES
+INSERT INTO `rapport_visite` (`COL_MATRICULE`, `RAP_NUM`, `PRA_NUM`, `RAP_DATE_VISITE`, `RAP_BILAN`, `RAP_MOTIF_AUTRE`, `REMP_NUM`, `MOT_ID`, `ETAT_ID`, `RAP_DATE_SAISIE`) VALUES
 ('a131', 3, 23, '2002-04-18 00:00:00', 'Médecin curieux, à recontacer en décembre pour réunion', 'Actualisation annuelle', 0, 'OTH', 'V', NULL),
 ('a131', 7, 41, '2003-03-23 00:00:00', 'RAS\r\nChangement de tel : 05 89 89 89 89', 'Rapport Annuel', 0, 'OTH', 'V', NULL),
 ('a17', 4, 4, '2003-05-21 00:00:00', 'Changement de direction, redéfinition de la politique médicamenteuse, recours au générique', 'Baisse activité', 0, 'OTH', 'V', NULL);
