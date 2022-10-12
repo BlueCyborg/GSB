@@ -18,7 +18,7 @@
                 } ?>
                 <form action="index.php?uc=praticiens&action=afficherpraticien" method="post" class="formulaire-recherche col-12 m-0">
                     <label class="titre-formulaire" for="listemedoc">Liste praticiens :</label>
-                    <select required name="medicament" class="form-select mt-3">
+                    <select required name="praticien" class="form-select mt-3">
                         <option value class="text-center">- Choisissez un praticien -</option>
                         <?php
                         foreach ($result as $key) {
