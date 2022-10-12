@@ -6,7 +6,7 @@ function connexionPDO()
 {
     $login = 'root';
     $mdp = '';
-    $bd = 'gsbcr0';
+    $bd = 'ferre_gsb_projet';
     $serveur = 'localhost';
 
     try {
