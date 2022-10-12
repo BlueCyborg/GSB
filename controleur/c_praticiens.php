@@ -18,7 +18,7 @@ switch ($action) {
 				if (empty($carac[7])) {
 					$carac[7] = 'Non défini(e)';
 				}
-				include("vues/v_afficherPraticiens.php");
+				include("vues/v_afficherPraticien.php");
 			} else {
 				$_SESSION['erreur'] = true;
 				header("Location: index.php?uc=praticiens&action=formulairepraticien");
