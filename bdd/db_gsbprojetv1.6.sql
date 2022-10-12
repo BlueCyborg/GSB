@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3307
--- Généré le : mer. 05 oct. 2022 à 14:49
+-- Généré le : mer. 12 oct. 2022 à 12:34
 -- Version du serveur : 10.6.5-MariaDB
 -- Version de PHP : 8.0.13
 
@@ -29,23 +29,23 @@ SET time_zone = "+00:00";
 
 DROP TABLE IF EXISTS `collaborateur`;
 CREATE TABLE IF NOT EXISTS `collaborateur` (
-  `COL_MATRICULE` varchar(10) COLLATE utf8mb3_bin NOT NULL,
-  `COL_NOM` varchar(25) COLLATE utf8mb3_bin DEFAULT NULL,
-  `COL_PRENOM` varchar(50) COLLATE utf8mb3_bin DEFAULT NULL,
-  `COL_ADRESSE` varchar(50) COLLATE utf8mb3_bin DEFAULT NULL,
-  `COL_CP` varchar(5) COLLATE utf8mb3_bin DEFAULT NULL,
-  `COL_VILLE` varchar(30) COLLATE utf8mb3_bin DEFAULT NULL,
+  `COL_MATRICULE` varchar(10) NOT NULL,
+  `COL_NOM` varchar(25) DEFAULT NULL,
+  `COL_PRENOM` varchar(50) DEFAULT NULL,
+  `COL_ADRESSE` varchar(50) DEFAULT NULL,
+  `COL_CP` varchar(5) DEFAULT NULL,
+  `COL_VILLE` varchar(30) DEFAULT NULL,
   `COL_DATEEMBAUCHE` datetime DEFAULT NULL,
   `HAB_ID` int(11) DEFAULT NULL,
   `LOG_ID` int(11) DEFAULT NULL,
-  `SEC_CODE` varchar(1) COLLATE utf8mb3_bin DEFAULT NULL,
-  `REG_CODE` varchar(2) COLLATE utf8mb3_bin DEFAULT NULL,
+  `SEC_CODE` varchar(1) DEFAULT NULL,
+  `REG_CODE` varchar(2) DEFAULT NULL,
   PRIMARY KEY (`COL_MATRICULE`),
   UNIQUE KEY `collaborateur_login0_AK` (`LOG_ID`),
   KEY `collaborateur_habilitation0_FK` (`HAB_ID`),
   KEY `collaborateur_secteur0_FK` (`SEC_CODE`),
   KEY `collaborateur_region1_FK` (`REG_CODE`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_bin;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 --
 -- Déchargement des données de la table `collaborateur`
@@ -66,11 +66,33 @@ INSERT INTO `collaborateur` (`COL_MATRICULE`, `COL_NOM`, `COL_PRENOM`, `COL_ADRE
 
 DROP TABLE IF EXISTS `dosage`;
 CREATE TABLE IF NOT EXISTS `dosage` (
-  `DOS_CODE` varchar(10) COLLATE utf8mb3_bin NOT NULL,
-  `DOS_QUANTITE` varchar(10) COLLATE utf8mb3_bin DEFAULT NULL,
-  `DOS_UNITE` varchar(10) COLLATE utf8mb3_bin DEFAULT NULL,
+  `DOS_CODE` varchar(10) NOT NULL,
+  `DOS_QUANTITE` varchar(10) DEFAULT NULL,
+  `DOS_UNITE` varchar(10) DEFAULT NULL,
   PRIMARY KEY (`DOS_CODE`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_bin;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `etat_rapport`
+--
+
+DROP TABLE IF EXISTS `etat_rapport`;
+CREATE TABLE IF NOT EXISTS `etat_rapport` (
+  `ETAT_ID` char(1) NOT NULL,
+  `ETAT_LIB` varchar(60) NOT NULL,
+  PRIMARY KEY (`ETAT_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+--
+-- Déchargement des données de la table `etat_rapport`
+--
+
+INSERT INTO `etat_rapport` (`ETAT_ID`, `ETAT_LIB`) VALUES
+('C', 'En cours de saisie'),
+('D', 'Consulté par le délégué'),
+('V', 'Rapport Validé');
 
 -- --------------------------------------------------------
 
@@ -80,10 +102,10 @@ CREATE TABLE IF NOT EXISTS `dosage` (
 
 DROP TABLE IF EXISTS `famille`;
 CREATE TABLE IF NOT EXISTS `famille` (
-  `FAM_CODE` varchar(3) COLLATE utf8mb3_bin NOT NULL,
-  `FAM_LIBELLE` varchar(80) COLLATE utf8mb3_bin DEFAULT NULL,
+  `FAM_CODE` varchar(3) NOT NULL,
+  `FAM_LIBELLE` varchar(80) DEFAULT NULL,
   PRIMARY KEY (`FAM_CODE`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_bin;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 --
 -- Déchargement des données de la table `famille`
@@ -119,11 +141,11 @@ INSERT INTO `famille` (`FAM_CODE`, `FAM_LIBELLE`) VALUES
 
 DROP TABLE IF EXISTS `formuler`;
 CREATE TABLE IF NOT EXISTS `formuler` (
-  `MED_DEPOTLEGAL` varchar(10) COLLATE utf8mb3_bin NOT NULL,
-  `PRE_CODE` varchar(2) COLLATE utf8mb3_bin NOT NULL,
+  `MED_DEPOTLEGAL` varchar(10) NOT NULL,
+  `PRE_CODE` varchar(2) NOT NULL,
   PRIMARY KEY (`MED_DEPOTLEGAL`,`PRE_CODE`),
   KEY `FORMULER_presentation1_FK` (`PRE_CODE`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_bin;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- --------------------------------------------------------
 
@@ -134,9 +156,9 @@ CREATE TABLE IF NOT EXISTS `formuler` (
 DROP TABLE IF EXISTS `habilitation`;
 CREATE TABLE IF NOT EXISTS `habilitation` (
   `HAB_ID` int(11) NOT NULL,
-  `HAB_LIB` varchar(30) COLLATE utf8mb3_bin NOT NULL,
+  `HAB_LIB` varchar(30) NOT NULL,
   PRIMARY KEY (`HAB_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_bin;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 --
 -- Déchargement des données de la table `habilitation`
@@ -155,11 +177,11 @@ INSERT INTO `habilitation` (`HAB_ID`, `HAB_LIB`) VALUES
 
 DROP TABLE IF EXISTS `interagir`;
 CREATE TABLE IF NOT EXISTS `interagir` (
-  `MED_DEPOTLEGAL` varchar(10) COLLATE utf8mb3_bin NOT NULL,
-  `MED_DEPOTLEGAL_medicament` varchar(10) COLLATE utf8mb3_bin NOT NULL,
-  PRIMARY KEY (`MED_DEPOTLEGAL`,`MED_DEPOTLEGAL_medicament`),
-  KEY `INTERAGIR_medicament1_FK` (`MED_DEPOTLEGAL_medicament`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_bin;
+  `MED_DEPOTLEGAL_PERTURBER` varchar(10) NOT NULL,
+  `MED_DEPOTLEGAL_PERTURBATEUR` varchar(10) NOT NULL,
+  PRIMARY KEY (`MED_DEPOTLEGAL_PERTURBER`,`MED_DEPOTLEGAL_PERTURBATEUR`),
+  KEY `INTERAGIR_medicament1_FK` (`MED_DEPOTLEGAL_PERTURBATEUR`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- --------------------------------------------------------
 
@@ -170,12 +192,12 @@ CREATE TABLE IF NOT EXISTS `interagir` (
 DROP TABLE IF EXISTS `login`;
 CREATE TABLE IF NOT EXISTS `login` (
   `LOG_ID` int(11) NOT NULL,
-  `LOG_LOGIN` varchar(50) COLLATE utf8mb3_bin NOT NULL,
-  `LOG_MOTDEPASSE` varchar(255) COLLATE utf8mb3_bin NOT NULL,
-  `COL_MATRICULE` varchar(10) COLLATE utf8mb3_bin NOT NULL,
+  `LOG_LOGIN` varchar(50) NOT NULL,
+  `LOG_MOTDEPASSE` varchar(255) NOT NULL,
+  `COL_MATRICULE` varchar(10) NOT NULL,
   PRIMARY KEY (`LOG_ID`),
   UNIQUE KEY `login_collaborateur0_AK` (`COL_MATRICULE`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_bin;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 --
 -- Déchargement des données de la table `login`
@@ -196,16 +218,16 @@ INSERT INTO `login` (`LOG_ID`, `LOG_LOGIN`, `LOG_MOTDEPASSE`, `COL_MATRICULE`) V
 
 DROP TABLE IF EXISTS `medicament`;
 CREATE TABLE IF NOT EXISTS `medicament` (
-  `MED_DEPOTLEGAL` varchar(10) COLLATE utf8mb3_bin NOT NULL,
-  `MED_NOMCOMMERCIAL` varchar(25) COLLATE utf8mb3_bin DEFAULT NULL,
-  `MED_COMPOSITION` varchar(255) COLLATE utf8mb3_bin DEFAULT NULL,
-  `MED_EFFETS` varchar(255) COLLATE utf8mb3_bin DEFAULT NULL,
-  `MED_CONTREINDIC` varchar(255) COLLATE utf8mb3_bin DEFAULT NULL,
+  `MED_DEPOTLEGAL` varchar(10) NOT NULL,
+  `MED_NOMCOMMERCIAL` varchar(25) DEFAULT NULL,
+  `MED_COMPOSITION` varchar(255) DEFAULT NULL,
+  `MED_EFFETS` varchar(255) DEFAULT NULL,
+  `MED_CONTREINDIC` varchar(255) DEFAULT NULL,
   `MED_PRIXECHANTILLON` float DEFAULT NULL,
-  `FAM_CODE` varchar(3) COLLATE utf8mb3_bin NOT NULL,
+  `FAM_CODE` varchar(3) NOT NULL,
   PRIMARY KEY (`MED_DEPOTLEGAL`),
   KEY `medicament_famille0_FK` (`FAM_CODE`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_bin;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 --
 -- Déchargement des données de la table `medicament`
@@ -240,6 +262,56 @@ INSERT INTO `medicament` (`MED_DEPOTLEGAL`, `MED_NOMCOMMERCIAL`, `MED_COMPOSITIO
 ('TROXT21', 'TROXADET', 'Paroxétine', 'Ce médicament est utilisé pour traiter la dépression et les troubles obsessionnels compulsifs. Il peut également être utilisé en prévention des crises de panique avec ou sans agoraphobie.', 'Ce médicament est contre-indiqué en cas d\'allergie au produit.', 37.99, 'AIN'),
 ('TXISOL22', 'TOUXISOL Vitamine C', 'Tyrothricine + Acide ascorbique (Vitamine C)', 'Ce médicament est utilisé pour traiter les affections de la bouche et de la gorge.', 'Ce médicament est contre-indiqué en cas d\'allergie à  l\'un des constituants et chez l\'enfant de moins de 6 ans.', 57.99, 'ALO'),
 ('URIEG6', 'URIREGUL', 'Fosfomycine trométamol', 'Ce médicament est utilisé pour traiter les infections urinaires simples chez la femme de moins de 65 ans.', 'La prise de ce médicament est contre-indiquée en cas d\'allergie à  l\'un des constituants et d\'insuffisance rénale.', 42.99, 'AUM');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `motif_visite`
+--
+
+DROP TABLE IF EXISTS `motif_visite`;
+CREATE TABLE IF NOT EXISTS `motif_visite` (
+  `MOT_ID` char(3) NOT NULL,
+  `MOT_LIB` varchar(60) NOT NULL,
+  PRIMARY KEY (`MOT_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+--
+-- Déchargement des données de la table `motif_visite`
+--
+
+INSERT INTO `motif_visite` (`MOT_ID`, `MOT_LIB`) VALUES
+('ACT', 'Actualité'),
+('NVT', 'Nouveauté'),
+('OTH', 'Autre'),
+('PER', 'Périodicité'),
+('REM', 'Remontage'),
+('SOL', 'Solicitation');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `offrir`
+--
+
+DROP TABLE IF EXISTS `offrir`;
+CREATE TABLE IF NOT EXISTS `offrir` (
+  `COL_MATRICULE` varchar(10) NOT NULL,
+  `RAP_NUM` int(11) NOT NULL,
+  `MED_DEPOTLEGAL` varchar(10) NOT NULL,
+  `OFF_QTE` int(11) DEFAULT NULL,
+  PRIMARY KEY (`COL_MATRICULE`,`RAP_NUM`,`MED_DEPOTLEGAL`),
+  KEY `MED_DEPOTLEGAL` (`MED_DEPOTLEGAL`),
+  KEY `VIS_MATRICULE` (`COL_MATRICULE`,`RAP_NUM`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+--
+-- Déchargement des données de la table `offrir`
+--
+
+INSERT INTO `offrir` (`COL_MATRICULE`, `RAP_NUM`, `MED_DEPOTLEGAL`, `OFF_QTE`) VALUES
+('a17', 4, '3MYC7', 3),
+('a17', 4, 'AMOX45', 12);
 
 -- --------------------------------------------------------
 
@@ -284,7 +356,6 @@ CREATE TABLE IF NOT EXISTS `praticien` (
 --
 
 INSERT INTO `praticien` (`PRA_NUM`, `PRA_NOM`, `PRA_PRENOM`, `PRA_ADRESSE`, `PRA_CP`, `PRA_VILLE`, `PRA_COEFNOTORIETE`, `TYP_CODE`, `PRA_COEFCONFIANCE`) VALUES
-(0, 'Aucun', 'Aucun', NULL, NULL, NULL, NULL, 'PO', 0),
 (1, 'Notini', 'Alain', '114 r Authie', '85000', 'LA ROCHE SUR YON', 290.03, 'MH', 0),
 (2, 'Gosselin', 'Albert', '13 r Devon', '41000', 'BLOIS', 307.49, 'MV', 0),
 (3, 'Delahaye', 'André', '36 av 6 Juin', '25000', 'BESANCON', 185.79, 'PS', 0),
@@ -380,14 +451,14 @@ INSERT INTO `praticien` (`PRA_NUM`, `PRA_NOM`, `PRA_PRENOM`, `PRA_ADRESSE`, `PRA
 
 DROP TABLE IF EXISTS `prescrire`;
 CREATE TABLE IF NOT EXISTS `prescrire` (
-  `TIN_CODE` varchar(5) COLLATE utf8mb3_bin NOT NULL,
-  `DOS_CODE` varchar(10) COLLATE utf8mb3_bin NOT NULL,
-  `MED_DEPOTLEGAL` varchar(10) COLLATE utf8mb3_bin NOT NULL,
-  `PRE_POSOLOGIE` varchar(50) COLLATE utf8mb3_bin NOT NULL,
+  `TIN_CODE` varchar(5) NOT NULL,
+  `DOS_CODE` varchar(10) NOT NULL,
+  `MED_DEPOTLEGAL` varchar(10) NOT NULL,
+  `PRE_POSOLOGIE` varchar(50) NOT NULL,
   PRIMARY KEY (`TIN_CODE`,`DOS_CODE`,`MED_DEPOTLEGAL`),
   KEY `PRESCRIRE_dosage1_FK` (`DOS_CODE`),
   KEY `PRESCRIRE_medicament2_FK` (`MED_DEPOTLEGAL`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_bin;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- --------------------------------------------------------
 
@@ -397,25 +468,49 @@ CREATE TABLE IF NOT EXISTS `prescrire` (
 
 DROP TABLE IF EXISTS `presentation`;
 CREATE TABLE IF NOT EXISTS `presentation` (
-  `PRE_CODE` varchar(2) COLLATE utf8mb3_bin NOT NULL,
-  `PRE_LIBELLE` varchar(20) COLLATE utf8mb3_bin DEFAULT NULL,
+  `PRE_CODE` varchar(2) NOT NULL,
+  `PRE_LIBELLE` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`PRE_CODE`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_bin;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `presentation_produit`
+-- Structure de la table `rapport_visite`
 --
 
-DROP TABLE IF EXISTS `presentation_produit`;
-CREATE TABLE IF NOT EXISTS `presentation_produit` (
-  `MED_DEPOTLEGAL` varchar(10) COLLATE utf8mb3_bin NOT NULL,
-  `COL_MATRICULE` varchar(10) COLLATE utf8mb3_bin NOT NULL,
-  `RAP_NUM` int(11) NOT NULL,
-  PRIMARY KEY (`MED_DEPOTLEGAL`,`COL_MATRICULE`,`RAP_NUM`),
-  KEY `PRESENTATION_PRODUIT_rapport_visite1_FK` (`COL_MATRICULE`,`RAP_NUM`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_bin;
+DROP TABLE IF EXISTS `rapport_visite`;
+CREATE TABLE IF NOT EXISTS `rapport_visite` (
+  `COL_MATRICULE` varchar(10) NOT NULL,
+  `RAP_NUM` int(11) NOT NULL AUTO_INCREMENT,
+  `PRA_NUM` int(11) NOT NULL,
+  `RAP_DATE_VISITE` datetime DEFAULT current_timestamp(),
+  `RAP_BILAN` varchar(255) DEFAULT NULL,
+  `RAP_MOTIF_AUTRE` varchar(255) DEFAULT NULL,
+  `REMP_NUM` int(11) DEFAULT NULL,
+  `MOT_ID` char(3) NOT NULL DEFAULT 'OTH',
+  `ETAT_ID` char(1) NOT NULL DEFAULT 'V',
+  `RAP_DATE_SAISIE` datetime DEFAULT current_timestamp(),
+  `MED_PRESENTER_1` varchar(10) DEFAULT NULL,
+  `MED_PRESENTER_2` varchar(10) DEFAULT NULL,
+  PRIMARY KEY (`COL_MATRICULE`,`RAP_NUM`),
+  KEY `PRA_NUM` (`PRA_NUM`),
+  KEY `RAP_NUM` (`RAP_NUM`),
+  KEY `fk_remplacent` (`REMP_NUM`),
+  KEY `fk_RAP_to_MOT` (`MOT_ID`),
+  KEY `fk_RAP_to_ETAT` (`ETAT_ID`),
+  KEY `fk_rap_presenter_med_1` (`MED_PRESENTER_1`),
+  KEY `fk_rap_presenter_med_2` (`MED_PRESENTER_2`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb3;
+
+--
+-- Déchargement des données de la table `rapport_visite`
+--
+
+INSERT INTO `rapport_visite` (`COL_MATRICULE`, `RAP_NUM`, `PRA_NUM`, `RAP_DATE_VISITE`, `RAP_BILAN`, `RAP_MOTIF_AUTRE`, `REMP_NUM`, `MOT_ID`, `ETAT_ID`, `RAP_DATE_SAISIE`, `MED_PRESENTER_1`, `MED_PRESENTER_2`) VALUES
+('a131', 3, 23, '2002-04-18 00:00:00', 'Médecin curieux, à recontacer en décembre pour réunion', 'Actualisation annuelle', NULL, 'OTH', 'V', NULL, NULL, NULL),
+('a131', 7, 41, '2003-03-23 00:00:00', 'RAS\r\nChangement de tel : 05 89 89 89 89', 'Rapport Annuel', NULL, 'OTH', 'V', NULL, NULL, NULL),
+('a17', 4, 4, '2003-05-21 00:00:00', 'Changement de direction, redéfinition de la politique médicamenteuse, recours au générique', 'Baisse activité', NULL, 'OTH', 'V', NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -425,12 +520,12 @@ CREATE TABLE IF NOT EXISTS `presentation_produit` (
 
 DROP TABLE IF EXISTS `region`;
 CREATE TABLE IF NOT EXISTS `region` (
-  `REG_CODE` varchar(2) COLLATE utf8mb3_bin NOT NULL,
-  `REG_NOM` varchar(50) COLLATE utf8mb3_bin DEFAULT NULL,
-  `SEC_CODE` varchar(1) COLLATE utf8mb3_bin NOT NULL,
+  `REG_CODE` varchar(2) NOT NULL,
+  `REG_NOM` varchar(50) DEFAULT NULL,
+  `SEC_CODE` varchar(1) NOT NULL,
   PRIMARY KEY (`REG_CODE`),
   KEY `region_secteur0_FK` (`SEC_CODE`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_bin;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 --
 -- Déchargement des données de la table `region`
@@ -468,10 +563,10 @@ INSERT INTO `region` (`REG_CODE`, `REG_NOM`, `SEC_CODE`) VALUES
 
 DROP TABLE IF EXISTS `secteur`;
 CREATE TABLE IF NOT EXISTS `secteur` (
-  `SEC_CODE` varchar(1) COLLATE utf8mb3_bin NOT NULL,
-  `SEC_LIBELLE` varchar(15) COLLATE utf8mb3_bin DEFAULT NULL,
+  `SEC_CODE` varchar(1) NOT NULL,
+  `SEC_LIBELLE` varchar(15) DEFAULT NULL,
   PRIMARY KEY (`SEC_CODE`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_bin;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 --
 -- Déchargement des données de la table `secteur`
@@ -555,10 +650,10 @@ INSERT INTO `specialite` (`SPE_CODE`, `SPE_LIBELLE`) VALUES
 
 DROP TABLE IF EXISTS `type_individu`;
 CREATE TABLE IF NOT EXISTS `type_individu` (
-  `TIN_CODE` varchar(5) COLLATE utf8mb3_bin NOT NULL,
-  `TIN_LIBELLE` varchar(50) COLLATE utf8mb3_bin DEFAULT NULL,
+  `TIN_CODE` varchar(5) NOT NULL,
+  `TIN_LIBELLE` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`TIN_CODE`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_bin;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- --------------------------------------------------------
 
@@ -590,6 +685,16 @@ INSERT INTO `type_praticien` (`TYP_CODE`, `TYP_LIBELLE`, `TYP_LIEU`) VALUES
 --
 
 --
+-- Contraintes pour la table `collaborateur`
+--
+ALTER TABLE `collaborateur`
+  ADD CONSTRAINT `collaborateur_habilitation0_FK` FOREIGN KEY (`HAB_ID`) REFERENCES `habilitation` (`HAB_ID`),
+  ADD CONSTRAINT `collaborateur_login1_FK` FOREIGN KEY (`LOG_ID`) REFERENCES `login` (`LOG_ID`),
+  ADD CONSTRAINT `collaborateur_region1_FK` FOREIGN KEY (`REG_CODE`) REFERENCES `region` (`REG_CODE`),
+  ADD CONSTRAINT `collaborateur_secteur0_FK` FOREIGN KEY (`SEC_CODE`) REFERENCES `secteur` (`SEC_CODE`),
+  ADD CONSTRAINT `fk_COLA_to_SECTEUR` FOREIGN KEY (`SEC_CODE`) REFERENCES `secteur` (`SEC_CODE`);
+
+--
 -- Contraintes pour la table `formuler`
 --
 ALTER TABLE `formuler`
@@ -600,8 +705,10 @@ ALTER TABLE `formuler`
 -- Contraintes pour la table `interagir`
 --
 ALTER TABLE `interagir`
-  ADD CONSTRAINT `INTERAGIR_medicament0_FK` FOREIGN KEY (`MED_DEPOTLEGAL`) REFERENCES `medicament` (`MED_DEPOTLEGAL`),
-  ADD CONSTRAINT `INTERAGIR_medicament1_FK` FOREIGN KEY (`MED_DEPOTLEGAL_medicament`) REFERENCES `medicament` (`MED_DEPOTLEGAL`);
+  ADD CONSTRAINT `INTERAGIR_medicament0_FK` FOREIGN KEY (`MED_DEPOTLEGAL_PERTURBER`) REFERENCES `medicament` (`MED_DEPOTLEGAL`),
+  ADD CONSTRAINT `INTERAGIR_medicament1_FK` FOREIGN KEY (`MED_DEPOTLEGAL_PERTURBATEUR`) REFERENCES `medicament` (`MED_DEPOTLEGAL`),
+  ADD CONSTRAINT `fk_INTERAGIR_to_MEDICAMENTpertubateur` FOREIGN KEY (`MED_DEPOTLEGAL_PERTURBATEUR`) REFERENCES `medicament` (`MED_DEPOTLEGAL`),
+  ADD CONSTRAINT `fk_INTERAGIR_to_MEDICAMENTperturber` FOREIGN KEY (`MED_DEPOTLEGAL_PERTURBER`) REFERENCES `medicament` (`MED_DEPOTLEGAL`);
 
 --
 -- Contraintes pour la table `login`
@@ -616,12 +723,44 @@ ALTER TABLE `medicament`
   ADD CONSTRAINT `medicament_famille0_FK` FOREIGN KEY (`FAM_CODE`) REFERENCES `famille` (`FAM_CODE`);
 
 --
+-- Contraintes pour la table `offrir`
+--
+ALTER TABLE `offrir`
+  ADD CONSTRAINT `fk_OFFRIR_to_MEDICAMENT` FOREIGN KEY (`MED_DEPOTLEGAL`) REFERENCES `medicament` (`MED_DEPOTLEGAL`),
+  ADD CONSTRAINT `fk_OFFRIR_to_RAPPORT_COLLABORATEUR` FOREIGN KEY (`COL_MATRICULE`,`RAP_NUM`) REFERENCES `rapport_visite` (`COL_MATRICULE`, `RAP_NUM`);
+
+--
+-- Contraintes pour la table `posseder`
+--
+ALTER TABLE `posseder`
+  ADD CONSTRAINT `fk_POSSEDER_to_PRATICIEN` FOREIGN KEY (`PRA_NUM`) REFERENCES `praticien` (`PRA_NUM`),
+  ADD CONSTRAINT `fk_POSSEDER_to_SPECIALITE` FOREIGN KEY (`SPE_CODE`) REFERENCES `specialite` (`SPE_CODE`);
+
+--
+-- Contraintes pour la table `praticien`
+--
+ALTER TABLE `praticien`
+  ADD CONSTRAINT `fk_PRATICIEN_to_TYPE_PRATICIEN` FOREIGN KEY (`TYP_CODE`) REFERENCES `type_praticien` (`TYP_CODE`);
+
+--
 -- Contraintes pour la table `prescrire`
 --
 ALTER TABLE `prescrire`
   ADD CONSTRAINT `PRESCRIRE_dosage1_FK` FOREIGN KEY (`DOS_CODE`) REFERENCES `dosage` (`DOS_CODE`),
   ADD CONSTRAINT `PRESCRIRE_medicament2_FK` FOREIGN KEY (`MED_DEPOTLEGAL`) REFERENCES `medicament` (`MED_DEPOTLEGAL`),
   ADD CONSTRAINT `PRESCRIRE_type_individu0_FK` FOREIGN KEY (`TIN_CODE`) REFERENCES `type_individu` (`TIN_CODE`);
+
+--
+-- Contraintes pour la table `rapport_visite`
+--
+ALTER TABLE `rapport_visite`
+  ADD CONSTRAINT `fk_RAPPORT_VISITE_to_PRATICIEN` FOREIGN KEY (`PRA_NUM`) REFERENCES `praticien` (`PRA_NUM`),
+  ADD CONSTRAINT `fk_RAPPORT_VISITE_to_VISITEUR` FOREIGN KEY (`COL_MATRICULE`) REFERENCES `collaborateur` (`COL_MATRICULE`),
+  ADD CONSTRAINT `fk_RAP_to_ETAT` FOREIGN KEY (`ETAT_ID`) REFERENCES `etat_rapport` (`ETAT_ID`),
+  ADD CONSTRAINT `fk_RAP_to_MOT` FOREIGN KEY (`MOT_ID`) REFERENCES `motif_visite` (`MOT_ID`),
+  ADD CONSTRAINT `fk_rap_med_presneter1` FOREIGN KEY (`MED_PRESENTER_1`) REFERENCES `medicament` (`MED_DEPOTLEGAL`),
+  ADD CONSTRAINT `fk_rap_med_presneter2` FOREIGN KEY (`MED_PRESENTER_2`) REFERENCES `medicament` (`MED_DEPOTLEGAL`),
+  ADD CONSTRAINT `fk_remplacent` FOREIGN KEY (`REMP_NUM`) REFERENCES `praticien` (`PRA_NUM`);
 
 --
 -- Contraintes pour la table `region`
