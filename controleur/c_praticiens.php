@@ -6,12 +6,15 @@ if (!isset($_REQUEST['action']) || empty($_REQUEST['action'])) {
 }
 switch ($action) {
 	case 'formulairepraticien': {
+
 			$result = getAllNomPraticiens();
+            var_dump($result);
 			include("vues/v_formulairePraticien.php");
 			break;
 		}
 
 	case 'afficherpraticien': {
+
 			if (isset($_REQUEST['praticien']) && getAllInformationPraticiens($_REQUEST['praticien'])) {
 				$prat = $_REQUEST['praticien'];
 				$carac = getAllInformationPraticiens($prat);
@@ -32,3 +35,4 @@ switch ($action) {
 			break;
 		}
 }
+?>

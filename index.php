@@ -1,7 +1,7 @@
 <?php
 
 require_once('modele/medicament.modele.inc.php');
-require_once('modele/praticiens.modele.inc.php');
+
 require_once('modele/connexion.modele.inc.php');
 
 if (!isset($_REQUEST['uc']) || empty($_REQUEST['uc']))
