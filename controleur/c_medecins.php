@@ -7,7 +7,7 @@ if (!isset($_REQUEST['action']) || empty($_REQUEST['action'])) {
 switch ($action) {
 
     case 'formulairemedecin': {
-            if (isset($_REQUEST['medecin'])) {
+            if (isset($_REQUEST['formulairemedecin'])) {
                 $med = $_REQUEST['medecin'];
                 $carac = getAllInformationsMedecin($med);
                 if ($carac) {
@@ -15,7 +15,7 @@ switch ($action) {
                 }
             } else {
                 $_SESSION['erreur'] = true;
-                header("Location: index.php?uc=medecin&action=formulairemedecin");
+                echo 'ERREUR';
             }
             break;
         }
