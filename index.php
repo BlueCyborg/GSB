@@ -2,6 +2,7 @@
 
 require_once('modele/medicament.modele.inc.php');
 require_once('modele/praticiens.modele.inc.php');
+require_once('modele/medecin.modele.inc.php');
 require_once('modele/connexion.modele.inc.php');
 
 if (!isset($_REQUEST['uc']) || empty($_REQUEST['uc']))
@@ -33,6 +34,14 @@ switch ($uc) {
     case 'praticiens': {
             if (!empty($_SESSION['login'])) {
                 include("controleur/c_praticiens.php");
+            } else {
+                include("vues/v_accesInterdit.php");
+            }
+            break;
+        }
+    case 'medecin': {
+            if (!empty($_SESSION['login'])) {
+                include("controleur/c_medecins.php");
             } else {
                 include("vues/v_accesInterdit.php");
             }

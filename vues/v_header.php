@@ -33,6 +33,11 @@
                         <li class="nav-item ">
                             <a class="nav-link btn-outline-info rounded-pill px-3 fw-bold" href="index.php?uc=praticiens&action=formulairepraticien">Praticiens</a>
                         </li>
+                        <?php if (isset($_SESSION['habilitation']) == 2) { ?>
+                            <li class="nav-item ">
+                                <a class="nav-link btn-outline-info rounded-pill px-3 fw-bold" href="index.php?uc=medecin&action=formulairemedecin">Gérer médecin</a>
+                            </li>
+                        <?php } ?>
                         <li class="nav-item ">
                             <a class="nav-link btn-outline-info rounded-pill px-3 fw-bold" href="index.php?uc=connexion&action=profil">Profil</a>
                         </li>

@@ -22,10 +22,10 @@
                         <option value class="text-center">- Choisissez un praticien -</option>
                         <?php
                         foreach ($result as $key) {
-                        ?> 
-                        <option value="<?= $key['PRA_NUM']?> " class="form-control"><?=$key['PRA_NOM'] . ' ' . $key['PRA_PRENOM']?></option>
-                    <?php    
-                    }
+                        ?>
+                            <option value="<?= $key['PRA_NUM'] ?> " class="form-control"><?= $key['PRA_NOM'] . ' ' . $key['PRA_PRENOM'] ?></option>
+                        <?php
+                        }
                         ?>
                     </select>
                     <input class="btn btn-info text-light valider" type="submit" value="Afficher les informations">

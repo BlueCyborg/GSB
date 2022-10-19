@@ -3,11 +3,11 @@
 include_once 'bd.inc.php';
 
 /**
- * Renvoie les numéros, noms et prénoms de tous les praticiens
+ * Renvoie les numéros, noms et prénoms de tous les médecin
  *
  * @return array un tableau de tableau avec les informations
  */
-function getAllNomPraticiens(): array
+function getAllNomMedecin(): array
 {
 
     try {
@@ -23,18 +23,18 @@ function getAllNomPraticiens(): array
 }
 
 /**
- * Fournie toutes les informations en fonction de l'ID du praticien
+ * Fournie toutes les informations en fonction de l'ID du médecin
  *
- * @param integer $prat identifiant du praticien
- * @return array|false si le praticien existe, renvoie un tableau sinon faux
+ * @param integer $med identifiant du médecin
+ * @return array|false si le médecin existe, renvoie un tableau sinon faux
  */
-function getAllInformationsPraticien(int $prat): mixed
+function getAllInformationsMedecin(int $med): mixed
 {
 
     try {
         $monPdo = connexionPDO();
-        $req = $monPdo->prepare('SELECT * FROM praticien WHERE PRA_NUM = :prat');
-        $req->bindValue(':prat', $prat, PDO::PARAM_INT);
+        $req = $monPdo->prepare('SELECT * FROM praticien WHERE PRA_NUM = :med');
+        $req->bindValue(':med', $med, PDO::PARAM_INT);
         $req->execute();
         return $req->fetch(PDO::FETCH_ASSOC);
     } catch (PDOException $e) {

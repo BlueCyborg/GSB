@@ -15,11 +15,7 @@ switch ($action) {
 			if (isset($_REQUEST['praticien'])) {
 				$prat = $_REQUEST['praticien'];
 				$carac = getAllInformationsPraticien($prat);
-				var_dump($carac);
 				if ($carac) {
-					if (empty($carac[7])) {
-						$carac[7] = 'Non défini(e)';
-					}
 					include("vues/v_afficherPraticien.php");
 				}
 			} else {
