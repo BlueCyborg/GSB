@@ -4,7 +4,7 @@
             <h1 class="titre text-center">Formulaire de praticiens</h1>
             <p class="text text-center">
                 Formulaire permettant d'afficher toutes les informations
-                à propos d'un praticiens en particulier.
+                à propos d'un praticien en particulier.
             </p>
         </div>
         <div class="row align-items-center justify-content-center">
@@ -22,8 +22,10 @@
                         <option value class="text-center">- Choisissez un praticien -</option>
                         <?php
                         foreach ($result as $key) {
-                            echo '<option value="' . $key['PRA_NUM'] . '" class="form-control">' . $key['PRA_NOM'] . ' ' . $key['PRA_PRENOM'] . '</option>';
-                        }
+                        ?> 
+                        <option value="<?= $key['PRA_NUM']?> " class="form-control"><?=$key['PRA_NOM'] . ' ' . $key['PRA_PRENOM']?></option>
+                    <?php    
+                    }
                         ?>
                     </select>
                     <input class="btn btn-info text-light valider" type="submit" value="Afficher les informations">

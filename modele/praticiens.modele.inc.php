@@ -17,15 +17,15 @@ function getAllNomPraticiens()
     }
 }
 
-function getAllInformationPraticiens($prat)
+function getAllInformationsPraticien(int $prat)
 {
 
     try {
         $monPdo = connexionPDO();
-        $req = 'SELECT * FROM praticien WHERE PRA_NUM = "' . $prat . '"';
-        $res = $monPdo->query($req);
-        $result = $res->fetch();
-        return $result;
+        $req = $monPdo->prepare('SELECT * FROM praticien WHERE PRA_NUM = :prat');
+        $req->bindValue(':prat', $prat, PDO::PARAM_INT);
+        $req->execute();
+        return $req->fetch(PDO::FETCH_ASSOC);
     } catch (PDOException $e) {
         print "Erreur !: " . $e->getMessage();
         die();
