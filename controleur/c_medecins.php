@@ -4,17 +4,16 @@ if (!isset($_REQUEST['action']) || empty($_REQUEST['action'])) {
 } else {
     $action = $_REQUEST['action'];
 }
+echo 'SESSION';
+var_dump($_SESSION);
 switch ($action) {
-
     case 'formulairemedecin': {
-            if (isset($_REQUEST['formulairemedecin'])) {
-                $med = $_REQUEST['medecin'];
-                $carac = getAllInformationsMedecin($med);
-                if ($carac) {
-                    include("vues/v_formulaireMedecin.php");
-                }
+            if (!isset($_REQUEST['medecin'])) {
+                $result = getMedecinRegion($_SESSION['region']);
+                var_dump($result);
+                //include("vues/v_formulaireMedecin.php");
             } else {
-                $_SESSION['erreur'] = true;
+                $_SESSION['erreur'] = false;
                 echo 'ERREUR';
             }
             break;
