@@ -15,13 +15,41 @@ switch ($action) {
 		break;
 	}
 
-	case 'saisir': {
-		
-		include('vues/v_formulaireRapport.php');
+	case 'creeRapport': {
+		$rapNum = newRapport($_SESSION['matricule']);
+		header('location: index.php?uc=rapport&action=saisirRapport&rapNum='.$rapNum);
 		break;
 	}
 
-	case 'saisit': {
+	case 'saisirRapport': {
+		if (!empty($_REQUEST['rapNum']) && is_numeric($_REQUEST['rapNum'])) {
+			$rapport = getRapport($_SESSION['matricule'], $_REQUEST['rapNum']);
+			if ($rapport) {
+				$rapNum = $rapport['RAP_NUM'];
+				$colMatricule = $rapport['COL_MATRICULE'];
+				$rapPraID = $rapport['PRA_NUM'];
+				$saisieDate = date('Y-m-d', strtotime($rapport['RAP_DATE_SAISIE']));
+				$rapBilan = $rapport['RAP_BILAN'];
+				$visiteDate = date('Y-m-d', strtotime($rapport['RAP_DATE_VISITE']));
+				$idMotif = $rapport['MOT_ID'];
+				$motifAutre = $rapport['RAP_MOTIF_AUTRE'];
+				$idMed1 = $rapport['MED_PRESENTER_1'];
+				$idMed2 = $rapport['MED_PRESENTER_2'];
+				include('vues/v_formulaireRapport.php');
+			} else {
+				$messageType = 'danger';
+				$messageBody = 'Numéro de rapport introuvable pour votre matricule !';
+				include('vues/v_message.php');
+			}
+		} else {
+			$messageType = 'danger';
+			$messageBody = 'Numéro de rapport invalide (le numéro de rapport doit être un nombre) !';
+			include('vues/v_message.php');
+		}
+		break;
+	}
+
+	case 'saisitRapport': {
 		var_dump($_POST);
 		//include('vues/v_formulaireRapport.php');
 		break;

@@ -1,24 +1,3 @@
-<?php
-if (isset($_POST['connexion'])) {
-    if (empty($_POST['username'])) {
-        $userEmpty = "Veuillez saisir votre identifiant !";
-    } elseif (empty($_POST['password'])) {
-        $userEmpty = "Veuillez saisir votre mot de passe !";
-    } else {
-        $arr = checkConnexion($_POST['username'], $_POST['password']);
-        if (empty($arr)) {
-            $userEmpty = "Informations incorrectes !";
-        } else {
-            $_SESSION['habilitation'] = $arr['habilitation'];
-            $_SESSION['login'] = $arr['id_log'];
-            $_SESSION['matricule'] = $arr['matricule'];
-            $_SESSION['erreur'] = false;
-            header('Location: index.php?uc=connexion&action=profil');
-        }
-    }
-}
-
-?>
 <section class="bg-light">
     <div class="container">
         <div class="structure-hero pt-lg-5 pt-4">

@@ -318,7 +318,8 @@ footer a.text-light:hover {
 	background-color: #aaaaaa;
 	border-radius: 8px;
 }
-.form-group.required .control-label:after, .redstar:before{
+
+.required:after, .redstar:before{
 	content:"*";
 	color:red;
   }

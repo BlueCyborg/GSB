@@ -16,7 +16,7 @@
                     echo '<p class="alert alert-danger text-center w-100">Un problème est survenu lors de la selection du praticien</p>';
                     $_SESSION['erreur'] = false;
                 } ?>
-                <form action="index.php?uc=rapport&action=saisir" method="post" class="formulaire-recherche col-12 m-0">
+                <form action="index.php?uc=rapport&action=saisirRapport" method="post" class="formulaire-recherche col-12 m-0">
                     <label class="titre-formulaire" for="rapport">Liste des rapports non validés :</label>
                     <?php
                         if (count($rapportNonValides) <= 0) {
@@ -25,13 +25,17 @@
                             <?php
                         } else {//count($rapportNonValides) > 0
                     ?>
-                        <select required name="rapport" id="rapport" class="form-select mt-3">
+                        <select required name="rapNum" id="rapport" class="form-select mt-3">
                             <option value class="text-center">- Choisissez un rapport non validé -</option>
                             <?php
-                            foreach ($rapportNonValides as $rap) {
+                            foreach ($rapportNonValides as $rapport) {
                             ?>
                                 <option value="<?=htmlspecialchars($rapport['RAP_NUM'])?> " class="form-control">
-                                    <?=htmlspecialchars($rapport['RAP_NUM'].' - '.$rapport['RAP_DATE_VISITE'].' '.$rapport['MOTIF'])?>
+                                    <?=htmlspecialchars(
+                                        'N°'.$rapport['RAP_NUM'].
+                                        ' du '.date('Y-m-d', strtotime($rapport['RAP_DATE_VISITE'])).
+                                        ' - '.$rapport['MOTIF']
+                                    );?>
                                 </option>
                             <?php    
                             }
@@ -42,7 +46,13 @@
                     }
                     ?>
                     <label class="titre-formulaire mt-3" for="nouveau">Nouveau rapport :</label>
-                    <a id="nouveau" class="btn btn-success text-light mt-2" role="button" aria-pressed="true">Nouveau rapport</a>
+                    <a 
+                        id="nouveau" 
+                        class="btn btn-success text-light mt-2" 
+                        role="button" 
+                        aria-pressed="true" 
+                        href="index.php?uc=rapport&action=creeRapport"
+                    >Nouveau rapport</a>
                 </form>
             </div>
         </div>

@@ -14,10 +14,9 @@ function getIdRapportNonValides(string $matricule): array
     SELECT
         r.COL_MATRICULE,
         r.RAP_NUM,
-        r.PRA_NUM,
         r.RAP_DATE_VISITE,
         CASE
-            WHEN r.MOT_ID = \'OTH\' THEN r.RAP_MOTIF_AUTRE
+            WHEN r.MOT_ID = \'OTH\' THEN IFNULL(r.RAP_MOTIF_AUTRE, "Non définie")
             ELSE m.MOT_LIB
         END AS \'MOTIF\'
     FROM 
@@ -31,7 +30,7 @@ function getIdRapportNonValides(string $matricule): array
         r.ETAT_ID = \'C\'
     ;
     ');
-    $req->bindValue(':matricule', $matricule, PDo::PARAM_STR);
+    $req->bindValue(':matricule', $matricule, PDO::PARAM_STR);
     $req->execute();
     $res = $req->fetchAll(PDO::FETCH_ASSOC);
     if (!$res) {
@@ -39,4 +38,60 @@ function getIdRapportNonValides(string $matricule): array
     }
     
     return $res;
+}
+
+/**
+ * Permet de crée un nouveau rapport pour un collaborateur
+ *
+ * @param string $matricule le matricule du collaborateur
+ * @return integer numéro du nouveau rapport du collaborateur
+ */
+function newRapport(string $matricule): int
+{
+    $PDO = connexionPDO();
+    //num rapport
+    $req = $PDO->prepare('
+        SELECT IFNULL((MAX(RAP_NUM) + 1), 1) AS "numRap" FROM rapport_visite WHERE COL_MATRICULE = :matricule;
+    ');
+    $req->bindValue(':matricule', $matricule, PDO::PARAM_STR);
+    $req->execute();
+    $rapNum = $req->fetch(PDO::FETCH_ASSOC)['numRap'];
+
+    $req = $PDO->prepare('
+        INSERT INTO rapport_visite(COL_MATRICULE, RAP_NUM, ETAT_ID) 
+        VALUES (:matricule, :rapNum, \'C\');
+    ');
+    $req->bindValue(':matricule', $matricule, PDO::PARAM_STR);
+    $req->bindValue(':rapNum', $rapNum, PDO::PARAM_INT);
+    $req->execute();
+
+    return $rapNum;
+}
+
+/**
+ * Permet de recupérer spécifiqueemnt un rapport d'un collabolrateur 
+ *
+ * @param string $matricule le matricule du collaborateur
+ * @param integer $rapNum le numéro d'un rapport d'un collaborateur
+ * @return array|false les informations d'un rapport sous forme d'un tableau associatif, ou false si pas trouvé
+ */
+function getRapport(string $matricule, int $rapNum): mixed
+{
+    $req = connexionPDO()->prepare('
+        SELECT
+            `COL_MATRICULE`, `RAP_NUM`, `PRA_NUM`, `RAP_DATE_VISITE`,
+            `RAP_BILAN`, `RAP_MOTIF_AUTRE`, `REMP_NUM`, `MOT_ID`, `ETAT_ID`,
+            `RAP_DATE_SAISIE`, `MED_PRESENTER_1`, `MED_PRESENTER_2` 
+        FROM
+            rapport_visite 
+        WHERE
+            COL_MATRICULE = :matricule
+            AND
+            RAP_NUM = :rapNum
+    ');
+    $req->bindValue(':matricule', $matricule, PDO::PARAM_STR);
+    $req->bindValue(':rapNum', $rapNum, PDO::PARAM_INT);
+    $req->execute();
+
+    return $req->fetch(PDO::FETCH_ASSOC);
 }
