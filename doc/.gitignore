@@ -1,0 +1,5 @@
+#fichier temporaire
+~*
+.*
+#prendre en compte fichier gitingore
+!.gitignore
