@@ -7,7 +7,7 @@
             </p>
         </div>
         <div class="py-lg-5 py-3">
-            <form action="index.php?uc=rapport&action=saisit" method="post" class="formulaire-recherche col-12 m-0 p-3 d-flex flex-column gap-3">
+            <form action="index.php?uc=rapport&action=saisitRapport" method="post" class="formulaire-recherche col-12 m-0 p-3 d-flex flex-column gap-3">
                 <div class="flex-fill w-100">
                     <p class="redstar">
                         Champs obligatoires
