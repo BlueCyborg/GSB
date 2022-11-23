@@ -47,14 +47,14 @@
                                 </a>
                                 <ul class="dropdown-menu">
                                     <li>
-                                        <a class="dropdown-item" href="index.php?uc=rapportdevisite&action=redigerrapport">Rédiger un rapport</a>
+                                        <a class="dropdown-item" href="index.php?uc=rapport&action=redigerRapport">Rédiger un rapport</a>
                                     </li>
                                     <li>
-                                        <a class="dropdown-item" href="index.php?uc=rapportdevisite&action=mesrapports">Mes rapports</a>
+                                        <a class="dropdown-item" href="index.php?uc=rapport&action=mesRapports">Mes rapports</a>
                                     </li>
                                     <?php if ($_SESSION['habilitation'] == 2) { ?>
                                             <li>
-                                                <a class="dropdown-item" href="index.php?uc=rapportdevisite&action=rapportregion">Rapport de ma région</a>
+                                                <a class="dropdown-item" href="index.php?uc=rapport&action=rapportregion">Rapport de ma région</a>
                                             </li>
                                     <?php } ?>
                                 </ul>

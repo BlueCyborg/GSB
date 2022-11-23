@@ -16,7 +16,7 @@
                     echo '<p class="alert alert-danger text-center w-100">Un problème est survenu lors de la selection du praticien</p>';
                     $_SESSION['erreur'] = false;
                 } ?>
-                <form action="index.php?uc=rapport&action=saisitRapport" method="post" class="formulaire-recherche col-12 m-0">
+                <form action="index.php?uc=rapport&action=saisirRapport" method="post" class="formulaire-recherche col-12 m-0">
                     <label class="titre-formulaire" for="rapport">Liste des rapports non validés :</label>
                     <?php
                         if (count($rapportNonValides) <= 0) {

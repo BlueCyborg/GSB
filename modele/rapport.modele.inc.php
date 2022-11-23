@@ -8,7 +8,7 @@ require_once 'bd.inc.php';
  * @param string $matricule le matricule d'un visiteur
  * @return array liste des rapports en cours de saisie (COL_MATRICULE, RAP_NUM, PRA_NUM, RAP_DATE_VISITE, MOTIF)
  */
-function getIdRapportNonValides(string $matricule): array
+function getInfoRapportNonValides(string $matricule): array
 {
     $req = connexionPDO()->prepare('
     SELECT
