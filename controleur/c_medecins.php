@@ -15,7 +15,10 @@ if ($_SESSION['habilitation'] == 2) { // Si l'utilisateur possède les droits n�
             }
         case 'gerermedecin': {
                 if (isset($_POST['formulaire_medecin'])) { //Si le délégué visiteur à changé les valeurs d'un médecin
-                    echo 'test';
+                    gererUnMedecin($_POST['id_medecin'], $_POST['nom_medecin'], $_POST['prenom_medecin'], $_POST['adresse_medecin'], $_POST['cp_medecin'], $_POST['ville_medecin'], $_POST['coeffNotoriete'], $_POST['type_code'], $_POST['coeffConfiance'], $_POST['formulaire_medecin']);
+                    if (!isset($e)) { // S'il n'y a pas d'erreurs lors de l'éxécution de la fonction gererUnMedecin
+                        echo 'Modifications effectués';
+                    };
                 } else {
                     if (isset($_REQUEST['medecin'])) {
                         $medecin = getAllInformationsMedecin($_REQUEST['medecin']);
