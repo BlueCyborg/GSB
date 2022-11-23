@@ -95,3 +95,29 @@ function getRapport(string $matricule, int $rapNum): mixed
 
     return $req->fetch(PDO::FETCH_ASSOC);
 }
+
+/**
+ * Permet de recupérer tous les informations de tous les motifs
+ *
+ * @return array|false les informations des motifs sous forme d'un tableau de tableau associatif, ou false si pas trouvé
+ */
+function getLesMotifs(): mixed {
+    $req = connexionPDO()->query('SELECT MOT_ID, MOT_LIB FROM motif_visite');
+    $req->execute();
+    $motifs = $req->fetchAll(PDO::FETCH_ASSOC);
+    return $motifs;
+}
+
+/**
+ * Permet de recupérer tous les information d'un motif en focntion de son identifiant
+ *
+ * @param string $id identifiant du motif
+ * @return array|false les informations du motif sous forme d'un tableau associatif, ou false si (pas trouvé ou $id null)
+ */
+function getUnMotifById(string $id): mixed {
+    $req = connexionPDO()->prepare('SELECT MOT_ID, MOT_LIB FROM motif_visite WHERE MOT_ID = :id');
+    $req->bindValue(':id', $id, PDO::PARAM_STR);
+    $req->execute();
+    $motifs = $req->fetch(PDO::FETCH_ASSOC);
+    return $motifs;
+}

@@ -7,14 +7,14 @@ include_once 'bd.inc.php';
  *
  * @return array un tableau de tableau avec les informations
  */
-function getAllNomMedecin(): array
+function getAllNomMedecins(): array
 {
 
     try {
         $monPdo = connexionPDO();
         $req = 'SELECT PRA_NUM, PRA_NOM, PRA_PRENOM FROM praticien ORDER BY PRA_NOM';
         $res = $monPdo->query($req);
-        $result = $res->fetchAll();
+        $result = $res->fetchAll(PDO::FETCH_ASSOC);
         return $result;
     } catch (PDOException $e) {
         print "Erreur !: " . $e->getMessage();

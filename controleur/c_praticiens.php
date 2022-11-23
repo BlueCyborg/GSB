@@ -6,7 +6,7 @@ if (!isset($_REQUEST['action']) || empty($_REQUEST['action'])) {
 }
 switch ($action) {
 	case 'formulairepraticien': {
-			$result = getAllNomPraticiens();
+			$result = getAllNomMedecins();
 			include("vues/v_formulairePraticien.php");
 			break;
 		}
@@ -14,7 +14,7 @@ switch ($action) {
 	case 'afficherpraticien': {
 			if (isset($_REQUEST['praticien'])) {
 				$prat = $_REQUEST['praticien'];
-				$carac = getAllInformationsPraticien($prat);
+				$carac = getAllInformationsMedecin($prat);
 				if ($carac) {
 					include("vues/v_afficherPraticien.php");
 				}

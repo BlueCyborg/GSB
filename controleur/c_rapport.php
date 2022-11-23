@@ -1,5 +1,4 @@
 <?php
-require_once 'modele/rapport.modele.inc.php';
 
 if (empty($_REQUEST['action'])) {
 	$action = 'visRapports';
@@ -25,16 +24,20 @@ switch ($action) {
 		if (!empty($_REQUEST['rapNum']) && is_numeric($_REQUEST['rapNum'])) {
 			$rapport = getRapport($_SESSION['matricule'], $_REQUEST['rapNum']);
 			if ($rapport) {
+				$lesMede = getAllNomMedicaments();
+				$lesPraticiens = getAllNomMedecins();
+				$lesMotif = getLesMotifs();
+
 				$rapNum = $rapport['RAP_NUM'];
 				$colMatricule = $rapport['COL_MATRICULE'];
-				$rapPraID = $rapport['PRA_NUM'];
+				$rapPraID = getAllInformationsMedecin($rapport['PRA_NUM']);
 				$saisieDate = date('Y-m-d', strtotime($rapport['RAP_DATE_SAISIE']));
 				$rapBilan = $rapport['RAP_BILAN'];
 				$visiteDate = date('Y-m-d', strtotime($rapport['RAP_DATE_VISITE']));
-				$idMotif = $rapport['MOT_ID'];
+				$unMotif = getUnMotifById($rapport['MOT_ID']);
 				$motifAutre = $rapport['RAP_MOTIF_AUTRE'];
-				$idMed1 = $rapport['MED_PRESENTER_1'];
-				$idMed2 = $rapport['MED_PRESENTER_2'];
+				$preMed = getAllInformationMedicamentDepot($rapport['MED_PRESENTER_1']);
+				$secMed = getAllInformationMedicamentDepot($rapport['MED_PRESENTER_2']);
 				include('vues/v_formulaireRapport.php');
 			} else {
 				$messageType = 'danger';
