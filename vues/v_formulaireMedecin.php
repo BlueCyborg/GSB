@@ -28,7 +28,17 @@
                         }
                         ?>
                     </select>
-                    <input class="btn btn-info text-light valider" type="submit" value="Gérer le médecin">
+                    <input class="btn btn-info text-light valider" type="submit" name="gerer" value="Gérer le médecin">
+                    <br><br>
+                    <label class="titre-formulaire" for="creer">Autre :</label>
+                    <a 
+                        id="creer" 
+                        class="btn btn-success text-light mt-2" 
+                        role="button" 
+                        aria-pressed="true" 
+                        href="index.php?uc=medecin&action=creerMedecin">
+                        Créer Medecin
+                    </a>
                 </form>
             </div>
         </div>

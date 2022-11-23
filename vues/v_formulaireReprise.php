@@ -51,8 +51,9 @@
                         class="btn btn-success text-light mt-2" 
                         role="button" 
                         aria-pressed="true" 
-                        href="index.php?uc=rapport&action=creeRapport"
-                    >Nouveau rapport</a>
+                        href="index.php?uc=rapport&action=creeRapport">
+                        Nouveau rapport
+                    </a>
                 </form>
             </div>
         </div>
