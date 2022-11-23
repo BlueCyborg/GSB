@@ -17,7 +17,9 @@
                             <li class="pb-2">
                                 <i class='bx-fw bx bxs-chevron-right bx-xs'></i><a class="text-decoration-none text-light" href="index.php?uc=accueil">Accueil</a>
                             </li>
-                            <?php if (isset($_SESSION['login'])) { ?>
+                            <?php 
+                                if (isset($_SESSION['habilitation']) && $_SESSION['habilitation'] >= 1) {
+                            ?>
                                 <li class="pb-2">
                                     <i class="bx-fw bx bxs-chevron-right bx-xs"></i><a class="text-decoration-none text-light py-1" href="index.php?uc=medicaments&action=formulairemedoc">Médicaments</a>
                                 </li>
@@ -35,7 +37,8 @@
                                         <li><a class="dropdown-item" href="index.php?uc=rapportdevisite&action=redigerrapport">Rédiger un rapport</a></li>
                                         <li><a class="dropdown-item" href="index.php?uc=rapportdevisite&action=mesrapports">Mes rapports</a></li>
                                         <?php if ($_SESSION['habilitation'] == 2) { ?>
-                                        <li><a class="dropdown-item" href="index.php?uc=rapportdevisite&action=rapportregion">Rapport de ma région</a></li>
+                                            <li><a class="dropdown-item" href="index.php?uc=rapportdevisite&action=rapportregion">Rapport de ma région</a></li>
+                                        <?php }?>
                                     </ul>
                                 </li>
                                 <li class="pb-2">
@@ -45,7 +48,7 @@
                                 <li class="pb-2">
                                     <i class="bx-fw bx bxs-chevron-right bx-xs"></i><a class="text-decoration-none text-light py-1" href="index.php?uc=connexion&action=connexion">Connexion</a>
                                 </li>
-                            <?php } } ?>
+                            <?php } ?>
                         </ul>
                 </div>
             </div>
@@ -72,3 +75,7 @@
 <script src="assets/js/isotope.pkgd.js"></script>
 
 <script src="assets/js/custom.js"></script>
+
+</body>
+
+</html>

@@ -39,14 +39,13 @@ switch ($action) {
 
 	case 'deconnexion': {
 			session_destroy();
-			header('location: index.php?uc=connexion&action=connexion');
+			header('Location: index.php?uc=connexion&action=connexion');
 			break;
 		}
 
 	case 'profil': {
-
 			if (!isset($_SESSION['matricule'])) {
-				header('location: index.php?uc=connexion&action=connexion');
+				header('Location: index.php?uc=connexion&action=connexion');
 			} else {
 				$info = getAllInformationCompte($_SESSION['matricule']);
 				$_SESSION['region'] = $info[9];

@@ -10,11 +10,8 @@ else {
     $uc = $_REQUEST['uc'];
 }
 
-if (empty($_SESSION['login'])) {
-    include("vues/v_headerDeconnexion.php");
-} else {
-    include("vues/v_header.php");
-}
+//capture contenue retourner
+ob_start();
 switch ($uc) {
     case 'accueil': {
             include("vues/v_accueil.php");
@@ -62,8 +59,14 @@ switch ($uc) {
             break;
         }
 }
-?>
-<?php include("vues/v_footer.php"); ?>
-</body>
+//fin de la capture de contenue retourner
+$content = ob_get_clean();
 
-</html>
+//affichage de la page
+if (!isset($_SESSION['login'])) {
+    include("vues/v_headerDeconnexion.php");
+} else {
+    include("vues/v_header.php");
+}
+echo $content;
+include("vues/v_footer.php"); 
