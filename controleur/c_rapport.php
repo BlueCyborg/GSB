@@ -88,21 +88,21 @@ switch ($action) {
 
 		
 
-			/*['rapPraID']
-			['saisieDate']
-			['rapBilan']
-			['visiteDate']
-			['idMotif']
-			['motifAutre']
-			['idMed1']
-			['idMed2']*/
-			//['saisieDef']
+			/*$_POST['rapPraID']
+			$_POST['saisieDate']
+			$_POST['rapBilan']
+			$_POST['visiteDate']
+			$_POST['idMotif']
+			$_POST['motifAutre']
+			$_POST['idMed1']
+			$_POST['idMed2']*/
+			$saisieDef = isset($_POST['saisieDef']);
 		//include('vues/v_formulaireRapport.php');
 		break;
 	}
 
 	default: {
-		header('location: index.php?uc=rapport&action=visRapports');
+		header('location: index.php?uc=rapport&action=mesRapports');
 		break;
 	}
 }
