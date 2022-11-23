@@ -10,12 +10,12 @@ switch ($action) {
     case 'formulairemedecin': {
             if (!isset($_REQUEST['medecin'])) {
                 $result = getMedecinRegion($_SESSION['region']);
-                var_dump($result);
-                //include("vues/v_formulaireMedecin.php");
-            } else {
-                $_SESSION['erreur'] = false;
-                echo 'ERREUR';
+                include("vues/v_formulaireMedecin.php");
             }
+            break;
+        }
+    case 'gerermedecin': {
+            var_dump($_POST);
             break;
         }
 
