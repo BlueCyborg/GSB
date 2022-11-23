@@ -24,20 +24,33 @@ switch ($action) {
 		if (!empty($_REQUEST['rapNum']) && is_numeric($_REQUEST['rapNum'])) {
 			$rapport = getRapport($_SESSION['matricule'], $_REQUEST['rapNum']);
 			if ($rapport) {
-				$lesMede = getAllNomMedicaments();
+				$lesMeds = getAllNomMedicaments();
 				$lesPraticiens = getAllNomMedecins();
-				$lesMotif = getLesMotifs();
+				$lesMotifs = getLesMotifs();
+
+				$rapPraID = $rapport['PRA_NUM'];
+				if ($rapPraID != PDO::NULL_NATURAL) {
+					$rapPraID = getAllInformationsMedecin($rapPraID);
+				}
+				$idMotif = $rapport['MOT_ID'];
+				if ($idMotif != PDO::NULL_NATURAL) {
+					$unMotif = getUnMotifById($idMotif);
+				}
+				$idMed1 = $rapport['MED_PRESENTER_1'];
+				if ($idMed1 != PDO::NULL_NATURAL) {
+					$preMed = getAllInformationMedicamentDepot($idMed1);
+				}
+				$idMed2 = $rapport['MED_PRESENTER_2'];
+				if ($idMed2 != PDO::NULL_NATURAL) {
+					$secMed = getAllInformationMedicamentDepot($idMed2);
+				}
 
 				$rapNum = $rapport['RAP_NUM'];
 				$colMatricule = $rapport['COL_MATRICULE'];
-				$rapPraID = getAllInformationsMedecin($rapport['PRA_NUM']);
 				$saisieDate = date('Y-m-d', strtotime($rapport['RAP_DATE_SAISIE']));
 				$rapBilan = $rapport['RAP_BILAN'];
 				$visiteDate = date('Y-m-d', strtotime($rapport['RAP_DATE_VISITE']));
-				$unMotif = getUnMotifById($rapport['MOT_ID']);
 				$motifAutre = $rapport['RAP_MOTIF_AUTRE'];
-				$preMed = getAllInformationMedicamentDepot($rapport['MED_PRESENTER_1']);
-				$secMed = getAllInformationMedicamentDepot($rapport['MED_PRESENTER_2']);
 				include('vues/v_formulaireRapport.php');
 			} else {
 				$messageType = 'danger';

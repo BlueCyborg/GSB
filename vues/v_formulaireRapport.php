@@ -68,7 +68,7 @@
                             <?php
                                 if (empty($unMotif)) {
                             ?>
-                                <option value class="text-center" selected>- Choisissez un praticien -</option>
+                                <option value class="text-center" selected>- Choisissez un motif -</option>
                             <?php
                                 } else {
                             ?>
@@ -80,9 +80,9 @@
                             ?>
 
                             <?php
-                            foreach ($lesMotifs as $motifs) {
+                            foreach ($lesMotifs as $motif) {
                             ?>
-                                <option value="<?=htmlspecialchars($motif['MOT_ID'])?>" class="text-center" selected>
+                                <option value="<?=htmlspecialchars($motif['MOT_ID'])?>">
                                     <?=htmlspecialchars($motif['MOT_LIB'])?>
                                 </option>
                             <?php    
@@ -92,48 +92,48 @@
 
                         <label for="motifAutre" class="form-label required">Autre Motif:</label>
                         <input id="motifAutre" name="motifAutre" class="form-control" type="text" value=<?=htmlspecialchars($motifAutre)?>>
-                        
-                        <datalist id="lesMeds">
-                            <?php
-                            foreach ($lesMeds as $med) {
-                            ?>
-                                <option value="<?=htmlspecialchars($med['MED_DEPOTLEGAL'])?>" class="text-center" selected>
-                                    <?=htmlspecialchars($med['MED_DEPOTLEGAL'].' - '.$med['MED_NOMCOMMERCIAL'])?>
-                                </option>
-                            <?php    
-                            }
-                            ?>
-                        </datalist>
 
-                        <label for="idMed1" class="form-label required">1er médicament présenté</label>
-                        <select name="idMotif" id="idMotif" class="form-select" list="lesMeds">
+                        <label for="idMed1" class="form-label">1er médicament présenté</label>
+                        <select name="idMed1" id="idMed1" class="form-select">
                             <?php
-                                if (empty($preMed)) {
-                            ?>
-                                <option value class="text-center" selected>- Choisissez un praticien -</option>
-                            <?php
-                                } else {
+                                if (!empty($preMed)) {
                             ?>
                                 <option value="<?=htmlspecialchars($preMed['MED_DEPOTLEGAL'])?>" class="text-center" selected>
-                                    <?=htmlspecialchars($preMed['MED_DEPOTLEGAL'].' - '.$preMed['MED_NOMCOMMERCIAL'])?>
+                                    <?=htmlspecialchars($preMed['MED_NOMCOMMERCIAL'])?>
                                 </option>
+                            <?php 
+                                }
+                            ?>
+                                <option value class="text-center">- Aucun -</option>
                             <?php
+                                foreach ($lesMeds as $med) {
+                            ?>
+                                <option value="<?=htmlspecialchars($med['MED_DEPOTLEGAL'])?>">
+                                    <?=htmlspecialchars($med['MED_NOMCOMMERCIAL'])?>
+                                </option>
+                            <?php    
                                 }
                             ?>
                         </select>
-                        <label for="idMed2" class="form-label required">2eme médicament présenté</label>
-                        <select name="idMotif" id="idMotif" class="form-select" list="lesMeds">
-                            <?php
-                                if (empty($secMed)) {
-                            ?>
-                                <option value class="text-center" selected>- Choisissez un praticien -</option>
-                            <?php
-                                } else {
+                        <label for="idMed2" class="form-label">2eme médicament présenté</label>
+                        <select name="idMed2" id="idMed2" class="form-select">
+                        <?php
+                                if (!empty($secMed)) {
                             ?>
                                 <option value="<?=htmlspecialchars($secMed['MED_DEPOTLEGAL'])?>" class="text-center" selected>
-                                    <?=htmlspecialchars($secMed['MED_DEPOTLEGAL'].' - '.$secMed['MED_NOMCOMMERCIAL'])?>
+                                    <?=htmlspecialchars($secMed['MED_NOMCOMMERCIAL'])?>
                                 </option>
+                            <?php 
+                                }
+                            ?>
+                                <option value class="text-center">- Aucun -</option>
                             <?php
+                                foreach ($lesMeds as $med) {
+                            ?>
+                                <option value="<?=htmlspecialchars($med['MED_DEPOTLEGAL'])?>">
+                                    <?=htmlspecialchars($med['MED_NOMCOMMERCIAL'])?>
+                                </option>
+                            <?php    
                                 }
                             ?>
                         </select>
