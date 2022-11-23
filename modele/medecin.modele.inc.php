@@ -41,25 +41,20 @@ function getAllInformationsMedecin(int $med): mixed
         die();
     }
 }
+/**
+ * Fournie toutes les praticiens en fonction de la région du visiteur délégué
+ *
+ * @param string $codeRegion Le nom de la région du visiteur délégué
+ * @return array|false si des médecins existent, renvoie un tableau sinon faux
+ */
 function getMedecinRegion(String $codeRegion): mixed
 {
     try {
         $monPdo = connexionPDO();
-        //Séléction du nom du département
-        $req = $monPdo->prepare('SELECT REG_CODE FROM region WHERE REG_NOM = :regNom');
+        $req = $monPdo->prepare('SELECT `PRA_NUM`,`PRA_NOM`,`PRA_PRENOM` FROM praticien WHERE SUBSTRING(PRA_CP, 1, 2) IN ( SELECT DEP_NUM FROM departement WHERE REG_CODE = ( SELECT REG_CODE FROM region WHERE REG_NOM = :regNom )); ');
         $req->bindValue(':regNom', $codeRegion, PDO::PARAM_STR);
         $req->execute();
-        $code = $req->fetch(PDO::FETCH_ASSOC);
-        //Séléction des départements en fonction de la région
-        $req = $monPdo->prepare('SELECT DEP_NUM FROM departement WHERE REG_CODE = :regCode');
-        $req->bindValue(':regCode', $code['REG_CODE'], PDO::PARAM_STR);
-        $req->execute();
-        $region = $req->fetchAll(PDO::FETCH_ASSOC);
-        //Séléction des praticiens en fonction des départements
-        $req = $monPdo->prepare('SELECT * FROM praticien WHERE PRA_CP = :region');
-        $req->bindValue(':region', $region, PDO::PARAM_STR);
-        $req->execute();
-        $region = $req->fetchAll(PDO::FETCH_ASSOC);
+        $region = $req->fetchAll();
         return $region;
     } catch (PDOException $e) {
         print "Erreur !: " . $e->getMessage();
