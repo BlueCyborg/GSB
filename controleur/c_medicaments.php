@@ -13,8 +13,7 @@ switch ($action) {
 		}
 
 	case 'affichermedoc': {
-
-			if (isset($_REQUEST['medicament']) && getAllInformationMedicamentDepot($_REQUEST['medicament'])) {
+			if (isset($_REQUEST['medicament'])) {
 				$med = $_REQUEST['medicament'];
 				$carac = getAllInformationMedicamentDepot($med);
 				if (empty($carac[7])) {
@@ -34,4 +33,3 @@ switch ($action) {
 			break;
 		}
 }
-?>

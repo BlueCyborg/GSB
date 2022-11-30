@@ -36,7 +36,7 @@
                         class="btn btn-success text-light mt-2" 
                         role="button" 
                         aria-pressed="true" 
-                        href="index.php?uc=medecin&action=creerMedecin">
+                        href="index.php?uc=medecin&action=creermedecin">
                         Créer Medecin
                     </a>
                 </form>
