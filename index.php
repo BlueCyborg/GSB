@@ -3,6 +3,7 @@ require_once('modele/medicament.modele.inc.php');
 require_once('modele/medecin.modele.inc.php');
 require_once('modele/rapport.modele.inc.php');
 require_once('modele/connexion.modele.inc.php');
+require_once('modele/func.check.inc.php');
 
 if (!isset($_REQUEST['uc']) || empty($_REQUEST['uc']))
     $uc = 'accueil';
@@ -34,7 +35,7 @@ switch ($uc) {
             break;
         }
     case 'medecin': {
-            if (!empty($_SESSION['login']) && $_SESSION['habilitation'] == 2) {
+            if (!empty($_SESSION['login']) && $_SESSION['habilitation'] >= 2) {
                 include("controleur/c_medecins.php");
             } else {
                 include("vues/v_accesInterdit.php");

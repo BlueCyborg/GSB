@@ -19,6 +19,7 @@
                         <label for="rapNum" class="form-label">
                             Numéro du rapport:
                             <span id="rapNum" class="text-secondary"><?=htmlspecialchars($rapNum)?></span>
+                            <input name="rapNum" type="hidden" value="<?=htmlspecialchars($rapNum)?>" hidden>
                         </label>
 
                         <label for="colMat" class="form-label">
@@ -57,7 +58,7 @@
                         <input id="saisieDate" name="saisieDate" class="form-control" type="date" value=<?=htmlspecialchars($saisieDate)?>>
 
                         <label for="rapBilan" class="form-label required">Bilan du rapport:</label>
-                        <textarea id="rapBilan" name="rapBilan" class="form-control" rows="4"><?=htmlspecialchars($rapBilan)?></textarea>
+                        <textarea id="rapBilan" name="rapBilan" class="form-control" maxlength="255" rows="4"><?=htmlspecialchars($rapBilan)?></textarea>
                     </div>
                     <div class="d-flex justify-content-between align-content-star flex-column flex-fill">
                         <label for="visiteDate" class="form-label required">Date de visite:</label>
@@ -91,7 +92,7 @@
                         </select>
 
                         <label for="motifAutre" class="form-label required">Autre Motif:</label>
-                        <input id="motifAutre" name="motifAutre" class="form-control" type="text" value=<?=htmlspecialchars($motifAutre)?>>
+                        <input id="motifAutre" name="motifAutre" maxlength="255" class="form-control" type="text" value=<?=htmlspecialchars($motifAutre)?>>
 
                         <label for="idMed1" class="form-label">1er médicament présenté</label>
                         <select name="idMed1" id="idMed1" class="form-select">

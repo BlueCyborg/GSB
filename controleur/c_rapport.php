@@ -8,6 +8,17 @@ if (empty($_REQUEST['action'])) {
 
 switch ($action) {
 	
+	case 'rapportRegion': {
+		if ($_SESSION['habilitation'] >= 2) {
+
+
+
+		} else {
+			include("vues/v_accesInterdit.php");
+		}
+		break;
+	}
+
 	case 'mesRapports': {
 		$rapportNonValides = getInfoRapportNonValides($_SESSION['matricule']);
 		include('vues/v_formulaireReprise.php');
@@ -32,7 +43,7 @@ switch ($action) {
 
 	case 'saisirRapport': {
 		if (!empty($_REQUEST['rapNum']) && is_numeric($_REQUEST['rapNum'])) {
-			$rapport = getRapport($_SESSION['matricule'], $_REQUEST['rapNum']);
+			$rapport = getUnRapport($_SESSION['matricule'], $_REQUEST['rapNum']);
 			if ($rapport) {
 				//rapport pas en cours d'edition
 				if ($rapport['ETAT_ID'] != 'C') {
@@ -47,7 +58,7 @@ switch ($action) {
 
 					$rapPraID = $rapport['PRA_NUM'];
 					if ($rapPraID != PDO::NULL_NATURAL) {
-						$rapPraID = getAllInformationsMedecin($rapPraID);
+						$unPraticien = getAllInformationsMedecin($rapPraID);
 					}
 					$idMotif = $rapport['MOT_ID'];
 					if ($idMotif != PDO::NULL_NATURAL) {
@@ -85,19 +96,52 @@ switch ($action) {
 
 	case 'saisitRapport': {
 		var_dump($_POST);
+		$colMatricule = $_SESSION['matricule'];
+		$rapNum = $_POST['rapNum'];
+		$rapPraID = $_POST['rapPraID'];
+		$saisieDate = $_POST['saisieDate'];
+		$rapBilan = $_POST['rapBilan'];
+		$visiteDate = $_POST['visiteDate'];
+		$idMotif = $_POST['idMotif'];
+		$motifAutre = $_POST['motifAutre'];
+		$idMed1 = $_POST['idMed1'];
+		$idMed2 = $_POST['idMed2'];
+		$saisieDef = isset($_POST['saisieDef']);
 
-		
+		//check erreur
+		$msgErrs = checkFormRapport($colMatricule, $rapNum, $rapPraID, $saisieDate, $rapBilan, $visiteDate, $idMotif, $motifAutre, $idMed1, $idMed2);
 
-			/*$_POST['rapPraID']
-			$_POST['saisieDate']
-			$_POST['rapBilan']
-			$_POST['visiteDate']
-			$_POST['idMotif']
-			$_POST['motifAutre']
-			$_POST['idMed1']
-			$_POST['idMed2']*/
-			$saisieDef = isset($_POST['saisieDef']);
-		//include('vues/v_formulaireRapport.php');
+		if (count($msgErrs) >= 1 ||true) {
+			//erreur
+			$messageType = 'danger';
+			foreach ($msgErrs as $msg) {
+				$messageBody = $msg;
+				include('vues/v_message.php');
+			}
+
+			//rapport en cours d'edition
+			$lesMeds = getAllNomMedicaments();
+			$lesPraticiens = getAllNomMedecins();
+			$lesMotifs = getLesMotifs();
+			$unMotif = getUnMotifById($idMotif);
+
+			if (!empty($rapPraID) && estUnNombre($rapPraID)) {
+				$unPraticien = getAllInformationsMedecin($rapPraID);
+			}
+			if (!empty($idMed1)) {
+				$preMed = getAllInformationMedicamentDepot($idMed1);
+			}
+			if (!empty($idMed2)) {
+				$secMed = getAllInformationMedicamentDepot($idMed2);
+			}
+
+			include('vues/v_formulaireRapport.php');
+		} else {
+			//valide
+			$messageType = 'info';
+			$messageBody = 'Modification du rapport N°'.htmlspecialchars($rapNum).' bien pris en compte !';
+			include('vues/v_message.php');
+		}
 		break;
 	}
 
