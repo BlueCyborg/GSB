@@ -26,9 +26,13 @@ switch ($action) {
                 }
             }
         }
-        case 'creermedecin':{
-            $types = getTypePraticien();
-            include("vues/v_creerMedecin.php");
+    case 'creermedecin': {
+            if (isset($_POST['submit'])) {
+                //creerUnMedecin();
+            } else {
+                $types = getTypePraticien();
+                include("vues/v_creerMedecin.php");
+            }
             break;
         }
 }

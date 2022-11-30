@@ -114,3 +114,37 @@ function getTypePraticien(): mixed
         die();
     }
 }
+/**
+ * Fonction permettant de créer un médecin
+ *
+ * @param String $nom Nom du médecin
+ * @param String $prenom Prenom du médecin
+ * @param String $adresse Adresse du médecin
+ * @param String $cp Code postal du médecin
+ * @param String $ville Ville du médecin
+ * @param float $coeffNotoriete Coefficien de notoriete du médecin
+ * @param String $typeCode Type code du médecin
+ * @param integer $coeffConfiance Coefficien de confiance du médecin
+ * @return void Envoie les informations du nouveau médecin dans la base de donnée
+ */
+function creerUnMedecin(String $nom, String $prenom, String $adresse, String $cp, String $ville, float $coeffNotoriete, String $typeCode, int $coeffConfiance)
+{
+    try {
+        $monPdo = connexionPDO();
+        $req = $monPdo->prepare("INSERT INTO `praticien` (`PRA_NOM`, `PRA_PRENOM`, `PRA_ADRESSE`, `PRA_CP`, `PRA_VILLE`, `PRA_COEFNOTORIETE`, `TYP_CODE`, `PRA_COEFCONFIANCE`) VALUES(:med_nom, : med_prenom, :med_adresse, :med_cp, :med_ville, :coeff_notoriete, :typeCode, :coeff_confiance)");
+        $req->bindValue(':med_nom', $nom, PDO::PARAM_STR);
+        $req->bindValue(':med_prenom', $prenom, PDO::PARAM_STR);
+        $req->bindValue(':med_adresse', $adresse, PDO::PARAM_STR);
+        $req->bindValue(':med_cp', $cp, PDO::PARAM_STR);
+        $req->bindValue(':med_ville', $ville, PDO::PARAM_STR);
+        $req->bindValue(':coeff_notoriete', $coeffNotoriete, PDO::PARAM_STR);
+        $req->bindValue(':typeCode', $typeCode, PDO::PARAM_STR);
+        $req->bindValue(':coeff_confiance', $coeffConfiance, PDO::PARAM_INT);
+        $req->execute();
+        $medecin = $req->fetch();
+        return $medecin;
+    } catch (PDOException $e) {
+        print "Erreur !: " . $e->getMessage();
+        die();
+    }
+}

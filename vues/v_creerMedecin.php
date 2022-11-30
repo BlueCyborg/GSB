@@ -23,7 +23,8 @@
             <br><br>Coefficient confiance :
             <input type="number" min="0" name="coefficient_confiance" required />
             <br>
-            <input type="submit" name="submit" value="Créer" />
+            <button type="button" class="btn btn-outline-primary" onClick="javascript:.add()" >Ajouter</button>
+            <button type="submit" class="btn btn-outline-primary">Créer</button>
         </p>
     </form>
 </div>
