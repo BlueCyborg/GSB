@@ -135,3 +135,70 @@ function getUnEtatById(string $id): mixed {
     $etat = $req->fetch(PDO::FETCH_ASSOC);
     return $etat;
 }
+
+/**
+ * Permet de mettre à jour un rapport de visite
+ *
+ * @param string $COL_MATRICULE un matricule de collaborateur
+ * @param integer $RAP_NUM numero du rapport
+ * @param integer $PRA_NUM un identifiant de praticien
+ * @param string $RAP_DATE_VISITE une date de saisie
+ * @param string $RAP_BILAN un text de bilan
+ * @param string $RAP_MOTIF_AUTRE un texte pour le motif aute
+ * @param integer $REMP_NUM l'identifiant d'un praticien remplacent
+ * @param string $MOT_ID un identifiant de motif
+ * @param string $ETAT_ID un identifiant d'etat
+ * @param string $RAP_DATE_SAISIE une date de saisie
+ * @param string $MED_PRESENTER_1 un identifiant du premier medicamnent
+ * @param string $MED_PRESENTER_2 un identifiant du deuxieme medicamnent
+ * @return bool true si bien inserer
+ */
+function updateUnRapport(
+    string $COL_MATRICULE,
+    int $RAP_NUM,
+    int $PRA_NUM,
+    string $RAP_DATE_VISITE,
+    string $RAP_BILAN,
+    string $RAP_MOTIF_AUTRE,
+    int $REMP_NUM,
+    string $MOT_ID,
+    string $ETAT_ID,
+    string $RAP_DATE_SAISIE,
+    string $MED_PRESENTER_1,
+    string $MED_PRESENTER_2
+    ) {
+           
+    $req = connexionPDO()->prepare('
+        UPDATE 
+            rapport_visite 
+        SET 
+            PRA_NUM=:PRA_NUM,
+            RAP_DATE_VISITE=:RAP_DATE_VISITE,
+            RAP_BILAN=:RAP_BILAN,
+            RAP_MOTIF_AUTRE=:RAP_MOTIF_AUTRE,
+            REMP_NUM=:REMP_NUM,
+            MOT_ID=:MOT_ID,
+            ETAT_ID=:ETAT_ID,
+            RAP_DATE_SAISIE=:RAP_DATE_SAISIE,
+            MED_PRESENTER_1=:MED_PRESENTER_1,
+            MED_PRESENTER_2=:MED_PRESENTER_2,
+        WHERE
+            COL_MATRICULE = :COL_MATRICULE
+            AND
+            RAP_NUM = :RAP_NUM
+    ');
+    $req->bindValue(':RAP_BILAN', $RAP_BILAN, PDO::PARAM_STR);
+    $req->bindValue(':RAP_MOTIF_AUTRE', $RAP_MOTIF_AUTRE, PDO::PARAM_STR);
+    $req->bindValue(':REMP_NUM', $REMP_NUM, PDO::PARAM_INT);
+    $req->bindValue(':MOT_ID', $MOT_ID, PDO::PARAM_STR);
+    $req->bindValue(':ETAT_ID', $ETAT_ID, PDO::PARAM_STR);
+    $req->bindValue(':RAP_DATE_SAISIE', $RAP_DATE_SAISIE, PDO::PARAM_STR);
+    $req->bindValue(':MED_PRESENTER_1', $MED_PRESENTER_1, PDO::PARAM_STR);
+    $req->bindValue(':MED_PRESENTER_2', $MED_PRESENTER_2, PDO::PARAM_STR);
+    $req->bindValue(':COL_MATRICULE', $COL_MATRICULE, PDO::PARAM_STR);
+    $req->bindValue(':RAP_NUM', $RAP_NUM, PDO::PARAM_INT);
+    $req->bindValue(':PRA_NUM', $PRA_NUM, PDO::PARAM_INT);
+    $req->bindValue(':RAP_DATE_VISITE', $RAP_DATE_VISITE, PDO::PARAM_INT);
+    
+    return $req->execute();
+}

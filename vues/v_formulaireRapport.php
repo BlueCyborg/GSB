@@ -65,7 +65,14 @@
                         <input id="visiteDate" name="visiteDate" class="form-control" type="date" value=<?=htmlspecialchars($visiteDate)?>>
                         
                         <label for="idMotif" class="form-label required">Motif:</label>
-                        <select name="idMotif" id="idMotif" class="form-select">
+                        <select name="idMotif" id="idMotif" class="form-select" onchange="
+                            let mot = document.getElementById('motifAutreGroup');
+                            if (this.value !== 'OTH') {
+                                mot.setAttribute('hidden', '');
+                            } else {
+                                mot.removeAttribute('hidden');
+                            }
+                        ">
                             <?php
                                 if (empty($unMotif)) {
                             ?>
@@ -91,8 +98,10 @@
                             ?>
                         </select>
 
-                        <label for="motifAutre" class="form-label required">Autre Motif:</label>
-                        <input id="motifAutre" name="motifAutre" maxlength="255" class="form-control" type="text" value=<?=htmlspecialchars($motifAutre)?>>
+                        <none id="motifAutreGroup" <?php if ($unMotif['MOT_ID'] != 'OTH') {echo 'hidden';}; ?>>
+                            <label for="motifAutre" class="form-label required">Autre Motif:</label>
+                            <input id="motifAutre" name="motifAutre" maxlength="255" class="form-control" type="text" value=<?=htmlspecialchars($motifAutre)?>>
+                        </none>
 
                         <label for="idMed1" class="form-label">1er médicament présenté</label>
                         <select name="idMed1" id="idMed1" class="form-select">
