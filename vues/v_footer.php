@@ -26,7 +26,7 @@
                                 <li class="pb-2">
                                     <i class="bx-fw bx bxs-chevron-right bx-xs"></i><a class="text-decoration-none text-light py-1" href="index.php?uc=praticiens&action=formulairepraticien">Praticiens</a>
                                 </li>
-                                <?php if ($_SESSION['habilitation'] == 2) { ?>
+                                <?php if ($_SESSION['habilitation'] >= 2) { ?>
                                     <li class="pb-2">
                                         <i class="bx-fw bx bxs-chevron-right bx-xs"></i><a class="text-decoration-none text-light py-1" href="index.php?uc=medecin&action=formulairemedecin">Gérer médecin</a>
                                     </li>
@@ -36,7 +36,7 @@
                                     <ul class="dropdown-menu dropdown-menu-dark p-0">
                                         <li><a class="dropdown-item" href="index.php?uc=rapport&action=redigerRapport">Rédiger un rapport</a></li>
                                         <li><a class="dropdown-item" href="index.php?uc=rapport&action=mesRapports">Mes rapports</a></li>
-                                        <?php if ($_SESSION['habilitation'] == 2) { ?>
+                                        <?php if ($_SESSION['habilitation'] >= 2) { ?>
                                             <li><a class="dropdown-item" href="index.php?uc=rapport&action=rapportregion">Rapport de ma région</a></li>
                                         <?php }?>
                                     </ul>

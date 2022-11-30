@@ -16,8 +16,8 @@ switch ($action) {
 			if (isset($_REQUEST['medicament'])) {
 				$med = $_REQUEST['medicament'];
 				$carac = getAllInformationMedicamentDepot($med);
-				if (empty($carac[7])) {
-					$carac[7] = 'Non défini(e)';
+				if (empty($carac['FAM_LIBELLE'])) {
+					$carac['FAM_LIBELLE'] = 'Non défini(e)';
 				}
 				include("vues/v_afficherMedicament.php");
 			} else {

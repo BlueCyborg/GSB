@@ -75,7 +75,7 @@ function newRapport(string $matricule): int
  * @param integer $rapNum le numéro d'un rapport d'un collaborateur
  * @return array|false les informations d'un rapport sous forme d'un tableau associatif, ou false si pas trouvé
  */
-function getRapport(string $matricule, int $rapNum): mixed
+function getUnRapport(string $matricule, int $rapNum): mixed
 {
     $req = connexionPDO()->prepare('
         SELECT
@@ -109,15 +109,29 @@ function getLesMotifs(): mixed {
 }
 
 /**
- * Permet de recupérer tous les information d'un motif en focntion de son identifiant
+ * Permet de recupérer tous les information d'un motif en fonction de son identifiant
  *
  * @param string $id identifiant du motif
- * @return array|false les informations du motif sous forme d'un tableau associatif, ou false si (pas trouvé ou $id null)
+ * @return array|false les informations du motif sous forme d'un tableau associatif, ou false si pas trouvé
  */
 function getUnMotifById(string $id): mixed {
     $req = connexionPDO()->prepare('SELECT MOT_ID, MOT_LIB FROM motif_visite WHERE MOT_ID = :id');
     $req->bindValue(':id', $id, PDO::PARAM_STR);
     $req->execute();
-    $motifs = $req->fetch(PDO::FETCH_ASSOC);
-    return $motifs;
+    $motif = $req->fetch(PDO::FETCH_ASSOC);
+    return $motif;
+}
+
+/**
+ * Permet de recupérer tous les information d'un etat en fonction de son identifiant
+ *
+ * @param string $id identifiant de l'etat
+ * @return array|false les informations de l'etat sous forme d'un tableau associatif, ou false si pas trouvé
+ */
+function getUnEtatById(string $id): mixed {
+    $req = connexionPDO()->prepare('SELECT ETAT_ID, ETAT_LIB FROM etat_rapport WHERE ETAT_ID = :id');
+    $req->bindValue(':id', $id, PDO::PARAM_STR);
+    $req->execute();
+    $etat = $req->fetch(PDO::FETCH_ASSOC);
+    return $etat;
 }

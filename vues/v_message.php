@@ -5,6 +5,6 @@
     }
 ?>
 
-<div class="m-5 alert alert-<?=htmlspecialchars($messageType)?>" role="alert">
+<div class="m-3 alert alert-<?=htmlspecialchars($messageType)?>" role="alert">
     <?=htmlspecialchars($messageBody)?>
 </div>

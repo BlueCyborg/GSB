@@ -29,7 +29,7 @@ function getAllNomMedicaments(): mixed
 function getAllInformationMedicamentDepot($depot): mixed
 {
     try {
-        $req = connexionPDO()->prepare('SELECT m.MED_DEPOTLEGAL AS \'depotlegal\', m.MED_NOMCOMMERCIAL AS \'nomcom\', m.MED_COMPOSITION AS \'compo\', m.MED_EFFETS AS \'effet\', m.MED_CONTREINDIC AS \'contreindic\', m.MED_PRIXECHANTILLON AS \'prixechan\', f.FAM_LIBELLE AS \'famille\' FROM medicament m INNER JOIN famille f ON f.FAM_CODE = m.FAM_CODE WHERE MED_DEPOTLEGAL = :depot');
+        $req = connexionPDO()->prepare('SELECT m.MED_DEPOTLEGAL, m.MED_NOMCOMMERCIAL, m.MED_COMPOSITION, m.MED_EFFETS, m.MED_CONTREINDIC, m.MED_PRIXECHANTILLON, f.FAM_LIBELLE FROM medicament m INNER JOIN famille f ON f.FAM_CODE = m.FAM_CODE WHERE MED_DEPOTLEGAL = :depot');
         $req->bindValue(':depot', $depot);
         $req->execute();
         $result = $req->fetch(PDO::FETCH_ASSOC);
@@ -48,7 +48,7 @@ function getAllInformationMedicamentDepot($depot): mixed
 function getAllInformationMedicamentNom($nom): mixed
 {
     try {
-        $req = connexionPDO()->prepare('SELECT m.MED_DEPOTLEGAL as \'depotlegal\', m.MED_NOMCOMMERCIAL as \'nomcom\', m.MED_COMPOSITION as \'compo\', m.MED_EFFETS as \'effet\', m.MED_CONTREINDIC as \'contreindic\', m.MED_PRIXECHANTILLON as \'prixechan\', f.FAM_LIBELLE as \'famille\' FROM medicament m INNER JOIN famille f ON f.FAM_CODE = m.FAM_CODE WHERE MED_NOMCOMMERCIAL = :nom');
+        $req = connexionPDO()->prepare('SELECT m.MED_DEPOTLEGAL, m.MED_NOMCOMMERCIAL, m.MED_COMPOSITION, m.MED_EFFETS, m.MED_CONTREINDIC, m.MED_PRIXECHANTILLON, f.FAM_LIBELLE FROM medicament m INNER JOIN famille f ON f.FAM_CODE = m.FAM_CODE WHERE MED_NOMCOMMERCIAL = :nom');
         $req->bindValue(':nom', $nom);
         $req->execute();
         $result = $req->fetch(PDO::FETCH_ASSOC);
@@ -86,7 +86,7 @@ function getNbMedicament(): int
 {
     try {
         $monPdo = connexionPDO();
-        $req = 'SELECT COUNT(MED_DEPOTLEGAL) as \'nb\' FROM medicament';
+        $req = 'SELECT COUNT(MED_DEPOTLEGAL) FROM medicament';
         $res = $monPdo->query($req);
         $result = $res->fetch(PDO::FETCH_ASSOC);
         return $result;
