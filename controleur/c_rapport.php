@@ -95,7 +95,6 @@ switch ($action) {
 	}
 
 	case 'saisitRapport': {
-		var_dump($_POST);
 		$colMatricule = $_SESSION['matricule'];
 		$rapNum = $_POST['rapNum'];
 		$rapPraID = $_POST['rapPraID'];
@@ -111,7 +110,7 @@ switch ($action) {
 		//check erreur
 		$msgErrs = checkFormRapport($colMatricule, $rapNum, $rapPraID, $saisieDate, $rapBilan, $visiteDate, $idMotif, $motifAutre, $idMed1, $idMed2);
 
-		if (count($msgErrs) >= 1 ||true) {
+		if (count($msgErrs) >= 1) {
 			//erreur
 			$messageType = 'danger';
 			foreach ($msgErrs as $msg) {
@@ -137,10 +136,17 @@ switch ($action) {
 
 			include('vues/v_formulaireRapport.php');
 		} else {
+			//saisie bonne
+			//saisieDef ? 'V' : 'C'
+
+
 			//valide
 			$messageType = 'info';
 			$messageBody = 'Modification du rapport N°'.htmlspecialchars($rapNum).' bien pris en compte !';
 			include('vues/v_message.php');
+			
+			$rapportNonValides = getInfoRapportNonValides($_SESSION['matricule']);
+			include('vues/v_formulaireReprise.php');
 		}
 		break;
 	}
