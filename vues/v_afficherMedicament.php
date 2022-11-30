@@ -9,13 +9,13 @@
             </div>
             <div class="test col-12 col-sm-8 col-lg-6 col-xl-5 col-xxl-4 py-lg-5 py-3">
                 <div class="formulaire">
-                    <p><span class="carac">Dépot légal</span> : <?= $carac['depotlegal'] ?></p>
-                    <p><span class="carac">Nom commercial</span> : <?= $carac['nomcom'] ?></p>
-                    <p><span class="carac">Composition</span> : <?= $carac['compo'] ?></p>
-                    <p><span class="carac">Effets</span> : <?= $carac['effet'] ?></p>
-                    <p><span class="carac">Contre indication</span> : <?= $carac['contreindic'] ?></p>
-                    <p><span class="carac">Prix de l'échantillon</span> : <?= $carac['prixechan'] . '€' ?></p>
-                    <p><span class="carac">Famille</span> : <?= $carac['famille'] ?></p>
+                    <p><span class="carac">Dépot légal</span> : <?= htmlspecialchars($carac['depotlegal']) ?></p>
+                    <p><span class="carac">Nom commercial</span> : <?= htmlspecialchars($carac['nomcom']) ?></p>
+                    <p><span class="carac">Composition</span> : <?= htmlspecialchars($carac['compo']) ?></p>
+                    <p><span class="carac">Effets</span> : <?= htmlspecialchars($carac['effet']) ?></p>
+                    <p><span class="carac">Contre indication</span> : <?= htmlspecialchars($carac['contreindic']) ?></p>
+                    <p><span class="carac">Prix de l'échantillon</span> : <?= htmlspecialchars($carac['prixechan']) . '€' ?></p>
+                    <p><span class="carac">Famille</span> : <?= htmlspecialchars($carac['famille']) ?></p>
                     <input class="btn btn-info text-light valider col-6 col-sm-5 col-md-4 col-lg-3" type="button" onclick="history.go(-1)" value="Retour">
                 </div>
             </div>

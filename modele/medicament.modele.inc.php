@@ -7,7 +7,7 @@ include_once 'bd.inc.php';
  *
  * @return array|false Retourne un tableau contenenant tous les médicaments de la table ou false si rien n'est retourné
  */
-function getAllNomMedicaments(): array|false
+function getAllNomMedicaments(): mixed
 {
     try {
         $monPdo = connexionPDO();
@@ -26,7 +26,7 @@ function getAllNomMedicaments(): array|false
  * @param String $depot Le nom de la référence du médicament
  * @return array|false Retourne un tableau contenenant toutes les informations concernant le médicament ou false si il ne retourne rien
  */
-function getAllInformationMedicamentDepot($depot): array|bool
+function getAllInformationMedicamentDepot($depot): mixed
 {
     try {
         $req = connexionPDO()->prepare('SELECT m.MED_DEPOTLEGAL AS \'depotlegal\', m.MED_NOMCOMMERCIAL AS \'nomcom\', m.MED_COMPOSITION AS \'compo\', m.MED_EFFETS AS \'effet\', m.MED_CONTREINDIC AS \'contreindic\', m.MED_PRIXECHANTILLON AS \'prixechan\', f.FAM_LIBELLE AS \'famille\' FROM medicament m INNER JOIN famille f ON f.FAM_CODE = m.FAM_CODE WHERE MED_DEPOTLEGAL = :depot');
@@ -45,7 +45,7 @@ function getAllInformationMedicamentDepot($depot): array|bool
  * @param String $depot Le nom de la référence du médicament
  * @return array|false Retourne un tableau contenenant toutes les informations concernant le médicament ou false sinon
  */
-function getAllInformationMedicamentNom($nom): array|false
+function getAllInformationMedicamentNom($nom): mixed
 {
     try {
         $req = connexionPDO()->prepare('SELECT m.MED_DEPOTLEGAL as \'depotlegal\', m.MED_NOMCOMMERCIAL as \'nomcom\', m.MED_COMPOSITION as \'compo\', m.MED_EFFETS as \'effet\', m.MED_CONTREINDIC as \'contreindic\', m.MED_PRIXECHANTILLON as \'prixechan\', f.FAM_LIBELLE as \'famille\' FROM medicament m INNER JOIN famille f ON f.FAM_CODE = m.FAM_CODE WHERE MED_NOMCOMMERCIAL = :nom');
@@ -64,7 +64,7 @@ function getAllInformationMedicamentNom($nom): array|false
  * @param String $depot Le dépôt légal du médicament
  * @return array|false Un tableau contenant toutes les médicaments
  */
-function getDepotMedoc($depot): array|false
+function getDepotMedoc($depot): mixed
 {
     try {
         $req = connexionPDO()->prepare('SELECT MED_DEPOTLEGAL, MED_NOMCOMMERCIAL FROM medicament WHERE MED_DEPOTLEGAL = :depot');

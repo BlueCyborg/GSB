@@ -9,7 +9,6 @@ include_once 'bd.inc.php';
  */
 function getAllNomMedecins(): array
 {
-
     try {
         $monPdo = connexionPDO();
         $req = 'SELECT PRA_NUM, PRA_NOM, PRA_PRENOM FROM praticien ORDER BY PRA_NOM';
@@ -92,6 +91,24 @@ function gererUnMedecin(int $numero, String $nom, String $prenom, String $adress
         $req->execute();
         $region = $req->fetch();
         return $region;
+    } catch (PDOException $e) {
+        print "Erreur !: " . $e->getMessage();
+        die();
+    }
+}
+/**
+ * Retourne tous les types de praticiens
+ *
+ * @return array|false Le résultat des types de praticiens
+ */
+function getTypePraticien(): mixed
+{
+    try {
+        $monPdo = connexionPDO();
+        $req = 'SELECT `TYP_CODE`,`TYP_LIBELLE` FROM `type_praticien`';
+        $res = $monPdo->query($req);
+        $result = $res->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
     } catch (PDOException $e) {
         print "Erreur !: " . $e->getMessage();
         die();

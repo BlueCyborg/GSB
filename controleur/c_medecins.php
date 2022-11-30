@@ -27,6 +27,7 @@ switch ($action) {
             }
         }
         case 'creermedecin':{
+            $types = getTypePraticien();
             include("vues/v_creerMedecin.php");
             break;
         }
