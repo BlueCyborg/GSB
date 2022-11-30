@@ -1,0 +1,1 @@
+- Revoir les valeurs nulles par défaut dans la base de donnée
