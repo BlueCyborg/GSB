@@ -26,4 +26,8 @@ switch ($action) {
                 }
             }
         }
+        case 'creermedecin':{
+            include("vues/v_creerMedecin.php");
+            break;
+        }
 }
