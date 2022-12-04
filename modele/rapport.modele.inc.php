@@ -79,9 +79,9 @@ function getUnRapport(string $matricule, int $rapNum): mixed
 {
     $req = connexionPDO()->prepare('
         SELECT
-            `COL_MATRICULE`, `RAP_NUM`, `PRA_NUM`, `RAP_DATE_VISITE`,
-            `RAP_BILAN`, `RAP_MOTIF_AUTRE`, `REMP_NUM`, `MOT_ID`, `ETAT_ID`,
-            `RAP_DATE_SAISIE`, `MED_PRESENTER_1`, `MED_PRESENTER_2` 
+            COL_MATRICULE, RAP_NUM, PRA_NUM, RAP_DATE_VISITE,
+            RAP_BILAN, RAP_MOTIF_AUTRE, REMP_NUM, MOT_ID, ETAT_ID,
+            RAP_DATE_SAISIE, MED_PRESENTER_1, MED_PRESENTER_2 
         FROM
             rapport_visite 
         WHERE

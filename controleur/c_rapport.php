@@ -48,7 +48,7 @@ switch ($action) {
 				//rapport pas en cours d'edition
 				if ($rapport['ETAT_ID'] != 'C') {
 					$messageType = 'warning';
-					$messageBody = 'Le rapport n°'.htmlspecialchars($_REQUEST['rapNum']).' à déja été saisie de façon définitive !';
+					$messageBody = 'Le rapport n°'.$_REQUEST['rapNum'].' à déja été saisie de façon définitive !';
 					include('vues/v_message.php');
 				} else {
 					//rapport en cours d'edition
@@ -95,58 +95,74 @@ switch ($action) {
 	}
 
 	case 'saisitRapport': {
-		$colMatricule = $_SESSION['matricule'];
-		$rapNum = $_POST['rapNum'];
-		$rapPraID = $_POST['rapPraID'];
-		$saisieDate = $_POST['saisieDate'];
-		$rapBilan = $_POST['rapBilan'];
-		$visiteDate = $_POST['visiteDate'];
-		$idMotif = $_POST['idMotif'];
-		$motifAutre = $_POST['motifAutre'];
-		$idMed1 = $_POST['idMed1'];
-		$idMed2 = $_POST['idMed2'];
-		$saisieDef = isset($_POST['saisieDef']);
+		if (isset($_SESSION['matricule']) 
+			&& isset($_POST['rapNum'])
+			&& isset($_POST['rapPraID'])
+			&& isset($_POST['saisieDate'])
+			&& isset($_POST['rapBilan'])
+			&& isset($_POST['visiteDate'])
+			&& isset($_POST['idMotif'])
+			&& isset($_POST['motifAutre'])
+			&& isset($_POST['idMed1'])
+			&& isset($_POST['idMed2'])
+		) {
+			$colMatricule = $_SESSION['matricule'];
+			$rapNum = $_POST['rapNum'];
+			$rapPraID = $_POST['rapPraID'];
+			$saisieDate = $_POST['saisieDate'];
+			$rapBilan = $_POST['rapBilan'];
+			$visiteDate = $_POST['visiteDate'];
+			$idMotif = $_POST['idMotif'];
+			$motifAutre = $_POST['motifAutre'];
+			$idMed1 = $_POST['idMed1'];
+			$idMed2 = $_POST['idMed2'];
+			$saisieDef = isset($_POST['saisieDef']);
 
-		//check erreur
-		$msgErrs = checkFormRapport($colMatricule, $rapNum, $rapPraID, $saisieDate, $rapBilan, $visiteDate, $idMotif, $motifAutre, $idMed1, $idMed2);
+			//check erreur
+			$msgErrs = checkFormRapport($colMatricule, $rapNum, $rapPraID, $saisieDate, $rapBilan, $visiteDate, $idMotif, $motifAutre, $idMed1, $idMed2);
 
-		if (count($msgErrs) >= 1) {
-			//erreur
-			$messageType = 'danger';
-			foreach ($msgErrs as $msg) {
-				$messageBody = $msg;
+			if (count($msgErrs) >= 1) {
+				//erreur
+				$messageType = 'danger';
+				foreach ($msgErrs as $msg) {
+					$messageBody = $msg;
+					include('vues/v_message.php');
+				}
+
+				//rapport en cours d'edition
+				$lesMeds = getAllNomMedicaments();
+				$lesPraticiens = getAllNomMedecins();
+				$lesMotifs = getLesMotifs();
+				$unMotif = getUnMotifById($idMotif);
+
+				if (!empty($rapPraID) && estUnNombre($rapPraID)) {
+					$unPraticien = getAllInformationsMedecin($rapPraID);
+				}
+				if (!empty($idMed1)) {
+					$preMed = getAllInformationMedicamentDepot($idMed1);
+				}
+				if (!empty($idMed2)) {
+					$secMed = getAllInformationMedicamentDepot($idMed2);
+				}
+
+				include('vues/v_formulaireRapport.php');
+			} else {
+				//saisie bonne
+				//saisieDef ? 'V' : 'C'
+
+
+				//valide
+				$messageType = 'info';
+				$messageBody = 'Modification du rapport N°'.$rapNum.' bien pris en compte !';
 				include('vues/v_message.php');
+				
+				$rapportNonValides = getInfoRapportNonValides($_SESSION['matricule']);
+				include('vues/v_formulaireReprise.php');
 			}
-
-			//rapport en cours d'edition
-			$lesMeds = getAllNomMedicaments();
-			$lesPraticiens = getAllNomMedecins();
-			$lesMotifs = getLesMotifs();
-			$unMotif = getUnMotifById($idMotif);
-
-			if (!empty($rapPraID) && estUnNombre($rapPraID)) {
-				$unPraticien = getAllInformationsMedecin($rapPraID);
-			}
-			if (!empty($idMed1)) {
-				$preMed = getAllInformationMedicamentDepot($idMed1);
-			}
-			if (!empty($idMed2)) {
-				$secMed = getAllInformationMedicamentDepot($idMed2);
-			}
-
-			include('vues/v_formulaireRapport.php');
 		} else {
-			//saisie bonne
-			//saisieDef ? 'V' : 'C'
-
-
-			//valide
-			$messageType = 'info';
-			$messageBody = 'Modification du rapport N°'.htmlspecialchars($rapNum).' bien pris en compte !';
+			$messageType = 'danger';
+			$messageBody = 'Le formulaire pour saisir le rapport est mal constitué !';
 			include('vues/v_message.php');
-			
-			$rapportNonValides = getInfoRapportNonValides($_SESSION['matricule']);
-			include('vues/v_formulaireReprise.php');
 		}
 		break;
 	}
