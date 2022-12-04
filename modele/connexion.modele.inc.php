@@ -14,7 +14,7 @@ function getAllInformationCompte($matricule): mixed
     try {
         $monPdo = connexionPDO();
         $req = $monPdo->prepare('SELECT c.`COL_MATRICULE` as `matricule`,c.`COL_NOM` as `nom`,`COL_PRENOM` as `prenom`,c.`COL_ADRESSE` as `adresse`,c.`COL_CP` as `cp`,c.`COL_VILLE` as `ville`, concat(DAY(COL_DATEEMBAUCHE),\'/\',MONTH(`COL_DATEEMBAUCHE`),\'/\',YEAR(`COL_DATEEMBAUCHE`)) as `date_embauche`, h.HAB_LIB as `habilitation` ,s.SEC_LIBELLE as `secteur`, r.REG_NOM as `region` FROM collaborateur c LEFT JOIN secteur s ON s.`SEC_CODE`=c.`SEC_CODE` LEFT JOIN habilitation h ON h.HAB_ID=c.HAB_ID LEFT JOIN region r ON r.REG_CODE=c.REG_CODE WHERE c.COL_MATRICULE = :matricule');
-        $req->bindParam(':matricule', $matricule, PDO::PARAM_STR);
+        $req->bindValue(':matricule', $matricule, PDO::PARAM_STR);
         $req->execute();
         $res = $req->fetch();
         return $res;
@@ -37,8 +37,8 @@ function checkConnexion(string $username, string $pass): mixed
     try {
         $monPdo = connexionPDO();
         $req = $monPdo->prepare('SELECT l.LOG_ID as \'id_log\', l.COL_MATRICULE as \'matricule\', c.HAB_ID as \'habilitation\' FROM login l INNER JOIN collaborateur c ON l.COL_MATRICULE = c.COL_MATRICULE WHERE l.LOG_LOGIN = :identifiant AND l.LOG_MOTDEPASSE = :password');
-        $req->bindParam(':identifiant', $username, PDO::PARAM_STR);
-        $req->bindParam(':password', hash('sha512', $pass), PDO::PARAM_STR);
+        $req->bindValue(':identifiant', $username, PDO::PARAM_STR);
+        $req->bindValue(':password', hash('sha512', $pass), PDO::PARAM_STR);
         $req->execute();
         $res = $req->fetch();
         return $res;
@@ -60,7 +60,7 @@ function checkMatriculeInscription(string $matricule): bool
     try {
         $getInfo = connexionPDO();
         $req = $getInfo->prepare('select `COL_MATRICULE` as \'matricule\' from login where `COL_MATRICULE`=:matricule');
-        $req->bindParam(':matricule', $matricule, PDO::PARAM_STR);
+        $req->bindValue(':matricule', $matricule, PDO::PARAM_STR);
         $req->execute();
         $res = $req->fetch();
         return $res;
@@ -82,7 +82,7 @@ function checkMatricule($matricule): bool
     try {
         $monPdo = connexionPDO();
         $req = $monPdo->prepare('select `COL_MATRICULE` as \'matricule\' from collaborateur where `COL_MATRICULE`=:matricule');
-        $req->bindParam(':matricule', $matricule, PDO::PARAM_STR);
+        $req->bindValue(':matricule', $matricule, PDO::PARAM_STR);
         $req->execute();
         $res = $req->fetch();
         return $res;
@@ -104,7 +104,7 @@ function checkUserInscription(string $username): bool
     try {
         $getInfo = connexionPDO();
         $req = $getInfo->prepare('SELECT `LOG_LOGIN` from login where `LOG_LOGIN`=:username');
-        $req->bindParam(':username', $username, PDO::PARAM_STR);
+        $req->bindValue(':username', $username, PDO::PARAM_STR);
         $req->execute();
         $res = $req->fetch();
         return $res;
