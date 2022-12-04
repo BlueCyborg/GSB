@@ -3,7 +3,7 @@
         <div class="structure-hero pt-lg-5 pt-4">
             <h1 class="titre text-center">Formulaire de reprise de rapport</h1>
             <p class="text text-center">
-                Formulaire permettant d'afficher toutes les rapports
+                Formulaire permettant d'afficher tous les rapports
                 non validés et d'en crée de nouveau.
             </p>
         </div>
@@ -12,10 +12,14 @@
                 <img class="img-fluid size-img-page" src="assets/img/medical_banner_dark.png">
             </div>
             <div class="test col-12 col-sm-8 col-lg-6 col-xl-5 col-xxl-4 py-lg-5 py-3">
-                <?php if ($_SESSION['erreur']) {
-                    echo '<p class="alert alert-danger text-center w-100">Un problème est survenu lors de la selection du praticien</p>';
-                    $_SESSION['erreur'] = false;
-                } ?>
+                <?php 
+                    if ($_SESSION['erreur']) {
+                    ?>
+                        <p class="alert alert-danger text-center w-100">Un problème est survenu lors de la selection du praticien</p>
+                    <?php
+                        $_SESSION['erreur'] = false;
+                    } 
+                ?>
                 <form action="index.php?uc=rapport&action=saisirRapport" method="post" class="formulaire-recherche col-12 m-0">
                     <label class="titre-formulaire" for="rapport">Liste des rapports non validés :</label>
                     <?php
