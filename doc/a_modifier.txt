@@ -1,2 +1,4 @@
 - Faire en sorte qu'à la création d'un médecin, il ai une spécialité voir plusieurs
 - Copier sur denis pour le visuel
+
+-coeficien de notauriété on le met ou ?

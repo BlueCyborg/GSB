@@ -28,7 +28,8 @@ function connexionPDO(): PDO
  * @param integer $type type de valeur si non null
  * @return void
  */
-function bindValueCanBeNull(PDOStatement $req, string $name, mixed $value, int $type) {
+function bindValueCanBeNull(PDOStatement $req, string $name, mixed $value, int $type): void
+{
     if (is_null($value)) {
         $req->bindValue($name, NULL, PDO::PARAM_NULL);
     } else {

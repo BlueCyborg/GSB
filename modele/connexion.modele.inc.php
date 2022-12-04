@@ -8,7 +8,7 @@ include_once 'bd.inc.php';
  * @param $matricule matricule d'un colborateur
  * @return array|false tabelau associatif contenant les informations ou false si matricule pas trouvé
  */
-function getAllInformationCompte($matricule): array|false
+function getAllInformationCompte($matricule): mixed
 {
 
     try {
@@ -31,14 +31,14 @@ function getAllInformationCompte($matricule): array|false
  * @param string $pass mot de passe de l'utilisateur
  * @return array|false tableau associtif avec les informations du collacorateur (matricule, habilitation, log_id), ou false si mauvaise identification
  */
-function checkConnexion(string $username, string $pass): array|false
+function checkConnexion(string $username, string $pass): mixed
 {
 
     try {
         $monPdo = connexionPDO();
         $req = $monPdo->prepare('SELECT l.LOG_ID as \'id_log\', l.COL_MATRICULE as \'matricule\', c.HAB_ID as \'habilitation\' FROM login l INNER JOIN collaborateur c ON l.COL_MATRICULE = c.COL_MATRICULE WHERE l.LOG_LOGIN = :identifiant AND l.LOG_MOTDEPASSE = :password');
         $req->bindParam(':identifiant', $username, PDO::PARAM_STR);
-        $req->bindParam(':password', hash('sha512', $pass, PDO::PARAM_STR));
+        $req->bindParam(':password', hash('sha512', $pass), PDO::PARAM_STR);
         $req->execute();
         $res = $req->fetch();
         return $res;
@@ -76,7 +76,7 @@ function checkMatriculeInscription(string $matricule): bool
  * @param string $matricule un matricule
  * @return bool true si la tabel contient le matricule
  */
-function checkMatricule($matricule)
+function checkMatricule($matricule): bool
 {
 
     try {
@@ -117,9 +117,9 @@ function checkUserInscription(string $username): bool
 /**
  * Permet de récupéré la liste des matricule des collabotrateurs
  *
- * @return array tableau de tableau associtif contenue les matricule
+ * @return array tableau de tableau associtif contenue les matricule ou false
  */
-function getAllMatriculeCollaborateur()
+function getAllMatriculeCollaborateur(): mixed
 {
 
     try {
@@ -141,7 +141,7 @@ function getAllMatriculeCollaborateur()
  *
  * @return mixed le nombre de collaborateur
  */
-function getCountMatricule()
+function getCountMatricule(): mixed
 {
 
     try {
