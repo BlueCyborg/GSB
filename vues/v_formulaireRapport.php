@@ -158,7 +158,7 @@
                                 } else {
                                     mot.removeAttribute('hidden');
                                 }
-                            ">>
+                            ">
                                 <?php
                                     if (!empty($preMed)) {
                                 ?>
