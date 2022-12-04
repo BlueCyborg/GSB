@@ -1,3 +1,4 @@
 #config contenent les mdp
 /modele/config.ini
+#des fichiers de logs
 *.log
