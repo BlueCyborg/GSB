@@ -20,6 +20,7 @@ switch ($action) {
                 };
             } else {
                 if (isset($_REQUEST['medecin'])) {
+                    $idMedecin = $_POST['medecin'];
                     $medecin = getAllInformationsMedecin($_REQUEST['medecin']);
                     include("vues/v_gererMedecin.php");
                     break;
