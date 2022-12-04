@@ -23,7 +23,7 @@
                         <?php
                         foreach ($result as $key) {
                         ?>
-                            <option value="<?= $key['PRA_NUM'] ?> " class="form-control"><?= $key['PRA_NOM'] . ' ' . $key['PRA_PRENOM'] ?></option>
+                            <option value="<?= htmlspecialchars($key['PRA_NUM']) ?>" class="form-control"><?= htmlspecialchars($key['PRA_NOM'] . ' ' . $key['PRA_PRENOM']) ?></option>
                         <?php
                         }
                         ?>

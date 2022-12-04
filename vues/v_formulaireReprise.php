@@ -33,7 +33,7 @@
                                 <option value="<?=htmlspecialchars($rapport['RAP_NUM'])?> " class="form-control">
                                     <?=htmlspecialchars(
                                         'N°'.$rapport['RAP_NUM'].
-                                        ' du '.date('Y-m-d', strtotime($rapport['RAP_DATE_VISITE'])).
+                                        ' du '.(empty($rapport['RAP_DATE_SAISIE']) ? 'Inconnue' : date('Y-m-d', strtotime($rapport['RAP_DATE_SAISIE']))).
                                         ' - '.$rapport['MOTIF']
                                     );?>
                                 </option>

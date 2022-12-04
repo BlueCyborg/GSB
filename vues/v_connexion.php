@@ -10,7 +10,9 @@
             </div>
             <div class="test col-12 col-sm-8 col-lg-6 col-xl-5 col-xxl-4 py-lg-5 py-3">
                 <?php if (isset($userEmpty)) {
-                    echo '<p class="alert alert-danger text-center w-100">' . $userEmpty . '</p>';
+                    ?>
+                    <p class="alert alert-danger text-center w-100"><?= htmlspecialchars($userEmpty) ?></p>
+                    <?php
                 } ?>
                 <form class="form-signin formulaire m-auto" action="index.php?uc=connexion&action=connexion" method="post">
                     <h2 class="form-signin-heading">Se connecter</h2>

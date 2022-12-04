@@ -22,7 +22,9 @@
                         <option value class="text-center">- Choisissez un médicament -</option>
                         <?php
                         foreach ($result as $key) {
-                            echo '<option value="' . $key['MED_DEPOTLEGAL'] . '" class="form-control">' . $key['MED_DEPOTLEGAL'] . ' - ' . $key['MED_NOMCOMMERCIAL'] . '</option>';
+                            ?>
+                           <option value="<?= htmlspecialchars($key['MED_DEPOTLEGAL']) ?>" class="form-control"><?= htmlspecialchars($key['MED_DEPOTLEGAL'].' - '.$key['MED_NOMCOMMERCIAL'])?></option>
+                            <?php
                         }
                         ?>
                     </select>

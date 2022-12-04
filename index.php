@@ -1,4 +1,5 @@
 <?php
+session_start();
 require_once('modele/medicament.modele.inc.php');
 require_once('modele/medecin.modele.inc.php');
 require_once('modele/rapport.modele.inc.php');
