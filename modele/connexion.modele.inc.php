@@ -8,7 +8,7 @@ include_once 'bd.inc.php';
  * @param $matricule matricule d'un colborateur
  * @return array|false tabelau associatif contenant les informations ou false si matricule pas trouvé
  */
-function getAllInformationCompte($matricule): array|false
+function getAllInformationCompte($matricule): mixed
 {
 
     try {
@@ -31,7 +31,7 @@ function getAllInformationCompte($matricule): array|false
  * @param string $pass mot de passe de l'utilisateur
  * @return array|false tableau associtif avec les informations du collacorateur (matricule, habilitation, log_id), ou false si mauvaise identification
  */
-function checkConnexion(string $username, string $pass): array|false
+function checkConnexion(string $username, string $pass): mixed
 {
 
     try {
