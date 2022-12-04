@@ -482,8 +482,8 @@ CREATE TABLE IF NOT EXISTS `presentation` (
 DROP TABLE IF EXISTS `rapport_visite`;
 CREATE TABLE IF NOT EXISTS `rapport_visite` (
   `COL_MATRICULE` varchar(10) NOT NULL,
-  `RAP_NUM` int(11) NOT NULL AUTO_INCREMENT,
-  `PRA_NUM` int(11),
+  `RAP_NUM` int(11) NOT NULL,
+  `PRA_NUM` int(11) DEFAULT NULL,
   `RAP_DATE_VISITE` datetime DEFAULT current_timestamp(),
   `RAP_BILAN` varchar(255) DEFAULT NULL,
   `RAP_MOTIF_AUTRE` varchar(255) DEFAULT NULL,
