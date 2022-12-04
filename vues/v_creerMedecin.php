@@ -19,7 +19,9 @@
                 <?php 
                     foreach ($types as $unType) { 
                     ?>
-                    <option value="<?= htmlspecialchars($unType['TYP_CODE']) ?>"><?= htmlspecialchars($unType['TYP_LIBELLE']) ?></option>
+                    <option value="<?= htmlspecialchars($unType['TYP_CODE']); ?>">
+                        <?= htmlspecialchars($unType['TYP_LIBELLE']); ?>
+                    </option>
                     <?php 
                     } 
                 ?>
@@ -27,7 +29,7 @@
             <br><br>Coefficient confiance :
             <input type="number" min="0" name="coefficient_confiance" required />
             <br>
-            <button type="button" class="btn btn-outline-primary" onClick="javascript:.add()" >Ajouter</button>
+            <button type="button" class="btn btn-outline-primary" onClick="//javascript:.add()" >Ajouter</button>
             <button type="submit" class="btn btn-outline-primary">Créer</button>
         </p>
     </form>

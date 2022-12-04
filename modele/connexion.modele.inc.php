@@ -2,7 +2,13 @@
 
 include_once 'bd.inc.php';
 
-function getAllInformationCompte($matricule)
+/**
+ * Permet de récupéré les information d'un collaborateur en fonction de son matricule
+ *
+ * @param $matricule matricule d'un colborateur
+ * @return array|false tabelau associatif contenant les informations ou false si matricule pas trouvé
+ */
+function getAllInformationCompte($matricule): array|false
 {
 
     try {
@@ -18,13 +24,21 @@ function getAllInformationCompte($matricule)
     }
 }
 
-function checkConnexion($username, $mdp)
+/**
+ * Permet d'effectuer l'authentification d'un utilisateur
+ *
+ * @param string $username nom de l'utilisateur
+ * @param string $pass mot de passe de l'utilisateur
+ * @return array|false tableau associtif avec les informations du collacorateur (matricule, habilitation, log_id), ou false si mauvaise identification
+ */
+function checkConnexion(string $username, string $pass): array|false
 {
 
     try {
         $monPdo = connexionPDO();
-        $req = $monPdo->prepare('SELECT l.LOG_ID as \'id_log\', l.COL_MATRICULE as \'matricule\', c.HAB_ID as \'habilitation\' FROM login l INNER JOIN collaborateur c ON l.COL_MATRICULE = c.COL_MATRICULE WHERE l.LOG_LOGIN = :identifiant AND l.LOG_MOTDEPASSE = "' . hash('sha512', $mdp) . '"');
+        $req = $monPdo->prepare('SELECT l.LOG_ID as \'id_log\', l.COL_MATRICULE as \'matricule\', c.HAB_ID as \'habilitation\' FROM login l INNER JOIN collaborateur c ON l.COL_MATRICULE = c.COL_MATRICULE WHERE l.LOG_LOGIN = :identifiant AND l.LOG_MOTDEPASSE = :password');
         $req->bindParam(':identifiant', $username, PDO::PARAM_STR);
+        $req->bindParam(':password', hash('sha512', $pass, PDO::PARAM_STR));
         $req->execute();
         $res = $req->fetch();
         return $res;
@@ -34,7 +48,13 @@ function checkConnexion($username, $mdp)
     }
 }
 
-function checkMatriculeInscription($matricule)
+/**
+ * Permet de savoir si un matricule existe dans la table login
+ *
+ * @param string $matricule un matricule
+ * @return bool true si la tabel contient le matricule
+ */
+function checkMatriculeInscription(string $matricule): bool
 {
 
     try {
@@ -50,6 +70,12 @@ function checkMatriculeInscription($matricule)
     }
 }
 
+/**
+ * Permet de savoir si un matricule existe dans la table collaborateur
+ *
+ * @param string $matricule un matricule
+ * @return bool true si la tabel contient le matricule
+ */
 function checkMatricule($matricule)
 {
 
@@ -66,7 +92,13 @@ function checkMatricule($matricule)
     }
 }
 
-function checkUserInscription($username)
+/**
+ * Permet de savoir si un login existe
+ *
+ * @param string $username login de l'utilisateur
+ * @return bool true si le login existe déja
+ */
+function checkUserInscription(string $username): bool
 {
 
     try {
@@ -82,6 +114,11 @@ function checkUserInscription($username)
     }
 }
 
+/**
+ * Permet de récupéré la liste des matricule des collabotrateurs
+ *
+ * @return array tableau de tableau associtif contenue les matricule
+ */
 function getAllMatriculeCollaborateur()
 {
 
@@ -99,23 +136,11 @@ function getAllMatriculeCollaborateur()
     }
 }
 
-function getColMatricule()
-{
-
-    try {
-
-        $monPdo = connexionPDO();
-        $req = 'SELECT COL_MATRICULE FROM collaborateur ORDER BY COL_MATRICULE';
-        $res = $monPdo->query($req);
-        $result = $res->fetchAll();
-
-        return $result;
-    } catch (PDOException $e) {
-        print "Erreur !: " . $e->getMessage();
-        die();
-    }
-}
-
+/**
+ * Permet de connaitre le nombre de collaborateur
+ *
+ * @return mixed le nombre de collaborateur
+ */
 function getCountMatricule()
 {
 
@@ -132,90 +157,3 @@ function getCountMatricule()
         die();
     }
 }
-
-/* ANCIENNES FONCTIONS QUI A PERMIS DE SET LES LOGINS, LES HABILITATIONS ET LA MONNAIE DES MEDOCS
-
-function concatMotDePasseBrut($mat) : string {
-
-    try 
-    {	
-
-        $monPdo = connexionPDO();
-        $req = 'SELECT COL_NOM, COL_PRENOM FROM collaborateur WHERE COL_MATRICULE = "'.$mat.'"';
-        $res = $monPdo->query($req);
-        $result = $res->fetch();
-
-        $c = substr($result['COL_NOM'], 0, 3) . substr($result['COL_PRENOM'], 0, 3) . '!';
-        return $c;
-    } 
-
-    catch (PDOException $e) 
-    {
-           print "Erreur !: " . $e->getMessage();
-            die();
-    }
-
-}
-
-function concatLogin($mat) : string {
-
-    try 
-    {	
-
-        $monPdo = connexionPDO();
-        $req = 'SELECT COL_NOM, COL_PRENOM FROM collaborateur WHERE COL_MATRICULE = "'.$mat.'"';
-        $res = $monPdo->query($req);
-        $result = $res->fetch();
-
-        $c = substr($result['COL_NOM'], 0, 3) . substr($result['COL_PRENOM'], 0, 3);
-        $c = strtolower($c);
-        return $c;
-    } 
-
-    catch (PDOException $e) 
-    {
-           print "Erreur !: " . $e->getMessage();
-            die();
-    }
-
-}
-
-function setAllLogin($a,$i){
-    $monPdo = connexionPDO();
-        $id=$i+1;
-        //echo 'Id : '.$a[$i][0].' | Login : '.concatLogin($a[$i][0]).' | Mot de passe : '.concatMotDePasseBrut($a[$i][0]).'</br>';
-        
-        $req = 'INSERT INTO login VALUES('.$id.',"'.concatLogin($a[$i][0]).'","'.hash('sha512', concatMotDePasseBrut($a[$i][0])).'","'.$a[$i][0].'"); UPDATE collaborateur SET LOG_ID='.$id.' WHERE COL_MATRICULE="'.$a[$i][0].'"' ;
-        $res = $monPdo->query($req);
-    
-
-}
-function setAllHabil($a,$id,$i){
-    $monPdo = connexionPDO();
-        $req = 'UPDATE collaborateur SET HAB_ID='.$id.' WHERE COL_MATRICULE="'.$a[$i][0].'"' ;
-        $res = $monPdo->query($req);
-    
-
-}
-function getIdMedoc(){
-        $monPdo = connexionPDO();
-        $req = 'SELECT `MED_DEPOTLEGAL` FROM `medicament`;' ;
-        $res = $monPdo->query($req);
-        $result = $res->fetchAll();
-        return $result;    
-
-}
-function getNbMedoc(){
-    $monPdo = connexionPDO();
-    $req = 'SELECT COUNT(`MED_DEPOTLEGAL`) FROM `medicament`;' ;
-    $res = $monPdo->query($req);
-    $result = $res->fetch();
-    return $result; 
-
-}
-function setMonnaieMedoc($a,$id,$i){
-    $monPdo = connexionPDO();
-    $id=$id+0.99;
-        $req = 'UPDATE medicament SET `MED_PRIXECHANTILLON`='.$id.' WHERE `MED_DEPOTLEGAL`="'.$a[$i][0].'"' ;
-        $res = $monPdo->query($req);
-} FONCTIONS PLUS UTILES */

@@ -20,6 +20,7 @@ function getAllNomMedicaments(): mixed
         die();
     }
 }
+
 /**
  * Retourne toutes les informations concernant un médicament ainsi que son libellé de famille grâce à son dépôt légal
  *
@@ -39,6 +40,7 @@ function getAllInformationMedicamentDepot($depot): mixed
         die();
     }
 }
+
 /**
  * Retourne toutes les informations concernant un médicament ainsi que son libellé de famille en fonction de son nom
  *
@@ -58,6 +60,7 @@ function getAllInformationMedicamentNom($nom): mixed
         die();
     }
 }
+
 /**
  * Retourne le nom et le depot légal de tous les médicaments contenant le dépot légal passé en paramètre
  *
@@ -77,6 +80,7 @@ function getDepotMedoc($depot): mixed
         die();
     }
 }
+
 /**
  * Retourne le nombre de médicaments
  *
