@@ -1,4 +1,3 @@
-<script src="assets/js/rapport.js"></script>
 <section class="bg-light">
     <div class="container">
         <div class="structure-hero pt-lg-5 pt-4">
@@ -8,14 +7,14 @@
             </p>
         </div>
         <div class="py-lg-5 py-3">
-            <form action="index.php?uc=rapport&action=saisitRapport" method="post" class="formulaire-recherche col-12 m-0 p-3 d-flex flex-column gap-3">
-                <div class="flex-fill w-100">
+            <form action="index.php?uc=rapport&action=saisitRapport" method="post" class="formulaire-recherche col-12 m-0 p-3 d-flex flex-column gap-3 justify-align-content-stretch align-items-stretch">
+                <div class="flex-fill flex">
                     <p class="redstar">
                         Champs obligatoires
                     </p>
                 </div>
-                <h2 class="titre-formulaire">Rapport de visite</h2>
-                <div class="d-flex flex-lg-row flex-column justify-content-stretch align-content-stretch w-100 gap-5 px-5">
+                <h2 class="titre-formulaire align-self-center">Rapport de visite</h2>
+                <div class="d-flex flex-lg-row flex-column justify-content-stretch align-content-stretch gap-5 px-5">
                     <div class="d-flex justify-content-between align-content-star flex-column flex-fill">
                         <div>
                             <label for="rapNum" class="form-label">
@@ -62,7 +61,7 @@
                         </div>
 
                         <div>
-                            <label for="rapRempID" class="form-label required">Remplacant concerné:</label>
+                            <label for="rapRempID" class="form-label">Remplacant concerné:</label>
                             <select name="rapRempID" id="rapRempID" class="form-select">
                                 <?php
                                     if (empty($unRemplacant)) {
@@ -193,7 +192,58 @@
                         </div>
                     </div>
                 </div>
-                <div class="form-check form-switch">
+                <div class="justify-content-start align-content-start gap-0 px-5">
+                    <label for="ech" class="form-label">Échantillon</label>
+                    <div class="form-control p-0">
+                        <table class="table table-striped" id="ech">
+                            <thead>
+                                <tr>
+                                    <th scope="col">
+                                        Quantité
+                                    </th>
+                                    <th scope="col">
+                                        Médicament
+                                    </th>
+                                    <th scope="col">
+                                        <button class="btn btn-outline-dark" type="button" onclick="addEch()">
+                                            Ajouter
+                                            <i class="bi bi-plus-square"></i>
+                                        </button>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody id="bodyEch">
+                                <tr id="examplLine">
+                                    <td>
+                                        <input id="examplQte" class="form-control" type="text" pattern="[1-9][0-9]*" required/>
+                                    </td>
+                                    <td>
+                                        <select id="examplMed" class="form-control form-select" required>
+                                            <option value class="text-center">- Aucun -</option>
+                                            <?php
+                                                foreach ($lesMeds as $med) {
+                                            ?>
+                                                <option value="<?=htmlspecialchars($med['MED_DEPOTLEGAL'])?>">
+                                                    <?=htmlspecialchars($med['MED_NOMCOMMERCIAL'])?>
+                                                </option>
+                                            <?php    
+                                                }
+                                            ?>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <button id="examplRm" class="btn btn-outline-danger" type="button">
+                                            Retirer
+                                            <i class="bi bi-x-square"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <hr class="">
+                <div class="form-check form-switch align-self-center">
                     <input class="form-check-input" type="checkbox" role="switch" id="saisieDef" name="saisieDef">
                     <label class="form-check-label" for="saisieDef">Saisie définitive</label>
                 </div>
@@ -205,3 +255,6 @@
         </div>
     </div>
 </section>
+<script src="assets/js/rapport.js">
+
+</script>
