@@ -7,7 +7,12 @@
  */
 function connexionPDO(): PDO
 {
-    $config = parse_ini_file('modele/config.ini');
+    $configFile = 'modele/config.ini';
+    if (!file_exists($configFile)) {
+        throw new Exception('Le fichier de configuration "config.ini" pour se connecter à la base de données est introuvable ! (Veuiliez le creer)');
+    }
+    $config = parse_ini_file($configFile);
+
     try {
         $conn = new PDO('mysql:host='.$config['db_host'].';dbname='.$config['db_name'].';port='.$config['db_port'], $config['db_login'], $config['db_pass'], array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES \'UTF8\''));
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);

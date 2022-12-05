@@ -14,52 +14,62 @@ else {
 
 //capture contenue retourner
 ob_start();
-switch ($uc) {
-    case 'accueil': {
-            include("vues/v_accueil.php");
-            break;
-        }
-    case 'medicaments': {
-            if (!empty($_SESSION['login'])) {
-                include("controleur/c_medicaments.php");
-            } else {
-                include("vues/v_accesInterdit.php");
+//permet de catch les erreurs inatendue
+try {
+    //redirection vers les controlleurs
+    switch ($uc) {
+        case 'accueil': {
+                include("vues/v_accueil.php");
+                break;
             }
-            break;
-        }
-    case 'praticiens': {
-            if (!empty($_SESSION['login'])) {
-                include("controleur/c_praticiens.php");
-            } else {
-                include("vues/v_accesInterdit.php");
+        case 'medicaments': {
+                if (!empty($_SESSION['login'])) {
+                    include("controleur/c_medicaments.php");
+                } else {
+                    include("vues/v_accesInterdit.php");
+                }
+                break;
             }
-            break;
-        }
-    case 'medecin': {
-            if (!empty($_SESSION['login']) && $_SESSION['habilitation'] >= 2) {
-                include("controleur/c_medecins.php");
-            } else {
-                include("vues/v_accesInterdit.php");
+        case 'praticiens': {
+                if (!empty($_SESSION['login'])) {
+                    include("controleur/c_praticiens.php");
+                } else {
+                    include("vues/v_accesInterdit.php");
+                }
+                break;
             }
-            break;
-        }
-    case 'rapport': {
-            if (!empty($_SESSION['login'])) {
-                include("controleur/c_rapport.php");
-            } else {
-                include("vues/v_accesInterdit.php");
+        case 'medecin': {
+                if (!empty($_SESSION['login']) && $_SESSION['habilitation'] >= 2) {
+                    include("controleur/c_medecins.php");
+                } else {
+                    include("vues/v_accesInterdit.php");
+                }
+                break;
             }
-            break;
-        }
-    case 'connexion': {
-            include("controleur/c_connexion.php");
-            break;
-        }
-    default: {
-
-            include("vues/v_accueil.php");
-            break;
-        }
+        case 'rapport': {
+                if (!empty($_SESSION['login'])) {
+                    include("controleur/c_rapport.php");
+                } else {
+                    include("vues/v_accesInterdit.php");
+                }
+                break;
+            }
+        case 'connexion': {
+                include("controleur/c_connexion.php");
+                break;
+            }
+        default: {
+                include("vues/v_accueil.php");
+                break;
+            }
+    }
+} catch(Exception $e) {//fin du catch d'erreur
+    //on retire l'affichage avec un bug
+    ob_clean();
+    //affichage du messages d'erreur de manère propre
+    $messageType = 'danger';
+	$messageBody = 'Erreur: '.$e->getMessage();
+	include('vues/v_message.php');
 }
 //fin de la capture de contenue retourner
 $content = ob_get_clean();
