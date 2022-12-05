@@ -14,7 +14,7 @@
                     </p>
                 </div>
                 <h2 class="titre-formulaire">Rapport de visite</h2>
-                <div class="d-flex flex-row justify-content-stretch align-content-stretch w-100 gap-5 px-5">
+                <div class="d-flex flex-lg-row flex-column justify-content-stretch align-content-stretch w-100 gap-5 px-5">
                     <div class="d-flex justify-content-between align-content-star flex-column flex-fill">
                         <div>
                             <label for="rapNum" class="form-label">
