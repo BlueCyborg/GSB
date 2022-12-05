@@ -1,3 +1,4 @@
+<script src="assets/js/rapport.js"></script>
 <section class="bg-light">
     <div class="container">
         <div class="structure-hero pt-lg-5 pt-4">
@@ -109,14 +110,7 @@
 
                         <div>
                             <label for="idMotif" class="form-label required">Motif:</label>
-                            <select name="idMotif" id="idMotif" class="form-select" onchange="
-                                let mot = document.getElementById('motifAutreGroup');
-                                if (this.value !== 'OTH') {
-                                    mot.setAttribute('hidden', '');
-                                } else {
-                                    mot.removeAttribute('hidden');
-                                }
-                            ">
+                            <select name="idMotif" id="idMotif" class="form-select" onchange="updateMotif(this)">
                                 <?php
                                     if (empty($unMotif)) {
                                 ?>
@@ -150,15 +144,7 @@
 
                         <div id="med1">
                             <label for="idMed1" class="form-label">1er médicament présenté</label>
-                            <select name="idMed1" id="idMed1" class="form-select" onchange="
-                                let mot = document.getElementById('med2');
-                                if (this.value == '') {
-                                    mot.setAttribute('hidden', '');
-                                    document.getElementById('med2None').selected = true;
-                                } else {
-                                    mot.removeAttribute('hidden');
-                                }
-                            ">
+                            <select name="idMed1" id="idMed1" class="form-select" onchange="updateMed(this)">
                                 <?php
                                     if (!empty($preMed)) {
                                 ?>
@@ -212,21 +198,7 @@
                     <label class="form-check-label" for="saisieDef">Saisie définitive</label>
                 </div>
                 <div class="d-flex flex-row justify-content-center align-content-center gap-3">
-                    <button class="btn btn-info text-light" role="button" type="sumbit" onclick="
-                        let send = true;
-                        if (document.getElementById('saisieDef').checked) {
-                            let med1 = document.getElementById('idMed1').value;
-
-                            if (send && med1 == '') {
-                                send = confirm('Êtes vous sûr de vouloir enregistré le rapport sans avoir saisie de médicament présenté ?');
-                            }
-
-                            /*
-                            Ajouter echantittion
-                            */
-                        }
-                        return send;
-                    ">Valider le rapport</button>
+                    <button class="btn btn-info text-light" role="button" type="sumbit" onclick="return sendForm()">Valider le rapport</button>
                     <a href="index.php?uc=rapport&action=mesRapports" class="btn btn-info text-light" role="button">Retour</a>
                 </div>
             </form>
