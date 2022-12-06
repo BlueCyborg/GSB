@@ -21,14 +21,24 @@
                         </p>
 
                         <p class="m-0">
-                            Praticien concerné: <span class="text-primary"><?= htmlspecialchars($unPraticien['PRA_NOM'] . ' ' . $unPraticien['PRA_PRENOM']) ?></span>
+                            Praticien concerné: <a 
+                                class="link-primary"
+                                href="index.php?uc=praticiens&action=afficherpraticien&praticien=<?= htmlspecialchars($unPraticien['PRA_NUM']) ?>"
+                                >
+                                <?= htmlspecialchars($unPraticien['PRA_NOM'] . ' ' . $unPraticien['PRA_PRENOM']) ?>
+                            </a>
                         </p>
 
                         <?php
                         if (!empty($unRemplacant)) {
                         ?>
                             <p class="m-0">
-                                Remplacant concerné: <span class="text-primary"><?= htmlspecialchars($unRemplacant['PRA_NOM'] . ' ' . $unRemplacant['PRA_PRENOM']) ?></span>
+                                Remplacant concerné: <a 
+                                    class="link-primary"
+                                    href="index.php?uc=praticiens&action=afficherpraticien&praticien=<?= htmlspecialchars($unRemplacant['PRA_NUM']) ?>"
+                                    >
+                                    <?= htmlspecialchars($unRemplacant['PRA_NOM'] . ' ' . $unRemplacant['PRA_PRENOM']) ?>
+                                </a>
                             </p>
                         <?php
                         }
@@ -56,7 +66,12 @@
                         if (!empty($preMed)) {
                         ?>
                             <p class="m-0">
-                                1er médicament présenté: <span class="text-primary"><?= htmlspecialchars($preMed['MED_NOMCOMMERCIAL']) ?></span>
+                                1er médicament présenté: <a 
+                                    class="link-primary"
+                                    href="index.php?uc=medicaments&action=affichermedoc&medicament=<?= htmlspecialchars($preMed['MED_DEPOTLEGAL']) ?>"
+                                    >
+                                        <?= htmlspecialchars($preMed['MED_NOMCOMMERCIAL']) ?>
+                                    </a>
                             </p>
                         <?php
                         }
@@ -66,7 +81,12 @@
                         if (!empty($secMed)) {
                         ?>
                             <p class="m-0">
-                                2eme médicament présenté: <span class="text-primary"><?= htmlspecialchars($secMed['MED_NOMCOMMERCIAL']) ?></span>
+                                2eme médicament présenté: <a 
+                                    class="link-primary"
+                                    href="index.php?uc=medicaments&action=affichermedoc&medicament=<?= htmlspecialchars($secMed['MED_DEPOTLEGAL']) ?>"
+                                    >
+                                        <?= htmlspecialchars($secMed['MED_NOMCOMMERCIAL']) ?>
+                                    </a>
                             </p>
                         <?php
                         }
@@ -99,7 +119,11 @@
                                             <?= htmlspecialchars($ech['qte']) ?>
                                         </td>
                                         <td>
-                                            <?= htmlspecialchars($ech['medName']) ?>
+                                            <a class="link-primary"
+                                                href="index.php?uc=medicaments&action=affichermedoc&medicament=<?= htmlspecialchars($ech['med']) ?>"
+                                            >
+                                                <?= htmlspecialchars($ech['medName']) ?>
+                                            </a>
                                         </td>
                                     </tr>
                                 <?php
