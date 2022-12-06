@@ -5,6 +5,7 @@ require_once('modele/medecin.modele.inc.php');
 require_once('modele/rapport.modele.inc.php');
 require_once('modele/connexion.modele.inc.php');
 require_once('modele/func.check.inc.php');
+require_once('modele/func.show.inc.php');
 
 if (!isset($_REQUEST['uc']) || empty($_REQUEST['uc']))
     $uc = 'accueil';

@@ -51,53 +51,7 @@ switch ($action) {
 					$messageBody = 'Le rapport n°'.$_REQUEST['rapNum'].' à déja été saisie de façon définitive !';
 					include('vues/v_message.php');
 				} else {
-					//rapport en cours d'edition
-					$lesMeds = getAllNomMedicaments();
-					$lesPraticiens = getAllNomMedecins();
-					$lesMotifs = getLesMotifs();
-					$idMotif = $rapport['MOT_ID'];
-					$unMotif = getUnMotifById($idMotif);
-					$lesEchantillions = getLesEchantillions($_SESSION['matricule'], $_REQUEST['rapNum']);
-
-					//objects
-					$rapPraID = $rapport['PRA_NUM'];
-					if ($rapPraID != PDO::NULL_NATURAL) {
-						$unPraticien = getAllInformationsMedecin($rapPraID);
-					}
-					$rapRempID = $rapport['REMP_NUM'];
-					if ($rapRempID != PDO::NULL_NATURAL) {
-						$unRemplacant = getAllInformationsMedecin($rapRempID);
-					}
-					$idMed1 = $rapport['MED_PRESENTER_1'];
-					if ($idMed1 != PDO::NULL_NATURAL) {
-						$preMed = getAllInformationMedicamentDepot($idMed1);
-					}
-					$idMed2 = $rapport['MED_PRESENTER_2'];
-					if ($idMed2 != PDO::NULL_NATURAL) {
-						$secMed = getAllInformationMedicamentDepot($idMed2);
-					}
-
-					//dates
-					$saisieDate = $rapport['RAP_DATE_SAISIE'];
-					if ($saisieDate != PDO::NULL_NATURAL) {
-						$saisieDate = date('Y-m-d', strtotime($saisieDate));
-					} else {
-						$saisieDate = '';
-					}
-
-					$visiteDate = $rapport['RAP_DATE_VISITE'];
-					if ($visiteDate != PDO::NULL_NATURAL) {
-						$visiteDate = date('Y-m-d', strtotime($visiteDate));
-					} else {
-						$visiteDate = '';
-					}
-
-					//normal
-					$rapNum = $rapport['RAP_NUM'];
-					$colMatricule = $rapport['COL_MATRICULE'];
-					$rapBilan = $rapport['RAP_BILAN'];
-					$motifAutre = $rapport['RAP_MOTIF_AUTRE'];
-					include('vues/v_formulaireRapport.php');
+					showRapport($rapport, 'vues/v_formulaireRapport.php', true);
 				}
 			} else {
 				$messageType = 'danger';
@@ -140,12 +94,15 @@ switch ($action) {
 			$lesEchantillions = isset($_POST['echs']) ? $_POST['echs'] : array();
 			
 			//check erreur
-			$msgErrs = checkFormRapport($colMatricule, $rapNum, $rapPraID, $rapRempID, $saisieDate, $rapBilan, $visiteDate, $idMotif, $motifAutre, $idMed1, $idMed2);
-			array_merge($msgErrs, checkFormRapportEchs($lesEchantillions));
+			$msgErrs = array_merge(
+					checkFormRapport($colMatricule, $rapNum, $rapPraID, $rapRempID, $saisieDate, $rapBilan, $visiteDate, $idMotif, $motifAutre, $idMed1, $idMed2),
+					checkFormRapportEchs($lesEchantillions)
+				);
 			if ($saisieDef) {
 				$msgErrs = array_merge($msgErrs, checkFormRapportDef($rapPraID, $saisieDate, $rapBilan, $visiteDate, $idMotif, $motifAutre));
 			}
 
+			//page d'erreur
 			if (count($msgErrs) >= 1) {
 				//erreur
 				$messageType = 'danger';
@@ -179,7 +136,7 @@ switch ($action) {
 				}
 
 				include('vues/v_formulaireRapport.php');
-			} else {
+			} else {//page de mise à jour
 				$valid = true;
 				//saisie bonne
 				if (!$saisieDef) {
@@ -241,6 +198,31 @@ switch ($action) {
 			//liste
 			$rapportNonValides = getInfoRapportNonValides($_SESSION['matricule']);
 			include('vues/v_formulaireReprise.php');
+		}
+		break;
+	}
+
+	case 'regarderRapport': {
+		if (!empty($_REQUEST['rapNum']) && is_numeric($_REQUEST['rapNum'])) {
+			$rapport = getUnRapport($_SESSION['matricule'], $_REQUEST['rapNum']);
+			if ($rapport) {
+				//rapport pas en cours d'edition
+				if ($rapport['ETAT_ID'] == 'C') {
+					$messageType = 'warning';
+					$messageBody = 'Le rapport n°'.$_REQUEST['rapNum'].' est en cours saisie !';
+					include('vues/v_message.php');
+				} else {
+					showRapport($rapport, 'vues/v_detailRapport.php', false);
+				}
+			} else {
+				$messageType = 'danger';
+				$messageBody = 'Numéro de rapport introuvable pour votre matricule !';
+				include('vues/v_message.php');
+			}
+		} else {
+			$messageType = 'danger';
+			$messageBody = 'Numéro de rapport invalide (le numéro de rapport doit être un nombre) !';
+			include('vues/v_message.php');
 		}
 		break;
 	}

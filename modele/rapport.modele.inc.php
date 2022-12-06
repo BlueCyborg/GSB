@@ -216,15 +216,20 @@ function getLesEchantillions(string $COL_MATRICULE, int $RAP_NUM): array
 {
     $req = connexionPDO()->prepare('
     SELECT 
-        MED_DEPOTLEGAL AS \'med\',
-        OFF_QTE AS \'qte\'
+        o.MED_DEPOTLEGAL AS "med",
+        o.OFF_QTE AS "qte",
+        m.MED_NOMCOMMERCIAL AS "medName"
     FROM 
-        offrir
+        offrir o
+    INNER JOIN 
+        medicament m
+        ON
+        o.MED_DEPOTLEGAL=m.MED_DEPOTLEGAL
     WHERE
-        COL_MATRICULE = :COL_MATRICULE
+        COL_MATRICULE=:COL_MATRICULE
         AND
-        RAP_NUM = :RAP_NUM
-    ');
+        RAP_NUM=:RAP_NUM
+    ;');
     $req->bindValue(':COL_MATRICULE', $COL_MATRICULE, PDO::PARAM_STR);
     $req->bindValue(':RAP_NUM', $RAP_NUM, PDO::PARAM_INT);
     $req->execute();
@@ -246,12 +251,12 @@ function updateLesEchantillions(string $COL_MATRICULE, int $RAP_NUM, array $echs
     try {
         //delete
         $del = $pdo->prepare('
-        DELETE
+        DELETE FROM
             offrir
         WHERE
-            COL_MATRICULE = :COL_MATRICULE
+            COL_MATRICULE=:COL_MATRICULE
             AND
-            RAP_NUM = :RAP_NUM
+            RAP_NUM=:RAP_NUM
         ');
         $del->bindValue(':COL_MATRICULE', $COL_MATRICULE, PDO::PARAM_STR);
         $del->bindValue(':RAP_NUM', $RAP_NUM, PDO::PARAM_INT);

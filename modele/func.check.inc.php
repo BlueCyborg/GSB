@@ -183,8 +183,10 @@ function checkFormRapportDef($idPraticien, $dateDeSaisie, $bilan, $dateDeVisite,
 /**
  * Permet de vérifier la validiter d'un ensemble de formulaire d'echantillions
  *
+ * @param mixed $lesEchantillions tableau des échantillions du rapport
+ * @return array tableau des erreur avec les champs
  */
-function checkFormRapportEchs($lesEchantillions): array
+function checkFormRapportEchs(mixed $lesEchantillions): array
 {
     $msgErr = array();
 
@@ -200,7 +202,7 @@ function checkFormRapportEchs($lesEchantillions): array
                     $msgErr[] = 'La quantité d\'un echantillion doit être supérieur ou égale à 1 !';
                 }
 
-                //test doublon ;medicament
+                //test doublon medicament
                 if (in_array($med, $meds)) {
                     $msgErr[] = 'Vous devez reunir en une seul ligne les échantillions du même médicament ! ('.$med.')';
                 } else {

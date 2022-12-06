@@ -47,6 +47,7 @@ var examplEch = extractExmlpEch();
 var bodyEch = document.getElementById("bodyEch");
 
 function addEch(qte = 1, med = '') {
+    console.log(med+";"+qte);
     let id = 'ech'+idEch;
 
     //element de base

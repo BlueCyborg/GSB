@@ -255,12 +255,14 @@
         </div>
     </div>
 </section>
-<script src="assets/js/rapport.js">
+<script src="assets/js/rapport.js"></script>
+<script>
     <?php
-        foreach ($lesEchantillions as $ech) {
+        foreach ($lesEchantillions as $ech) {//ajout dans la vue des echantillion déja enregistrer
             ?>
             addEch('<?= htmlspecialchars($ech['qte']) ?>', '<?= htmlspecialchars($ech['med']) ?>');
             <?php
         }
     ?>
 </script>
+
