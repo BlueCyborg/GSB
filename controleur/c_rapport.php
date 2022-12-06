@@ -57,6 +57,7 @@ switch ($action) {
 					$lesMotifs = getLesMotifs();
 					$idMotif = $rapport['MOT_ID'];
 					$unMotif = getUnMotifById($idMotif);
+					$lesEchantillions = getLesEchantillions($_SESSION['matricule'], $_REQUEST['rapNum']);
 
 					//objects
 					$rapPraID = $rapport['PRA_NUM'];
@@ -136,9 +137,11 @@ switch ($action) {
 			$idMed1 = $_POST['idMed1'];
 			$idMed2 = $_POST['idMed2'];
 			$saisieDef = isset($_POST['saisieDef']);
-
+			$lesEchantillions = isset($_POST['echs']) ? $_POST['echs'] : array();
+			
 			//check erreur
 			$msgErrs = checkFormRapport($colMatricule, $rapNum, $rapPraID, $rapRempID, $saisieDate, $rapBilan, $visiteDate, $idMotif, $motifAutre, $idMed1, $idMed2);
+			array_merge($msgErrs, checkFormRapportEchs($lesEchantillions));
 			if ($saisieDef) {
 				$msgErrs = array_merge($msgErrs, checkFormRapportDef($rapPraID, $saisieDate, $rapBilan, $visiteDate, $idMotif, $motifAutre));
 			}
@@ -170,6 +173,11 @@ switch ($action) {
 					$secMed = getAllInformationMedicamentDepot($idMed2);
 				}
 
+				//pour eviter des bug sur la vue
+				if (!is_array($lesEchantillions)) {
+					$lesEchantillions = array();
+				}
+
 				include('vues/v_formulaireRapport.php');
 			} else {
 				$valid = true;
@@ -188,6 +196,7 @@ switch ($action) {
 							ifEmptyThenNull($idMed1),
 							ifEmptyThenNull($idMed2)
 						);
+					updateLesEchantillions($colMatricule, $rapNum, $lesEchantillions);
 				} else {
 					$valid = updateUnRapport($colMatricule,
 							$rapNum,
@@ -202,6 +211,7 @@ switch ($action) {
 							ifEmptyThenNull($idMed1),
 							ifEmptyThenNull($idMed2)
 						);
+					updateLesEchantillions($colMatricule, $rapNum, $lesEchantillions);
 				}
 
 				if ($valid) {

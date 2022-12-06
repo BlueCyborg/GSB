@@ -142,7 +142,7 @@
                         </div>
 
                         <div id="med1">
-                            <label for="idMed1" class="form-label">1er médicament présenté</label>
+                            <label for="idMed1" class="form-label">1er médicament présenté:</label>
                             <select name="idMed1" id="idMed1" class="form-select" onchange="updateMed(this)">
                                 <?php
                                     if (!empty($preMed)) {
@@ -167,7 +167,7 @@
                                 </div>
 
                         <div id="med2" <?php if (empty($preMed)) {echo 'hidden';}; ?>>
-                            <label for="idMed2" class="form-label">2eme médicament présenté</label>
+                            <label for="idMed2" class="form-label">2eme médicament présenté:</label>
                             <select name="idMed2" id="idMed2" class="form-select">
                             <?php
                                     if (!empty($secMed)) {
@@ -193,7 +193,7 @@
                     </div>
                 </div>
                 <div class="justify-content-start align-content-start gap-0 px-5">
-                    <label for="ech" class="form-label">Échantillon</label>
+                    <label for="ech" class="form-label">Les échantillons:</label>
                     <div class="form-control p-0">
                         <table class="table table-striped" id="ech">
                             <thead>
@@ -256,5 +256,11 @@
     </div>
 </section>
 <script src="assets/js/rapport.js">
-
+    <?php
+        foreach ($lesEchantillions as $ech) {
+            ?>
+            addEch('<?= htmlspecialchars($ech['qte']) ?>', '<?= htmlspecialchars($ech['med']) ?>');
+            <?php
+        }
+    ?>
 </script>

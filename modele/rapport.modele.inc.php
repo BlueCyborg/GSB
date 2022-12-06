@@ -205,4 +205,74 @@ function updateUnRapport(
     return $req->execute();
 }
 
+/**
+ * Permet de récupérer les echantillions d'un rapport
+ *
+ * @param string $COL_MATRICULE matricule d'un collaborateur
+ * @param integer $RAP_NUM numero du rappport du collaborateur
+ * @return array un tableau de tableau associatif contenant les informations des echantillions
+ */
+function getLesEchantillions(string $COL_MATRICULE, int $RAP_NUM): array
+{
+    $req = connexionPDO()->prepare('
+    SELECT 
+        MED_DEPOTLEGAL AS \'med\',
+        OFF_QTE AS \'qte\'
+    FROM 
+        offrir
+    WHERE
+        COL_MATRICULE = :COL_MATRICULE
+        AND
+        RAP_NUM = :RAP_NUM
+    ');
+    $req->bindValue(':COL_MATRICULE', $COL_MATRICULE, PDO::PARAM_STR);
+    $req->bindValue(':RAP_NUM', $RAP_NUM, PDO::PARAM_INT);
+    $req->execute();
+    return $req->fetchAll(PDO::FETCH_ASSOC);
+}
 
+/**
+ * Permet de mettre à jour les echantillions d'un rapport
+ *
+ * @param string $COL_MATRICULE matricule d'un collaborateur
+ * @param integer $RAP_NUM numero du rappport du collaborateur
+ * @param array $echs les echantillions sous forme d'un tableau de tableau associatif
+ * @return void
+ */
+function updateLesEchantillions(string $COL_MATRICULE, int $RAP_NUM, array $echs): void
+{
+    $pdo = connexionPDO();
+    $pdo->beginTransaction();
+    try {
+        //delete
+        $del = $pdo->prepare('
+        DELETE
+            offrir
+        WHERE
+            COL_MATRICULE = :COL_MATRICULE
+            AND
+            RAP_NUM = :RAP_NUM
+        ');
+        $del->bindValue(':COL_MATRICULE', $COL_MATRICULE, PDO::PARAM_STR);
+        $del->bindValue(':RAP_NUM', $RAP_NUM, PDO::PARAM_INT);
+        $del->execute();
+
+        //insert
+        $mat = &$COL_MATRICULE;
+        $num = &$RAP_NUM;
+        $ins = $pdo->prepare('INSERT INTO offrir(COL_MATRICULE, RAP_NUM, MED_DEPOTLEGAL, OFF_QTE)
+            VALUES (:COL_MATRICULE, :RAP_NUM, :MED_DEPOTLEGAL, :OFF_QTE)');
+        $ins->bindParam(':COL_MATRICULE', $mat, PDO::PARAM_STR);
+        $ins->bindParam(':RAP_NUM', $num, PDO::PARAM_INT);
+        //pour chaque echantillion
+        foreach ($echs as $ech) {
+            $ins->bindValue(':OFF_QTE', $ech['qte'], PDO::PARAM_INT);
+            $ins->bindValue(':MED_DEPOTLEGAL', $ech['med'], PDO::PARAM_STR);
+            $ins->execute();
+        }
+    } catch (Exception $e) {//en cas d'erreur
+        $pdo->rollBack();//annulation des requets
+        throw $e;
+    }
+    $pdo->commit();//envoie des requets
+}

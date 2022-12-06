@@ -20,14 +20,15 @@ function moinsDe(string $str, int $taille): bool
  * Permet de vérifier si un identifiant de médicament est correct
  *
  * @param [type] $idMed
+ * @param bool $canNull si l'id peut etre non définie, par default true
  * @return array message d'erreur pour l'identifiant 
  */
-function checkIdMed($idMed) : array
+function checkIdMed($idMed, bool $canNull = true) : array
 {
     $err = array();
 
     if (moinsDe($idMed, 10)) {
-        if (!empty($idMed1) && !getAllInformationMedicamentDepot($idMed)) {
+        if (!((empty($idMed1) && $canNull) || getAllInformationMedicamentDepot($idMed))) {
             $err[] = "Identifiant de médicament n'existe pas !";
         }
     } else {
@@ -40,7 +41,7 @@ function checkIdMed($idMed) : array
 /**
  * Permet de vérifier si une date est corecte
  *
- * @param [type] $date chaine de texte verifier
+ * @param [type] $date chaine de texte verifié
  * @return boolean true si la date est valide
  */
 function dateValid($date): bool
@@ -49,14 +50,25 @@ function dateValid($date): bool
 }
 
 /**
- * Permet de vérifier si c'est un nombre
+ * Permet de vérifier si une chaine est un nombre
  *
- * @param [type] $nombre chaine de texte verifier
+ * @param [type] $nombre chaine de texte verifié
  * @return boolean true si c'est un nombre
  */
 function estUnNombre($nombre): bool
 {
     return preg_match('/[^[0-9]]/', $nombre) == 0;
+}
+
+/**
+ * Permet de vérifier si une chaine est un nombre positif et supérieur à 0
+ *
+ * @param [type] $nombre chaine de texte verifié
+ * @return boolean true si c'est un nombre
+ */
+function estUnNombreSup0($nombre): bool
+{
+    return preg_match('/^[1-9][0-9]*$/', $nombre) == 1;
 }
 
 /**
@@ -164,6 +176,43 @@ function checkFormRapportDef($idPraticien, $dateDeSaisie, $bilan, $dateDeVisite,
 
     }
     */
+
+    return $msgErr;
+}
+
+/**
+ * Permet de vérifier la validiter d'un ensemble de formulaire d'echantillions
+ *
+ */
+function checkFormRapportEchs($lesEchantillions): array
+{
+    $msgErr = array();
+
+    if (is_array($lesEchantillions)) {
+        $meds = array();
+        foreach ($lesEchantillions as $ech) {//pour chaque les echantillions
+            if (is_array($ech)) {
+                $med = $ech['med'];
+
+                //test echantillion
+                array_merge($msgErr, checkIdMed($med, false));
+                if (!estUnNombreSup0($ech['qte'])) {
+                    $msgErr[] = 'La quantité d\'un echantillion doit être supérieur ou égale à 1 !';
+                }
+
+                //test doublon ;medicament
+                if (in_array($med, $meds)) {
+                    $msgErr[] = 'Vous devez reunir en une seul ligne les échantillions du même médicament ! ('.$med.')';
+                } else {
+                    $meds[] = $med;
+                }
+            } else {
+                $msgErr[] = 'Chaque échantilion dois être sous forme de tableau !';
+            }
+        }
+    } else {
+        $msgErr[] = 'Les échantillions doivent être sous forme de tableau !';
+    }
 
     return $msgErr;
 }
