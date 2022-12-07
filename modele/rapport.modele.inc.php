@@ -281,3 +281,79 @@ function updateLesEchantillions(string $COL_MATRICULE, int $RAP_NUM, array $echs
     }
     $pdo->commit();//envoie des requets
 }
+
+/**
+ * Permet d'obtenir la liste des rapports de visite d'un collaborateur avec des criteres de recherche
+ *
+ * @param string $matricule le matricule d'un collaborateur
+ * @param string|null $startDate date de debut de l'interval de date rechercher
+ * @param string|null $endDate date de fin de l'interval de date rechercher
+ * @param integer|null $idPraticien identifiant du praticien concerner par le rapport
+ * @return array|false tableau de tableau associtif contenant les informations d'un rapport, ou false en cas d'erreur
+ */
+function getSesRapports(string $matricule, ?string $startDate = null, ?string $endDate = null, mixed $idPraticien = null): array
+{
+    //constitution du where suplementaire
+    $whereSup = '';
+    if (!empty($startDate) && !empty($endDate)) {
+        $whereSup .= ' AND r.RAP_DATE_VISITE BETWEEN :START_DATE AND :END_DATE';
+    }
+    if (!empty($idPraticien)) {
+        $whereSup .= ' AND p.PRA_NUM=:PRA_NUM';
+    }
+
+    //requet principal
+    $req = connexionPDO()->prepare('
+    SELECT
+        r.COL_MATRICULE,
+        r.RAP_NUM,
+        p.PRA_NUM,
+        p.PRA_NOM,
+        p.PRA_PRENOM,
+        CASE
+            WHEN r.MOT_ID = "OTH" THEN r.RAP_MOTIF_AUTRE
+            ELSE mt.MOT_LIB
+        END AS "MOTIF",
+        r.RAP_DATE_VISITE,
+        m1.MED_DEPOTLEGAL AS "MED1",
+        m1.MED_NOMCOMMERCIAL AS "MED1_NAME",
+        m2.MED_DEPOTLEGAL AS "MED2",
+        m2.MED_NOMCOMMERCIAL AS "MED2_NAME",
+        r.ETAT_ID
+    FROM 
+        rapport_visite r
+    INNER JOIN
+        motif_visite mt
+        ON mt.MOT_ID = r.MOT_ID
+    LEFT JOIN
+        praticien p
+        ON r.PRA_NUM = p.PRA_NUM
+    LEFT JOIN
+        medicament m1
+        ON r.MED_PRESENTER_1 = m1.MED_DEPOTLEGAL
+    LEFT JOIN
+        medicament m2
+        ON r.MED_PRESENTER_2 = m2.MED_DEPOTLEGAL
+    WHERE 
+        r.COL_MATRICULE=:MATRICULE
+        '.$whereSup.'
+    ORDER BY
+        r.RAP_DATE_VISITE ASC
+    ;');
+
+    //parametre
+    $req->bindValue(':MATRICULE', $matricule, PDO::PARAM_STR);//matricule
+
+    if (!empty($startDate) && !empty($endDate)) {//interval de date
+        $req->bindValue(':START_DATE', $startDate, PDO::PARAM_STR);
+        $req->bindValue(':END_DATE', $endDate, PDO::PARAM_STR);
+    }
+
+    if (!empty($idPraticien)) {//praticien
+        $req->bindValue(':PRA_NUM', $idPraticien, PDO::PARAM_INT);
+    }
+    
+    //execution
+    $req->execute();
+    return $req->fetchAll(PDo::FETCH_ASSOC);
+}

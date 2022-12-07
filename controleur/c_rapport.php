@@ -20,8 +20,42 @@ switch ($action) {
 	}
 
 	case 'mesRapports': {
-		$rapportNonValides = getInfoRapportNonValides($_SESSION['matricule']);
-		include('vues/v_formulaireReprise.php');
+		//test formulaire
+		$startDate = isset($_POST['startDate']) ? $_POST['startDate'] : '';
+		$endDate = isset($_POST['endDate']) ? $_POST['endDate'] : '';
+		$praID = isset($_POST['praID']) ? $_POST['praID'] : null;
+
+		//validation du fomulaire
+		$msgErrs = checkFormulaireRechercheMesRapport($startDate, $endDate, $praID);
+		$error = count($msgErrs) >= 1;
+		$rapports = array();
+
+		if ($error) {
+			showErrors($msgErrs);
+		} else {
+			//recherche
+			$rapports = getSesRapports($_SESSION['matricule'], $startDate, $endDate, $praID);
+		}
+
+		//parametre pour la vue
+		$nbRapports = count($rapports);
+		$lesPraticiens = getAllNomMedecins();
+
+		if (!empty($praID) && estUnNombre($praID)) {
+			$unPraticien = getAllInformationsMedecin($praID);
+		}
+
+		//affichage du formulaire
+		include('vues/v_formulaireMesRapport.php');
+
+		//affichage des resulats
+		if ($nbRapports <= 0) {
+			$messageType = 'secondary';
+			$messageBody = 'Aucun rapport de visite a été trouvé pour ces critères de recherche !';
+			include('vues/v_message.php');
+		} else {
+			include('vues/v_listeMesRapport.php');
+		}
 		break;
 	}
 
@@ -105,11 +139,7 @@ switch ($action) {
 			//page d'erreur
 			if (count($msgErrs) >= 1) {
 				//erreur
-				$messageType = 'danger';
-				foreach ($msgErrs as $msg) {
-					$messageBody = $msg;
-					include('vues/v_message.php');
-				}
+				showErrors($msgErrs);
 
 				//rapport en cours d'edition
 				$lesMeds = getAllNomMedicaments();

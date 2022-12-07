@@ -60,3 +60,17 @@ function showRapport(array $rapport, string $path, bool $loadList): void
     $motifAutre = $rapport['RAP_MOTIF_AUTRE'];
     include($path);
 }
+
+/**
+ * Permet d'affciher la liste des erreurs
+ *
+ * @param array $msgErrs un tabelau contenenant les messages d'erreurs
+ * @return void
+ */
+function showErrors(array $msgErrs) {
+    $messageType = 'danger';
+	foreach ($msgErrs as $msg) {//pour chaque message
+		$messageBody = $msg;
+		include('vues/v_message.php');
+	}
+}

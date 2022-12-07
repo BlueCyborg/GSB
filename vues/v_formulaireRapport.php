@@ -249,7 +249,7 @@
                 </div>
                 <div class="d-flex flex-row justify-content-center align-content-center gap-3">
                     <button class="btn btn-info text-light" role="button" type="sumbit" onclick="return sendForm()">Valider le rapport</button>
-                    <a href="index.php?uc=rapport&action=mesRapports" class="btn btn-info text-light" role="button">Retour</a>
+                    <a href="index.php?uc=rapport&action=redigerRapport" class="btn btn-info text-light" role="button">Retour</a>
                 </div>
             </form>
         </div>

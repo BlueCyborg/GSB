@@ -19,7 +19,7 @@ function moinsDe(string $str, int $taille): bool
 /**
  * Permet de vérifier si un identifiant de médicament est correct
  *
- * @param [type] $idMed
+ * @param mixed $idMed
  * @param bool $canNull si l'id peut etre non définie, par default true
  * @return array message d'erreur pour l'identifiant 
  */
@@ -41,7 +41,7 @@ function checkIdMed($idMed, bool $canNull = true) : array
 /**
  * Permet de vérifier si une date est corecte
  *
- * @param [type] $date chaine de texte verifié
+ * @param mixed $date chaine de texte verifié
  * @return boolean true si la date est valide
  */
 function dateValid($date): bool
@@ -52,7 +52,7 @@ function dateValid($date): bool
 /**
  * Permet de vérifier si une chaine est un nombre
  *
- * @param [type] $nombre chaine de texte verifié
+ * @param mixed $nombre chaine de texte verifié
  * @return boolean true si c'est un nombre
  */
 function estUnNombre($nombre): bool
@@ -63,7 +63,7 @@ function estUnNombre($nombre): bool
 /**
  * Permet de vérifier si une chaine est un nombre positif et supérieur à 0
  *
- * @param [type] $nombre chaine de texte verifié
+ * @param mixed $nombre chaine de texte verifié
  * @return boolean true si c'est un nombre
  */
 function estUnNombreSup0($nombre): bool
@@ -214,6 +214,37 @@ function checkFormRapportEchs(mixed $lesEchantillions): array
         }
     } else {
         $msgErr[] = 'Les échantillions doivent être sous forme de tableau !';
+    }
+
+    return $msgErr;
+}
+
+/**
+ * Permet de tester si les paramètres du formulaire de recherche de ses rapport
+ *
+ * @param mixed $startDate une date
+ * @param mixed $endDate une date
+ * @param mixed $idPraticien un identifiant de praticien
+ * @return array tableau de message d'erreur pour les champs
+ */
+function checkFormulaireRechercheMesRapport($startDate, $endDate, $idPraticien): array
+{
+    $msgErr = array();
+
+    if (!empty($startDate) == empty($endDate)) {
+        $msgErr[] = "Pour définir un interval, vous devez saisir la date de debut et de fin pour définir cet interval !";
+    }
+
+    if (!empty($startDate) && !dateValid($startDate)) {
+        $msgErr[] = "Le format de la date de depart est incorrecte !";
+    }
+
+    if (!empty($endDate) && !dateValid($endDate)) {
+        $msgErr[] = "Le format de la date de fin est incorrecte !";
+    }
+
+    if (!empty($idPraticien) && (!estUnNombre($idPraticien) || !getAllInformationsMedecin((int) $idPraticien))) {
+        $msgErr[] = "L'identifiant du praticien est inexistant !";
     }
 
     return $msgErr;
