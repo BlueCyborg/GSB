@@ -342,6 +342,7 @@ function getSesRapports(string $matricule, ?string $startDate = null, ?string $e
         r.COL_MATRICULE=:MATRICULE
         '.$whereSup.'
     ORDER BY
+        r.ETAT_ID ASC,
         r.RAP_DATE_VISITE ASC
     ;');
 
