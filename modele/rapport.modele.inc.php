@@ -319,12 +319,16 @@ function getSesRapports(string $matricule, ?string $startDate = null, ?string $e
         m1.MED_NOMCOMMERCIAL AS "MED1_NAME",
         m2.MED_DEPOTLEGAL AS "MED2",
         m2.MED_NOMCOMMERCIAL AS "MED2_NAME",
-        r.ETAT_ID
+        r.ETAT_ID,
+        e.ETAT_LIB
     FROM 
         rapport_visite r
     INNER JOIN
         motif_visite mt
         ON mt.MOT_ID = r.MOT_ID
+    INNER JOIN
+        etat_rapport e
+        ON e.ETAT_ID = r.ETAT_ID
     LEFT JOIN
         praticien p
         ON r.PRA_NUM = p.PRA_NUM

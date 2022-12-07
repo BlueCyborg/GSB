@@ -141,7 +141,10 @@
                 </div>
                 <hr class="">
                 <div class="d-flex flex-row justify-content-center align-content-center gap-3">
-                    <a href="index.php?uc=rapport&action=mesRapports" class="btn btn-info text-light" role="button">Retour</a>
+                    <button class="btn btn-info text-light" type="button" role="button"
+                        onclick="history.go(-1)">
+                        Retour
+                    </button>
                 </div>
             </div>
         </div>

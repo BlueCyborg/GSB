@@ -10,8 +10,8 @@
             </p>
         </div>
         <div class="py-lg-5 py-3">
-            <form action="index.php?uc=rapport&action=saisitRapport" method="post" class="formulaire-recherche col-12 m-0 p-3">
-                <table class="table table-striped" id="ech">
+            <form action="index.php?uc=rapport&action=saisitRapport" method="post" class="formulaire-recherche d-block col-12 m-0 p-3 overflow-auto">
+                <table class="table table-striped">
                     <thead>
                         <tr>
                             <th scope="col">
@@ -60,24 +60,40 @@
                                 <td>
                                     <?= htmlspecialchars($rapport['RAP_NUM']) ?>
                                 </td>
-                                <td>
-                                    <?= htmlspecialchars($rapport['PRA_NUM']) ?>
-                                </td>
-                                <td>
-                                    <?= htmlspecialchars($rapport['PRA_NOM']) ?>
-                                </td>
-                                <td>
-                                    <?= htmlspecialchars($rapport['PRA_PRENOM']) ?>
-                                </td>
-                                <td>
-                                    <?= htmlspecialchars($rapport['MOTIF']) ?>
-                                </td>
+                                <?php
+                                if (!empty($rapport['PRA_NUM'])) {
+                                ?>
+                                    <td>
+                                        <?= htmlspecialchars($rapport['PRA_NUM']) ?>
+                                    </td>
+                                    <td>
+                                        <?= htmlspecialchars($rapport['PRA_NOM']) ?>
+                                    </td>
+                                    <td>
+                                        <?= htmlspecialchars($rapport['PRA_PRENOM']) ?>
+                                    </td>
+                                <?php
+                                } else {
+                                ?>
+                                    <td>Non définie</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                <?php
+                                }
+                                ?>
                                 <td>
                                     <?= htmlspecialchars(
+                                        !empty($rapport['MOTIF'])
+                                            ? $rapport['MOTIF']
+                                            : 'Non définie'
+                                    ) ?>
+                                </td>
+                                <td class="text-nowrap">
+                                    <?= htmlspecialchars(
                                         !empty($rapport['RAP_DATE_VISITE'])
-                                        ? date('Y-m-d', strtotime($rapport['RAP_DATE_VISITE']))
-                                        : 'Non définie'
-                                    )?>
+                                            ? date('Y-m-d', strtotime($rapport['RAP_DATE_VISITE']))
+                                            : 'Non définie'
+                                    ) ?>
                                 </td>
                                 <td>
                                     <?php if (!empty($rapport['MED1'])) {
@@ -100,9 +116,28 @@
                                     } ?>
                                 </td>
                                 <td>
-                                    <?= htmlspecialchars($rapport['ETAT_ID']) ?>
+                                    <?= htmlspecialchars($rapport['ETAT_LIB']) ?>
                                 </td>
                                 <td>
+                                    <?php
+                                    if ($rapport['ETAT_ID'] == 'C') {
+                                    ?>
+                                        <a class="btn btn-info text-light" role="button" 
+                                            href="index.php?uc=rapport&action=saisirRapport&rapNum=<?= htmlspecialchars($rapport['RAP_NUM']) ?>"
+                                            >
+                                            <i class="bi bi-pencil-square"></i>
+                                        </a>
+                                    <?php
+                                    } else {
+                                    ?>
+                                        <a class="btn btn-secondary" role="button"
+                                            href="index.php?uc=rapport&action=regarderRapport&rapNum=<?= htmlspecialchars($rapport['RAP_NUM']) ?>"
+                                            >
+                                            <i class="bi bi-card-text"></i>
+                                        </a>
+                                    <?php
+                                    }
+                                    ?>
                                 </td>
                             </tr>
                         <?php
