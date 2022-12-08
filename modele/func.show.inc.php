@@ -24,6 +24,7 @@ function showRapport(array $rapport, string $path, bool $loadList): void
     $rapPraID = $rapport['PRA_NUM'];
     if ($rapPraID != PDO::NULL_NATURAL) {
         $unPraticien = getAllInformationsMedecin($rapPraID);
+        $coefConf = $unPraticien['PRA_COEFCONFIANCE'];
     }
     $rapRempID = $rapport['REMP_NUM'];
     if ($rapRempID != PDO::NULL_NATURAL) {

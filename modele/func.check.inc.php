@@ -77,16 +77,16 @@ function estUnNombreSup0($nombre): bool
  * @param mixed $matricule matricule du collaborateur
  * @param mixed $rapNum un numéro du rapport
  * @param mixed $idPratiecien un identifiant de praticien
- * @param mixed $dateDeSaisie une date
  * @param mixed $bilan un texte de bilan
  * @param mixed $dateDeVisite une date
  * @param mixed $idMotif un identifiant de motif
  * @param mixed $autreMotif un text pour représenter le motif
  * @param mixed $idMed1 le premier un identifiant de médicament
  * @param mixed $idMed2 le premier deuxième identifiant de médicament
+ * @param mixed $coefConf coefficiant de conficance du medecin
  * @return array tableau des erreur avec les champs
  */
-function checkFormRapport($matricule, $rapNum, $idPraticien, $unRemplacant, $dateDeSaisie, $bilan, $dateDeVisite, $idMotif, $autreMotif, $idMed1, $idMed2) : array
+function checkFormRapport($matricule, $rapNum, $idPraticien, $unRemplacant, $bilan, $dateDeVisite, $idMotif, $autreMotif, $idMed1, $idMed2, $coefConf) : array
 {
     $msgErr = array();
 
@@ -100,10 +100,6 @@ function checkFormRapport($matricule, $rapNum, $idPraticien, $unRemplacant, $dat
 
     if (!empty($unRemplacant) && (!estUnNombre($unRemplacant) || !getAllInformationsMedecin((int) $unRemplacant))) {
         $msgErr[] = "L'identifiant du remplacent praticien est inexistant !";
-    }
-
-    if (!empty($dateDeSaisie) && !dateValid($dateDeSaisie)) {
-        $msgErr[] = "Le format de la date de saisie est incorrecte !";
     }
 
     if (!empty($dateDeVisite) && !dateValid($dateDeVisite)) {
@@ -122,6 +118,10 @@ function checkFormRapport($matricule, $rapNum, $idPraticien, $unRemplacant, $dat
         $msgErr[] = "Le motif autre est trop grand ! (superieur à 255)";
     }
 
+    if (preg_match('/^[0-9]{1,3}$|^[0-9]{1,3}\.[0-9]{0,2}$/', $coefConf) != 1) {
+        $msgErr[] = "Le format du coefficien de confiance n'est pas respecté ! (nombre entre 999.99 et 0)";
+    }
+
     $msgErr = array_merge($msgErr, checkIdMed($idMed1));
     $msgErr = array_merge($msgErr, checkIdMed($idMed2));
 
@@ -134,7 +134,6 @@ function checkFormRapport($matricule, $rapNum, $idPraticien, $unRemplacant, $dat
  * @param mixed $matricule matricule du collaborateur
  * @param mixed $rapNum un numéro du rapport
  * @param mixed $idPratiecien un identifiant de praticien
- * @param mixed $dateDeSaisie une date
  * @param mixed $bilan un texte de bilan
  * @param mixed $dateDeVisite une date
  * @param mixed $idMotif un identifiant de motif
@@ -143,7 +142,7 @@ function checkFormRapport($matricule, $rapNum, $idPraticien, $unRemplacant, $dat
  * @param mixed $idMed2 le premier deuxième identifiant de médicament
  * @return array tableau des erreur avec les champs
  */
-function checkFormRapportDef($idPraticien, $dateDeSaisie, $bilan, $dateDeVisite, $idMotif, $autreMotif): array
+function checkFormRapportDef($idPraticien, $bilan, $dateDeVisite, $idMotif, $autreMotif): array
 {
     $msgErr = array();
 
@@ -157,10 +156,6 @@ function checkFormRapportDef($idPraticien, $dateDeSaisie, $bilan, $dateDeVisite,
     
     if (empty($idPraticien)) {
         $msgErr[] = 'Veuillez saisir le praticien !';
-    }
-
-    if (empty($dateDeSaisie)) {
-        $msgErr[] = 'Veuillez saisir la date de saisie !';
     }
 
     if (empty($dateDeVisite)) {

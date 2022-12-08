@@ -21,9 +21,11 @@ switch ($action) {
 
 	case 'mesRapports': {
 		//test formulaire
-		$startDate = isset($_POST['startDate']) ? $_POST['startDate'] : '';
-		$endDate = isset($_POST['endDate']) ? $_POST['endDate'] : '';
-		$praID = isset($_POST['praID']) ? $_POST['praID'] : null;
+		//j'ai choissie la method=get pour le formulaire car cela permet de faire "précédante page" sans erreur 
+		//et parsceque aucune information sensible n'est presente dans l'url
+		$startDate = isset($_GET['startDate']) ? $_GET['startDate'] : '';
+		$endDate = isset($_GET['endDate']) ? $_GET['endDate'] : '';
+		$praID = isset($_GET['praID']) ? $_GET['praID'] : null;
 
 		//validation du fomulaire
 		$msgErrs = checkFormulaireRechercheMesRapport($startDate, $endDate, $praID);
@@ -104,6 +106,7 @@ switch ($action) {
 		if (isset($_SESSION['matricule']) 
 			&& isset($_POST['rapNum'])
 			&& isset($_POST['rapPraID'])
+			&& isset($_POST['coefConf'])
 			&& isset($_POST['rapRempID'])
 			&& isset($_POST['saisieDate'])
 			&& isset($_POST['rapBilan'])
@@ -116,8 +119,9 @@ switch ($action) {
 			$colMatricule = $_SESSION['matricule'];
 			$rapNum = $_POST['rapNum'];
 			$rapPraID = $_POST['rapPraID'];
+			$coefConf = $_POST['coefConf'];
 			$rapRempID = $_POST['rapRempID'];
-			$saisieDate = $_POST['saisieDate'];
+			$saisieDate = $_POST['saisieDate'];//juste pour ne pas faire de n,ouvelle apelle a bd
 			$rapBilan = $_POST['rapBilan'];
 			$visiteDate = $_POST['visiteDate'];
 			$idMotif = $_POST['idMotif'];
@@ -129,11 +133,16 @@ switch ($action) {
 			
 			//check erreur
 			$msgErrs = array_merge(
-					checkFormRapport($colMatricule, $rapNum, $rapPraID, $rapRempID, $saisieDate, $rapBilan, $visiteDate, $idMotif, $motifAutre, $idMed1, $idMed2),
+					checkFormRapport($colMatricule, $rapNum, $rapPraID, $rapRempID, $rapBilan, $visiteDate, $idMotif, $motifAutre, $idMed1, $idMed2, $coefConf),
 					checkFormRapportEchs($lesEchantillions)
 				);
 			if ($saisieDef) {
-				$msgErrs = array_merge($msgErrs, checkFormRapportDef($rapPraID, $saisieDate, $rapBilan, $visiteDate, $idMotif, $motifAutre));
+				$msgErrs = array_merge($msgErrs, checkFormRapportDef($rapPraID, $rapBilan, $visiteDate, $idMotif, $motifAutre));
+			}
+
+			//information sur le praticien
+			if (!empty($rapPraID) && estUnNombre($rapPraID)) {
+				$unPraticien = getAllInformationsMedecin($rapPraID);
 			}
 
 			//page d'erreur
@@ -147,9 +156,6 @@ switch ($action) {
 				$lesMotifs = getLesMotifs();
 				$unMotif = getUnMotifById($idMotif);
 
-				if (!empty($rapPraID) && estUnNombre($rapPraID)) {
-					$unPraticien = getAllInformationsMedecin($rapPraID);
-				}
 				if (!empty($rapRempID) && estUnNombre($rapRempID)) {
 					$unRemplacant = getAllInformationsMedecin($rapRempID);
 				}
@@ -168,6 +174,15 @@ switch ($action) {
 				include('vues/v_formulaireRapport.php');
 			} else {//page de mise à jour
 				$valid = true;
+
+				//mise a jour coef confiancie du medecin
+				if (!empty($unPraticien)) {
+					updateCoefConfMedecin($rapPraID, $coefConf);
+					$messageType = 'success';
+					$messageBody = 'Le coefficien de confiance du medecin "'.$unPraticien['PRA_NOM'].' '.$unPraticien['PRA_PRENOM'].'" à bien été redefinie à '.$coefConf.' !';
+					include('vues/v_message.php');
+				}
+
 				//saisie bonne
 				if (!$saisieDef) {
 					$valid = updateUnRapport($colMatricule,
@@ -179,7 +194,6 @@ switch ($action) {
 							ifEmptyThenNull($rapRempID),
 							$idMotif,
 							'C',
-							ifEmptyThenNull($saisieDate),
 							ifEmptyThenNull($idMed1),
 							ifEmptyThenNull($idMed2)
 						);
@@ -194,7 +208,6 @@ switch ($action) {
 							ifEmptyThenNull($rapRempID),
 							$idMotif,
 							'V',
-							ifEmptyThenNull($saisieDate),
 							ifEmptyThenNull($idMed1),
 							ifEmptyThenNull($idMed2)
 						);

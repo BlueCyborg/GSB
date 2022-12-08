@@ -149,7 +149,6 @@ function getUnEtatById(string $id): mixed {
  * @param ?integer $REMP_NUM l'identifiant d'un praticien remplacent
  * @param string $MOT_ID un identifiant de motif
  * @param string $ETAT_ID un identifiant d'etat
- * @param ?string $RAP_DATE_SAISIE une date de saisie
  * @param ?string $MED_PRESENTER_1 un identifiant du premier medicamnent
  * @param ?string $MED_PRESENTER_2 un identifiant du deuxieme medicamnent
  * @return bool true si bien mise à jour
@@ -164,7 +163,6 @@ function updateUnRapport(
     ?int $REMP_NUM,
     string $MOT_ID,
     string $ETAT_ID,
-    ?string $RAP_DATE_SAISIE,
     ?string $MED_PRESENTER_1,
     ?string $MED_PRESENTER_2
     ): bool
@@ -180,7 +178,6 @@ function updateUnRapport(
             REMP_NUM=:REMP_NUM,
             MOT_ID=:MOT_ID,
             ETAT_ID=:ETAT_ID,
-            RAP_DATE_SAISIE=:RAP_DATE_SAISIE,
             MED_PRESENTER_1=:MED_PRESENTER_1,
             MED_PRESENTER_2=:MED_PRESENTER_2
         WHERE
@@ -197,7 +194,6 @@ function updateUnRapport(
     $req->bindValue(':ETAT_ID', $ETAT_ID, PDO::PARAM_STR);
     bindValueCanBeNull($req, ':PRA_NUM', $PRA_NUM, PDO::PARAM_INT);
     bindValueCanBeNull($req, ':REMP_NUM', $REMP_NUM, PDO::PARAM_INT);
-    bindValueCanBeNull($req, ':RAP_DATE_SAISIE', $RAP_DATE_SAISIE, PDO::PARAM_STR);
     bindValueCanBeNull($req, ':RAP_DATE_VISITE', $RAP_DATE_VISITE, PDO::PARAM_STR);
     bindValueCanBeNull($req, ':MED_PRESENTER_1', $MED_PRESENTER_1, PDO::PARAM_STR);
     bindValueCanBeNull($req, ':MED_PRESENTER_2', $MED_PRESENTER_2, PDO::PARAM_STR);
@@ -320,7 +316,8 @@ function getSesRapports(string $matricule, ?string $startDate = null, ?string $e
         m2.MED_DEPOTLEGAL AS "MED2",
         m2.MED_NOMCOMMERCIAL AS "MED2_NAME",
         r.ETAT_ID,
-        e.ETAT_LIB
+        e.ETAT_LIB,
+        r.ETAT_ID="C" AS "enCours"
     FROM 
         rapport_visite r
     INNER JOIN
@@ -342,7 +339,7 @@ function getSesRapports(string $matricule, ?string $startDate = null, ?string $e
         r.COL_MATRICULE=:MATRICULE
         '.$whereSup.'
     ORDER BY
-        r.ETAT_ID ASC,
+        enCours DESC,
         r.RAP_DATE_VISITE ASC
     ;');
 

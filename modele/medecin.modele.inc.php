@@ -148,3 +148,17 @@ function creerUnMedecin(String $nom, String $prenom, String $adresse, String $cp
         die();
     }
 }
+
+/**
+ * Permet de mettre à jour le coefficien de confiance d'un medecin
+ *
+ * @param integer $num un numero identifiant un medecin
+ * @param string $coefConf nouveau coefficien de confiance du médecin
+ * @return void
+ */
+function updateCoefConfMedecin(int $num, string $coefConf) {
+    $req = connexionPDO()->prepare("UPDATE praticien SET PRA_COEFCONFIANCE=:coefConf WHERE PRA_NUM=:pra_num");
+    $req->bindValue(':pra_num', $num, PDO::PARAM_INT);
+    $req->bindValue(':coefConf', $coefConf, PDO::PARAM_STR);
+    $req->execute();
+}

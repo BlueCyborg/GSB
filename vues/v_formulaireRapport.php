@@ -92,8 +92,8 @@
                         </div>
 
                         <div>
-                            <label for="saisieDate" class="form-label required">Date de saisie:</label>
-                            <input id="saisieDate" name="saisieDate" class="form-control" type="date" value=<?=htmlspecialchars($saisieDate)?>>
+                            <label for="saisieDate" class="form-label">Date de saisie:</label>
+                            <input id="saisieDate" class="form-control text-secondary" readonly type="date" name="saisieDate" value=<?=htmlspecialchars($saisieDate)?>>
                         </div>
 
                         <div>
@@ -106,6 +106,11 @@
                             <label for="visiteDate" class="form-label required">Date de visite:</label>
                             <input id="visiteDate" name="visiteDate" class="form-control" type="date" value=<?=htmlspecialchars($visiteDate)?>>
                         </div>
+
+                        <div>
+                            <label for="coefConf" class="form-label required">Coefficien Confiance:</label>
+                            <input id="coefConf" name="coefConf" class="form-control" type="number" step="0.01" min='0' max='999.99' required value=<?php if (!empty($coefConf)) { echo(htmlspecialchars($coefConf));} ?>>
+                        </div>      
 
                         <div>
                             <label for="idMotif" class="form-label required">Motif:</label>
@@ -249,10 +254,10 @@
                 </div>
                 <div class="d-flex flex-row justify-content-center align-content-center gap-3">
                     <button class="btn btn-info text-light" role="button" type="sumbit" onclick="return sendForm()">Valider le rapport</button>
-                    <button class="btn btn-info text-light" type="button" role="button"
-                        onclick="history.go(-1)">
+                    <a class="btn btn-info text-light" role="button"
+                        href="index.php?uc=rapport&action=redigerRapport">
                         Retour
-                    </button>
+                    </a>
                 </div>
             </form>
         </div>

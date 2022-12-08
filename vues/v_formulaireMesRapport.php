@@ -7,7 +7,9 @@
             </p>
         </div>
         <div class="py-lg-5 py-3">
-            <form action="index.php?uc=rapport&action=mesRapports" method="post" class="formulaire-recherche col-12 m-0 p-3 d-flex flex-column gap-3 justify-align-content-stretch align-items-stretch">
+            <form action="index.php" method="get" class="formulaire-recherche col-12 m-0 p-3 d-flex flex-column gap-3 justify-align-content-stretch align-items-stretch">
+                <input type="hidden" hidden name="uc" value="rapport">
+                <input type="hidden" hidden name="action" value="mesRapports">
                 <h2 class="titre-formulaire align-self-center">Critères de recherche</h2>
                 <div class="d-flex flex-lg-row flex-column justify-content-stretch align-content-stretch gap-5 px-5">
                     <div class="input-group">
