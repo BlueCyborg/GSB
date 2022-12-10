@@ -38,7 +38,7 @@
                                 if ($_SESSION['habilitation'] >= 2) {
                         ?>
                             <li class="nav-item ">
-                                <a class="nav-link btn-outline-info rounded-pill px-3 fw-bold" href="index.php?uc=medecin&action=formulairemedecin">Gérer médecin</a>
+                                <a class="nav-link btn-outline-info rounded-pill px-3 fw-bold" href="index.php?uc=medecin&action=formulaireMedecin">Gérer médecin</a>
                             </li>
                         <?php }?>
                             <li class="nav-item dropdown">

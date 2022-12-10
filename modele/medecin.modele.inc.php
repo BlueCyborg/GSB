@@ -156,9 +156,28 @@ function creerUnMedecin(String $nom, String $prenom, String $adresse, String $cp
  * @param string $coefConf nouveau coefficien de confiance du médecin
  * @return void
  */
-function updateCoefConfMedecin(int $num, string $coefConf) {
+function updateCoefConfMedecin(int $num, string $coefConf)
+{
     $req = connexionPDO()->prepare("UPDATE praticien SET PRA_COEFCONFIANCE=:coefConf WHERE PRA_NUM=:pra_num");
     $req->bindValue(':pra_num', $num, PDO::PARAM_INT);
     $req->bindValue(':coefConf', $coefConf, PDO::PARAM_STR);
     $req->execute();
+}
+/**
+ * Retourne toutes les spécialités
+ *
+ * @return array|false Le résultat des différentes spécialités
+ */
+function getLesSpecialites(): mixed
+{
+    try {
+        $monPdo = connexionPDO();
+        $req = 'SELECT `SPE_CODE`,`SPE_LIBELLE` FROM `specialite`';
+        $res = $monPdo->query($req);
+        $result = $res->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
+    } catch (PDOException $e) {
+        print "Erreur !: " . $e->getMessage();
+        die();
+    }
 }
