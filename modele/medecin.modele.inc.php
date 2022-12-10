@@ -61,7 +61,7 @@ function getMedecinRegion(String $codeRegion): mixed
     }
 }
 /**
- * Fonction permettant de gérer les informations d'un médecin
+ * Fonction permettant de mettre à jour les informations d'un médecin
  *
  * @param integer $numero ID du praticien
  * @param String $nom Nom du praticien
@@ -74,7 +74,7 @@ function getMedecinRegion(String $codeRegion): mixed
  * @param integer $coeffConfiance Coefficien de confiance du praticien
  * @return void
  */
-function gererUnMedecin(int $numero, String $nom, String $prenom, String $adresse, String $cp, String $ville, float $coeffNotoriete, String $typeCode, int $coeffConfiance)
+function updateUnMedecin(int $numero, String $nom, String $prenom, String $adresse, String $cp, String $ville, float $coeffNotoriete, String $typeCode, int $coeffConfiance)
 {
     try {
         $monPdo = connexionPDO();
