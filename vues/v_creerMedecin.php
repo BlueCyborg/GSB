@@ -1,36 +1,31 @@
 <?php
 $i = 0;
-echo "<script>
-document.body.onload = addList;
+?>
+<script>
+    document.body.onload = addList;
 
-function suppList()
-{
-    let list = document.getElementById(\"select\");
-    list.remove();
-}
+    function suppList() {
+        let list = document.getElementById("select");
+        list.remove();
+    }
 
-function addList() {
-    const select = document.createElement(\"select\");
-    select.id = \"select\";
-    select.className=\"form-select\";
-    ";
-foreach ($specialites as $uneSpecialite) {
-    echo "const opt" . $i . " = document.createElement(\"option\");";
+    function addList() {
+        const select = document.createElement("select");
+        select.id = "select";
+        select.className = "form-select";
 
-    echo '
-        opt' . $i . '.value = "' . htmlspecialchars($uneSpecialite['SPE_CODE']) . '";
-        opt' . $i . '.text = "' . htmlspecialchars($uneSpecialite['SPE_LIBELLE']) . '";
-        select.add(opt' . $i . ', null);
-        select.appendChild(opt' . $i . ');
-    ';
-    $i++;
-}
-echo '
+        <?php foreach ($specialites as $uneSpecialite) { ?>
+            const option<?= $i  ?> = document.createElement("option");
+            option<?= $i ?>.value = "<?= htmlspecialchars($uneSpecialite['SPE_CODE']) ?>";
+            option<?= $i ?>.text = "<?= htmlspecialchars($uneSpecialite['SPE_LIBELLE']) ?>";
+            select.append(option<?= $i ?>);
+        <?php
+            $i++;
+        } ?>
         const div = document.getElementById("selection");
         div.insertBefore(select, div.children[0]);
-        }
-        </script>';
-?>
+    }
+</script>
 
 <div style="margin-left:10px;">
     <div class="py-lg-5 mx-auto">
