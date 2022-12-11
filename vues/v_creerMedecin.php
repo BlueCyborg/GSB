@@ -14,7 +14,7 @@
         numb++;
         const select = document.createElement("select");
         select.id = "select-" + numb;
-        select.name = "select-" + numb;
+        select.name = "select[" + numb + "]";
         select.className = "form-select";
 
         <?php
@@ -32,26 +32,38 @@
     }
 </script>
 
-<div style="margin-left:10px;">
-    <div class="py-lg-5 mx-auto">
-        <div class="formulaire-recherche col-12 m-0 p-3 d-flex flex-column gap-3">
-            <h3 style="text-align:center">Créer un médecin : </h3>
-            <form action="" method="POST" style="text-align:right">
-                <br>
-                <p>Nom :
-                    <input type="text" name="nom_medecin" required />
-                    <br>Prénom :
-                    <input type="text" name="prenom_medecin" required />
-                    <br>Adresse :
-                    <input type="text" name="adresse_medecin" required />
-                    <br>Code postal :
-                    <input type="text" name="cp_medecin" required />
-                    <br>Ville :
-                    <input type="text" name="ville_medecin" required />
-                    <br>Coefficient notoriété :
-                    <input type="number" step="0.01" min="0" name="coefficient_notoriete" value="0.00" required />
-                    <br><br>Type :
-                    <select name="type_medecin" class="form-select" required>
+<div class="py-lg-5 mx-5 my-3">
+    <div class="formulaire-recherche col-12 m-0 p-3 d-flex flex-column gap-3">
+        <h3 class="text-center">Créer un médecin : </h3>
+        <form action="" method="POST" class="d-flex justify-content-center">
+            <div class="d-flex flex-column gap-3 justify-content-center align-content-lg-stretch">
+                <div>
+                    <label for="nom_medecin" class="form-label">Nom :</label>
+                    <input class="form-control" type="text" id="nom_medecin" name="nom_medecin" required />
+                </div>
+                <div>
+                    <label class="form-label" for="prenom_medecin">Prénom :</label>
+                    <input class="form-control" type="text" id="prenom_medecin" name="prenom_medecin" required />
+                </div>
+                <div>
+                    <label class="form-label" for="adresse_medecin">Adresse :</label>
+                    <input class="form-control" type="text" id="adresse_medecin" name="adresse_medecin" required />
+                </div>
+                <div>
+                    <label class="form-label" for="cp_medecin">Code postal :</label>
+                    <input class="form-control" type="text" id="cp_medecin" name="cp_medecin" required />
+                </div>
+                <div>
+                    <label class="form-label" for="ville_medecin">Ville :</label>
+                    <input class="form-control" type="text" id="ville_medecin" name="ville_medecin" required />
+                </div>
+                <div>
+                    <label class="form-label" for="coefficient_notoriete">Coefficient notoriété :</label>
+                    <input class="form-control" id="coefficient_notoriete" type="number" step="0.01" min="0" name="coefficient_notoriete" value="0.00" required />
+                </div>
+                <div>
+                    <label class="form-label" for="type_medecin">Type :</label>
+                    <select class="form-select" name="type_medecin" class="form-select" required>
                         <?php
                         foreach ($types as $unType) {
                         ?>
@@ -62,22 +74,31 @@
                         }
                         ?>
                     </select>
-                    <br><br>Coefficient confiance :
-                    <input type="number" min="0" name="coefficient_confiance" value="0" required />
-                    <br>
-                <div id="selection">
-                    Spécialitée :
                 </div>
-                <button type="button" class="btn btn-outline-primary" onClick="addList()">Ajouter</button>
-                <button type="button" class="btn btn-outline-primary" onClick="suppList()">Enlever</button>
-                <br><br>Diplome :
-                <input type="text" name="diplome_medecin" maxlength="10" value="" />
-                <br><br>Coefficient prescription :
-                <input type="number" step="0.01" min="0" name="coefficient_prescription" value="0.00" />
-                <br><br>
-                <button type="submit" name="submit" class="btn btn-outline-primary">Créer</button>
+                <div>
+                    <label class="form-label" for="coefficient_confiance">Coefficient confiance :</label>
+                    <input class="form-control" id="coefficient_confiance" type="number" min="0" name="coefficient_confiance" value="0" required />
+                </div>
+                <div class="d-flex flex-column justify-content-end gap-3">
+                    <label>Spécialitée : </label>
+                    <div id="selection" class="d-flex flex-column gap-3">
+                    </div>
+                    <div class="d-flex flex-row gap-3">
+                        <button type="button" class="btn btn-outline-success flex-fill" onClick="addList()">Ajouter</button>
+                        <button type="button" class="btn btn-outline-danger flex-fill" onClick="suppList()">Enlever</button>
+                    </div>
+                    <div>
+                        <label class="form-label" for="diplome_medecin">Diplome :</label>
+                        <input class="form-control" type="text" id="diplome_medecin" name="diplome_medecin" maxlength="10" value="" required />
+                    </div>
+                    <div>
+                        <label class="form-label" for="coefficient_prescription">Coefficient prescription :</label>
+                        <input class="form-control" type="number" id="coefficient_prescription" name="coefficient_prescription" step="0.01" min="0" value="0.00" required />
+                    </div>
+                    <button type="submit" name="submit" class="btn btn-outline-primary">Créer</button>
+                </div>
                 </p>
-            </form>
-        </div>
+            </div>
+        </form>
     </div>
 </div>

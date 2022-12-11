@@ -29,11 +29,7 @@ switch ($action) {
         }
     case 'creerMedecin': {
             if (isset($_POST['submit'])) {
-                //Insertion des spécialités dans un tableau
-                for ($i = 1; $i <= (count($_POST) - 11); $i++) {
-                    $tableauSpecialite[$i] = $_POST['select-' . $i . ''];
-                }
-                creerUnMedecin($_POST['nom_medecin'], $_POST['prenom_medecin'], $_POST['adresse_medecin'], $_POST['cp_medecin'], $_POST['ville_medecin'], $_POST['coefficient_notoriete'], $_POST['type_medecin'], $_POST['coefficient_confiance'], $tableauSpecialite, $_POST['diplome_medecin'], $_POST['coefficient_prescription']);
+                creerUnMedecin($_POST['nom_medecin'], $_POST['prenom_medecin'], $_POST['adresse_medecin'], $_POST['cp_medecin'], $_POST['ville_medecin'], $_POST['coefficient_notoriete'], $_POST['type_medecin'], $_POST['coefficient_confiance'], $_POST['select'], $_POST['diplome_medecin'], $_POST['coefficient_prescription']);
             } else {
                 $types = getTypePraticien();
                 $specialites = getLesSpecialites();
