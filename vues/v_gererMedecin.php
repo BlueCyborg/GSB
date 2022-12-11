@@ -1,7 +1,7 @@
 <div style="margin-left:10px;" class="test col-12 col-sm-8 col-lg-6 col-xl-5 col-xxl-4 py-lg-5 py-3">
     <div class="formulaire-recherche col-12 m-0">
         <h3 style="text-align:center">Gérer le médecin <u><?= htmlspecialchars($medecin['PRA_PRENOM'] . ' ' . $medecin['PRA_NOM']) ?></u> : </h3>
-        <form action="index.php?uc=medecin&action=gerermedecin" method="POST" style="text-align:right">
+        <form action="index.php?uc=medecin&action=gererMedecin" method="POST" style="text-align:right">
             <br>
             <input name="id_medecin" type="hidden" value="<?= htmlspecialchars($idMedecin) ?>">
             <p>Nom :

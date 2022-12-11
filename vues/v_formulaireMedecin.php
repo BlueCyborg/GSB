@@ -16,7 +16,7 @@
                     echo '<p class="alert alert-danger text-center w-100">Un problème est survenu lors de la selection du praticien</p>';
                     $_SESSION['erreur'] = false;
                 } ?>
-                <form action="index.php?uc=medecin&action=gerermedecin" method="post" class="formulaire-recherche col-12 m-0">
+                <form action="index.php?uc=medecin&action=gererMedecin" method="post" class="formulaire-recherche col-12 m-0">
                     <label class="titre-formulaire" for="listemedoc">Liste médecin :</label>
                     <select required name="medecin" class="form-select mt-3">
                         <option value class="text-center">- Choisissez un médecin -</option>
@@ -36,7 +36,7 @@
                         class="btn btn-success text-light mt-2" 
                         role="button" 
                         aria-pressed="true" 
-                        href="index.php?uc=medecin&action=creermedecin">
+                        href="index.php?uc=medecin&action=creerMedecin">
                         Créer Medecin
                     </a>
                 </form>
