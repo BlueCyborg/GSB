@@ -4,8 +4,7 @@
 
     function suppList() { //Fonction permettant d'enlever la dernière spécialitée
         if (numb != 1) {
-            let lastSelect = "select-" + numb;
-            const element = document.getElementById(lastSelect);
+            const element = document.getElementById("select-" + numb);
             element.remove();
             numb--;
         }
@@ -15,6 +14,7 @@
         numb++;
         const select = document.createElement("select");
         select.id = "select-" + numb;
+        select.name = "select-" + numb;
         select.className = "form-select";
 
         <?php
@@ -49,7 +49,7 @@
                     <br>Ville :
                     <input type="text" name="ville_medecin" required />
                     <br>Coefficient notoriété :
-                    <input type="number" step="0.01" min="0" name="coefficient_notoriete" required />
+                    <input type="number" step="0.01" min="0" name="coefficient_notoriete" value="0.00" required />
                     <br><br>Type :
                     <select name="type_medecin" class="form-select" required>
                         <?php
@@ -63,13 +63,17 @@
                         ?>
                     </select>
                     <br><br>Coefficient confiance :
-                    <input type="number" min="0" name="coefficient_confiance" required />
-                    <br><br>
+                    <input type="number" min="0" name="coefficient_confiance" value="0" required />
+                    <br>
                 <div id="selection">
                     Spécialitée :
                 </div>
                 <button type="button" class="btn btn-outline-primary" onClick="addList()">Ajouter</button>
                 <button type="button" class="btn btn-outline-primary" onClick="suppList()">Enlever</button>
+                <br><br>Diplome :
+                <input type="text" name="diplome_medecin" maxlength="10" value="" />
+                <br><br>Coefficient prescription :
+                <input type="number" step="0.01" min="0" name="coefficient_prescription" value="0.00" />
                 <br><br>
                 <button type="submit" name="submit" class="btn btn-outline-primary">Créer</button>
                 </p>

@@ -1,4 +1,3 @@
-- Faire en sorte qu'à la création d'un médecin, il ai une spécialité voir plusieurs
 - Copier sur denis pour le visuel
-
--coeficien de notauriété on le met ou ?
+- Coeficien de notauriété on le met ou ?
+- Faire en sorte qu'à la création d'un médecin, l'on enleve la précédente spécialité séléctionné du nouveau tableau

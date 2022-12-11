@@ -125,9 +125,12 @@ function getTypePraticien(): mixed
  * @param float $coeffNotoriete Coefficien de notoriete du médecin
  * @param String $typeCode Type code du médecin
  * @param integer $coeffConfiance Coefficien de confiance du médecin
+ * @param array $specialites Un tableau contenant les spécialités du médecin
+ * @param String $diplome Le diplome du médecin
+ * @param float $coeffPrescription Coefficien de prescription du médecin
  * @return void Envoie les informations du nouveau médecin dans la base de donnée
  */
-function creerUnMedecin(String $nom, String $prenom, String $adresse, String $cp, String $ville, float $coeffNotoriete, String $typeCode, int $coeffConfiance)
+function creerUnMedecin(String $nom, String $prenom, String $adresse, String $cp, String $ville, float $coeffNotoriete, String $typeCode, int $coeffConfiance, array $specialites, String $diplome, float $coeffPrescription)
 {
     try {
         $monPdo = connexionPDO();
@@ -141,8 +144,22 @@ function creerUnMedecin(String $nom, String $prenom, String $adresse, String $cp
         $req->bindValue(':typeCode', $typeCode, PDO::PARAM_STR);
         $req->bindValue(':coeff_confiance', $coeffConfiance, PDO::PARAM_INT);
         $req->execute();
-        $medecin = $req->fetch();
-        return $medecin;
+
+        $req = $monPdo->prepare('SELECT `PRA_NUM` FROM `praticien` WHERE `PRA_NOM` = :med_nom AND `PRA_PRENOM` = :med_prenom');
+        $req->bindValue(':med_nom', $nom, PDO::PARAM_STR);
+        $req->bindValue(':med_prenom', $prenom, PDO::PARAM_STR);
+        $req->execute();
+        $numMedecin = $req->fetch(PDO::FETCH_ASSOC);
+        var_dump($numMedecin);
+
+        foreach ($specialites as $uneSpecialite) {
+            $req = $monPdo->prepare("INSERT INTO `posseder`(`PRA_NUM`, `SPE_CODE`, `POS_DIPLOME`, `POS_COEFPRESCRIPTION`) VALUES (:med_num, :spe_code, :med_diplome, :coeff_prescription)");
+            $req->bindValue(':med_num', $numMedecin, PDO::PARAM_INT);
+            $req->bindValue(':spe_code', $uneSpecialite, PDO::PARAM_STR);
+            $req->bindValue(':med_diplome', $diplome, PDO::PARAM_STR);
+            $req->bindValue(':coeff_prescription', $coeffPrescription, PDO::PARAM_STR);
+            $req->execute();
+        }
     } catch (PDOException $e) {
         print "Erreur !: " . $e->getMessage();
         die();
