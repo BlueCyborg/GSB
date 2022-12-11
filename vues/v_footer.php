@@ -12,7 +12,7 @@
                 </div>
 
                 <div class="col-lg-3 col-md-4 my-sm-0 mt-4">
-                    <h3 class="h4 pb-lg-3 text-light light-300">Information</h2>
+                    <h3 class="h4 pb-lg-3 text-light light-300">Information</h3>
                         <ul class="list-unstyled text-light light-300">
                             <li class="pb-2">
                                 <i class='bx-fw bx bxs-chevron-right bx-xs'></i><a class="text-decoration-none text-light" href="index.php?uc=accueil">Accueil</a>

@@ -1,40 +1,37 @@
-<script>
-    document.body.onload = addElement;
+<?php
+$i = 0;
+echo "<script>
+document.body.onload = addList;
 
-    function addElement() {
-        const select = document.createElement("select");
-        const opt1 = document.createElement("option");
-        const opt2 = document.createElement("option");
-        opt1.value = "1";
-        opt1.text = "Option: Value 1";
-        opt2.value = "2";
-        opt2.text = "Option: Value 2";
-        select.add(opt1, null);
-        select.add(opt2, null);
-        select.appendChild(opt1);
-        select.appendChild(opt2);
-        const div = document.getElementById("test");
-        div.insertBefore(select, div.children[0]); 
+function suppList()
+{
+    let list = document.getElementById(\"select\");
+    list.remove();
+}
 
-    }
+function addList() {
+    const select = document.createElement(\"select\");
+    select.id = \"select\";
+    select.className=\"form-select\";
+    ";
+foreach ($specialites as $uneSpecialite) {
+    echo "const opt" . $i . " = document.createElement(\"option\");";
 
-    // function addList() {
-    //     var myParent = document.body;
-    //     //Create array of options to be added
-    //     var array = ["Volvo", "Saab", "Mercades", "Audi"];
-    //     //Create and append select list
-    //     var selectList = document.createElement("select");
-    //     selectList.id = "mySelect";
-    //     myParent.appendChild(selectList);
-    //     //Create and append the options
-    //     for (var i = 0; i < array.length; i++) {
-    //         var option = document.createElement("option");
-    //         option.value = array[i];
-    //         option.text = array[i];
-    //         selectList.appendChild(option);
-    //     }
-    // }
-</script>
+    echo '
+        opt' . $i . '.value = "' . htmlspecialchars($uneSpecialite['SPE_CODE']) . '";
+        opt' . $i . '.text = "' . htmlspecialchars($uneSpecialite['SPE_LIBELLE']) . '";
+        select.add(opt' . $i . ', null);
+        select.appendChild(opt' . $i . ');
+    ';
+    $i++;
+}
+echo '
+        const div = document.getElementById("selection");
+        div.insertBefore(select, div.children[0]);
+        }
+        </script>';
+?>
+
 <div style="margin-left:10px;">
     <div class="py-lg-5 mx-auto">
         <div class="formulaire-recherche col-12 m-0 p-3 d-flex flex-column gap-3">
@@ -67,22 +64,12 @@
                     </select>
                     <br><br>Coefficient confiance :
                     <input type="number" min="0" name="coefficient_confiance" required />
+                    <br><br>
+                <div id="selection">
                     Spécialitée :
-                    <select class="form-select">
-                        <?php
-                        foreach ($specialites as $uneSpecialite) {
-                        ?>
-                            <option value="<?= htmlspecialchars($uneSpecialite['SPE_CODE']); ?>">
-                                <?= htmlspecialchars($uneSpecialite['SPE_LIBELLE']); ?>
-                            </option>
-                        <?php
-                        }
-                        ?>
-                    </select>
-                <div id="test">
-
                 </div>
-                <button type="button" class="btn btn-outline-primary" onClick="addElement()">Ajouter</button>
+                <button type="button" class="btn btn-outline-primary" onClick="addList()">Ajouter</button>
+                <button type="button" class="btn btn-outline-primary" onClick="suppList()">Enlever</button>
                 <br><br>
                 <button type="submit" class="btn btn-outline-primary">Créer</button>
                 </p>
