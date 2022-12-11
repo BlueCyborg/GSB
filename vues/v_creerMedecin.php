@@ -1,20 +1,25 @@
-<?php
-$i = 0;
-?>
 <script>
-    document.body.onload = addList;
+    var numb = 0; //initilisation du nombre de spécialités
+    document.body.onload = addList; //Au chargement de la page on ajoute par défaut une nouvelle liste
 
-    function suppList() {
-        let list = document.getElementById("select");
-        list.remove();
+    function suppList() { //Fonction permettant d'enlever la dernière spécialitée
+        if (numb != 1) {
+            let lastSelect = "select-" + numb;
+            const element = document.getElementById(lastSelect);
+            element.remove();
+            numb--;
+        }
     }
 
-    function addList() {
+    function addList() { //Fonction permettant de rajouter une nouvelle spécialitée
+        numb++;
         const select = document.createElement("select");
-        select.id = "select";
+        select.id = "select-" + numb;
         select.className = "form-select";
 
-        <?php foreach ($specialites as $uneSpecialite) { ?>
+        <?php
+        $i = 1;
+        foreach ($specialites as $uneSpecialite) { ?>
             const option<?= $i  ?> = document.createElement("option");
             option<?= $i ?>.value = "<?= htmlspecialchars($uneSpecialite['SPE_CODE']) ?>";
             option<?= $i ?>.text = "<?= htmlspecialchars($uneSpecialite['SPE_LIBELLE']) ?>";
@@ -23,7 +28,7 @@ $i = 0;
             $i++;
         } ?>
         const div = document.getElementById("selection");
-        div.insertBefore(select, div.children[0]);
+        div.appendChild(select);
     }
 </script>
 
@@ -66,7 +71,7 @@ $i = 0;
                 <button type="button" class="btn btn-outline-primary" onClick="addList()">Ajouter</button>
                 <button type="button" class="btn btn-outline-primary" onClick="suppList()">Enlever</button>
                 <br><br>
-                <button type="submit" class="btn btn-outline-primary">Créer</button>
+                <button type="submit" name="submit" class="btn btn-outline-primary">Créer</button>
                 </p>
             </form>
         </div>

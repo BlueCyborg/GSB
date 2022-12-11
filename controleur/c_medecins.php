@@ -29,6 +29,7 @@ switch ($action) {
         }
     case 'creerMedecin': {
             if (isset($_POST['submit'])) {
+                var_dump($_POST);
                 //creerUnMedecin();
             } else {
                 $types = getTypePraticien();
