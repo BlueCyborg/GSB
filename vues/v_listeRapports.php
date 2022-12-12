@@ -1,19 +1,34 @@
 <section class="bg-light">
-    <div class="container">
+    <div class="container-fluid px-5">
         <div class="structure-hero pt-lg-5 pt-4">
+            <?php 
+                if (!empty($titrePage)) {
+                ?>
+                    <h1 class="titre text-center"><?= htmlspecialchars($titrePage) ?></h1>
+                <?php
+                }
+            ?>
             <p class="text text-center">
-                <?= htmlspecialchars(
-                    $nbRapports == 1
-                        ? 'Un seul rapport de visite trouvé'
-                        : 'Liste des ' . $nbRapports . ' rapports de visites trouvés'
-                ) ?>
+                <?= htmlspecialchars($descPage) ?>
             </p>
         </div>
         <div class="py-lg-5 py-3">
-            <form action="index.php?uc=rapport&action=saisitRapport" method="post" class="formulaire-recherche d-block col-12 m-0 p-3 overflow-auto">
+            <div class="formulaire-recherche p-3 overflow-auto">
                 <table class="table table-striped">
                     <thead>
                         <tr>
+                            <?php
+                                if ($showCol) {
+                                ?>
+                                    <th scope="col">
+                                        Nom du collaborateur
+                                    </th>
+                                    <th scope="col">
+                                        Prenom du collaborateur
+                                    </th>
+                                <?php
+                                }
+                            ?>
                             <th scope="col">
                                 Numéro de rapport
                             </th>
@@ -57,6 +72,18 @@
                         foreach ($rapports as $rapport) {
                         ?>
                             <tr>
+                                <?php
+                                    if ($showCol) {
+                                    ?>
+                                        <td>
+                                            <?= htmlspecialchars($rapport['COL_NOM']) ?>
+                                        </td>
+                                        <td>
+                                            <?= htmlspecialchars($rapport['COL_PRENOM']) ?>
+                                        </td>
+                                    <?php
+                                    }
+                                ?>
                                 <td>
                                     <?= htmlspecialchars($rapport['RAP_NUM']) ?>
                                 </td>
@@ -131,7 +158,9 @@
                                     } else {
                                     ?>
                                         <a class="btn btn-secondary" role="button"
-                                            href="index.php?uc=rapport&action=regarderRapport&rapNum=<?= htmlspecialchars($rapport['RAP_NUM']) ?>"
+                                            href="index.php?uc=rapport&action=<?= htmlspecialchars($actionCheck) ?>&rapNum=<?=  
+                                            htmlspecialchars($showCol ? $rapport['RAP_NUM'].'&colMat='.$rapport['COL_MATRICULE'] : $rapport['RAP_NUM']) 
+                                            ?>"
                                             >
                                             <i class="bi bi-card-text"></i>
                                         </a>
@@ -145,7 +174,7 @@
                         ?>
                     </tbody>
                 </table>
-            </form>
+            </div>
         </div>
 
     </div>

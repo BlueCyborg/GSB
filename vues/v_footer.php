@@ -37,7 +37,7 @@
                                         <li><a class="dropdown-item" href="index.php?uc=rapport&action=redigerRapport">Rédiger un rapport</a></li>
                                         <li><a class="dropdown-item" href="index.php?uc=rapport&action=mesRapports">Mes rapports</a></li>
                                         <?php if ($_SESSION['habilitation'] >= 2) { ?>
-                                            <li><a class="dropdown-item" href="index.php?uc=rapport&action=rapportregion">Rapport de ma région</a></li>
+                                            <li><a class="dropdown-item" href="index.php?uc=rapport&action=newRapportRegion">Nouveaux rapports de ma région</a>
                                         <?php }?>
                                     </ul>
                                 </li>
@@ -59,7 +59,10 @@
                 <div class="row pt-2 d-flex justify-content-center">
                     <div class="col-lg-6 col-sm-12">
                         <p class="text-center text-light light-300">
-                            © Copyright 2022 Randy Durelle | Tristan Da Silva.
+                            © Copyright 2022 Randy Durelle | Tristan Da Silva
+                        </p>
+                        <p class="text-center text-light light-300">
+                            Modifier par Autréaux Denis & Ferre Mathys
                         </p>
                     </div>
                 </div>

@@ -8,11 +8,56 @@ if (empty($_REQUEST['action'])) {
 
 switch ($action) {
 	
-	case 'rapportRegion': {
+	case 'newRapportRegion': {
 		if ($_SESSION['habilitation'] >= 2) {
+			//recherche
+			$rapports = getNewRapportRegions($_SESSION['matricule']);
+			$nbRapports = count($rapports);
+	
+			//affichage des resulats
+			if ($nbRapports <= 0) {
+				$messageType = 'secondary';
+				$messageBody = 'Il y a aucun nouveau rapport de visite ! ';
+				include('vues/v_message.php');
+			} else {
+				$actionCheck= 'consulterRapport';
+				$titrePage = 'Nouveaux rapports de visite de la région';
+				$descPage = ($nbRapports == 1) ? 'Un seul nouveau rapport de visite !' : 'Liste des ' . $nbRapports . ' nouveaux rapports de visites !';
+				$showCol = true;
+				include('vues/v_listeRapports.php');
+			}
+		} else {
+			include("vues/v_accesInterdit.php");
+		}
+		break;
+	}
 
-
-
+	case 'consulterRapport': {
+		if ($_SESSION['habilitation'] >= 2) {
+			if (!empty($_REQUEST['rapNum']) && !empty($_REQUEST['colMat']) && is_numeric($_REQUEST['rapNum'])) {
+				$rapport = getUnRapport($_REQUEST['colMat'], $_REQUEST['rapNum']);
+				if ($rapport) {
+					//rapport non valider
+					if ($rapport['ETAT_ID'] == 'C') {
+						$messageType = 'warning';
+						$messageBody = 'Le rapport n°'.$_REQUEST['rapNum'].' n\'est pas validé !';
+						include('vues/v_message.php');
+					} else {
+						if ($rapport['ETAT_ID'] == 'V') {//mise ajour vers consulter
+							updateUnRapportEtat($_REQUEST['colMat'], $_REQUEST['rapNum'], 'D');
+						}
+						showRapport($rapport, 'vues/v_detailRapport.php', false);
+					}
+				} else {
+					$messageType = 'danger';
+					$messageBody = 'Numéro de rapport introuvable pour votre matricule !';
+					include('vues/v_message.php');
+				}
+			} else {
+				$messageType = 'danger';
+				$messageBody = 'Numéro de rapport invalide (le numéro de rapport doit être un nombre) !';
+				include('vues/v_message.php');
+			}
 		} else {
 			include("vues/v_accesInterdit.php");
 		}
@@ -56,7 +101,11 @@ switch ($action) {
 			$messageBody = 'Aucun rapport de visite a été trouvé pour ces critères de recherche !';
 			include('vues/v_message.php');
 		} else {
-			include('vues/v_listeMesRapport.php');
+			$actionCheck= 'regarderRapport';
+			$titrePage = '';
+            $descPage = ($nbRapports == 1) ? 'Un seul rapport de visite trouvé !' : 'Liste des ' . $nbRapports . ' rapports de visites trouvés !';
+			$showCol = false;
+			include('vues/v_listeRapports.php');
 		}
 		break;
 	}

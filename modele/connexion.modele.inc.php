@@ -19,8 +19,7 @@ function getAllInformationCompte($matricule): mixed
         $res = $req->fetch();
         return $res;
     } catch (PDOException $e) {
-        print "Erreur !: " . $e->getMessage();
-        die();
+        throw $e;
     }
 }
 
@@ -43,8 +42,7 @@ function checkConnexion(string $username, string $pass): mixed
         $res = $req->fetch();
         return $res;
     } catch (PDOException $e) {
-        print "Erreur !: " . $e->getMessage();
-        die();
+        throw $e;
     }
 }
 
@@ -65,8 +63,7 @@ function checkMatriculeInscription(string $matricule): bool
         $res = $req->fetch();
         return $res;
     } catch (PDOException $e) {
-        print "Erreur !: " . $e->getMessage();
-        die();
+        throw $e;
     }
 }
 
@@ -87,8 +84,7 @@ function checkMatricule($matricule): bool
         $res = $req->fetch();
         return $res;
     } catch (PDOException $e) {
-        print "Erreur !: " . $e->getMessage();
-        die();
+        throw $e;
     }
 }
 
@@ -109,8 +105,7 @@ function checkUserInscription(string $username): bool
         $res = $req->fetch();
         return $res;
     } catch (PDOException $e) {
-        print "Erreur !: " . $e->getMessage();
-        die();
+        throw $e;
     }
 }
 
@@ -131,8 +126,7 @@ function getAllMatriculeCollaborateur(): mixed
 
         return $result;
     } catch (PDOException $e) {
-        print "Erreur !: " . $e->getMessage();
-        die();
+        throw $e;
     }
 }
 
@@ -153,7 +147,6 @@ function getCountMatricule(): mixed
 
         return $result;
     } catch (PDOException $e) {
-        print "Erreur !: " . $e->getMessage();
-        die();
+        throw $e;
     }
 }

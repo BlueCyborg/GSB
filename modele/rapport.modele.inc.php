@@ -138,7 +138,7 @@ function getUnEtatById(string $id): mixed {
 }
 
 /**
- * Permet de mettre à jour un rapport de visite en focntion d'un matricule et d'un numero de rapport
+ * Permet de mettre à jour un rapport de visite en fonction d'un matricule et d'un numero de rapport
  *
  * @param string $COL_MATRICULE le matricule deu collaborateur
  * @param integer $RAP_NUM le numero du rapport
@@ -247,13 +247,13 @@ function updateLesEchantillions(string $COL_MATRICULE, int $RAP_NUM, array $echs
     try {
         //delete
         $del = $pdo->prepare('
-        DELETE FROM
-            offrir
-        WHERE
-            COL_MATRICULE=:COL_MATRICULE
-            AND
-            RAP_NUM=:RAP_NUM
-        ');
+            DELETE FROM
+                offrir
+            WHERE
+                COL_MATRICULE=:COL_MATRICULE
+                AND
+                RAP_NUM=:RAP_NUM
+        ;');
         $del->bindValue(':COL_MATRICULE', $COL_MATRICULE, PDO::PARAM_STR);
         $del->bindValue(':RAP_NUM', $RAP_NUM, PDO::PARAM_INT);
         $del->execute();
@@ -261,8 +261,12 @@ function updateLesEchantillions(string $COL_MATRICULE, int $RAP_NUM, array $echs
         //insert
         $mat = &$COL_MATRICULE;
         $num = &$RAP_NUM;
-        $ins = $pdo->prepare('INSERT INTO offrir(COL_MATRICULE, RAP_NUM, MED_DEPOTLEGAL, OFF_QTE)
-            VALUES (:COL_MATRICULE, :RAP_NUM, :MED_DEPOTLEGAL, :OFF_QTE)');
+        $ins = $pdo->prepare('
+            INSERT INTO 
+                offrir(COL_MATRICULE, RAP_NUM, MED_DEPOTLEGAL, OFF_QTE)
+            VALUES 
+                (:COL_MATRICULE, :RAP_NUM, :MED_DEPOTLEGAL, :OFF_QTE)
+        ;');
         $ins->bindParam(':COL_MATRICULE', $mat, PDO::PARAM_STR);
         $ins->bindParam(':RAP_NUM', $num, PDO::PARAM_INT);
         //pour chaque echantillion
@@ -287,7 +291,7 @@ function updateLesEchantillions(string $COL_MATRICULE, int $RAP_NUM, array $echs
  * @param integer|null $idPraticien identifiant du praticien concerner par le rapport
  * @return array|false tableau de tableau associtif contenant les informations d'un rapport, ou false en cas d'erreur
  */
-function getSesRapports(string $matricule, ?string $startDate = null, ?string $endDate = null, mixed $idPraticien = null): array
+function getSesRapports(string $matricule, ?string $startDate = null, ?string $endDate = null, mixed $idPraticien = null): mixed
 {
     //constitution du where suplementaire
     $whereSup = '';
@@ -301,7 +305,6 @@ function getSesRapports(string $matricule, ?string $startDate = null, ?string $e
     //requet principal
     $req = connexionPDO()->prepare('
     SELECT
-        r.COL_MATRICULE,
         r.RAP_NUM,
         p.PRA_NUM,
         p.PRA_NOM,
@@ -337,7 +340,6 @@ function getSesRapports(string $matricule, ?string $startDate = null, ?string $e
         ON r.MED_PRESENTER_2 = m2.MED_DEPOTLEGAL
     WHERE 
         r.COL_MATRICULE=:MATRICULE
-        '.$whereSup.'
     ORDER BY
         enCours DESC,
         r.RAP_DATE_VISITE ASC
@@ -358,4 +360,107 @@ function getSesRapports(string $matricule, ?string $startDate = null, ?string $e
     //execution
     $req->execute();
     return $req->fetchAll(PDo::FETCH_ASSOC);
+}
+
+/**
+ * Permet d'obtenir la liste des nouveaux rapports de visite de la region d'un délégué (rapport avec l'etat = V)
+ *
+ * @param string $matricule le matricule d'un collaborateur
+ * @return array|false tableau de tableau associtif contenant les informations d'un rapport, ou false en cas d'erreur
+ */
+function getNewRapportRegions(string $matricule): mixed
+{
+    //requet principal
+    $req = connexionPDO()->prepare('
+        SELECT
+            r.COL_MATRICULE,
+            cr.COL_NOM,
+            cr.COL_PRENOM,
+            r.RAP_NUM,
+            p.PRA_NUM,
+            p.PRA_NOM,
+            p.PRA_PRENOM,
+            CASE
+                WHEN r.MOT_ID = "OTH" THEN r.RAP_MOTIF_AUTRE
+                ELSE mt.MOT_LIB
+            END AS "MOTIF",
+            r.RAP_DATE_VISITE,
+            m1.MED_DEPOTLEGAL AS "MED1",
+            m1.MED_NOMCOMMERCIAL AS "MED1_NAME",
+            m2.MED_DEPOTLEGAL AS "MED2",
+            m2.MED_NOMCOMMERCIAL AS "MED2_NAME",
+            r.ETAT_ID,
+            e.ETAT_LIB
+        FROM 
+            rapport_visite r
+        INNER JOIN
+            motif_visite mt
+            ON mt.MOT_ID = r.MOT_ID
+        INNER JOIN
+            etat_rapport e
+            ON e.ETAT_ID = r.ETAT_ID
+        LEFT JOIN
+            praticien p
+            ON r.PRA_NUM = p.PRA_NUM
+        LEFT JOIN
+            medicament m1
+            ON r.MED_PRESENTER_1 = m1.MED_DEPOTLEGAL
+        LEFT JOIN
+            medicament m2
+            ON r.MED_PRESENTER_2 = m2.MED_DEPOTLEGAL
+        INNER JOIN
+            collaborateur cd
+            ON
+            cd.COL_MATRICULE=r.COL_MATRICULE
+        INNER JOIN
+            collaborateur cr
+            ON
+            cr.REG_CODE=cd.REG_CODE
+        WHERE
+            cd.COL_MATRICULE=:MATRICULE
+            AND
+            r.ETAT_ID=\'V\'
+        ORDER BY
+            r.COL_MATRICULE ASC,
+            r.RAP_DATE_VISITE ASC
+        ;');
+
+    //parametre
+    $req->bindValue(':MATRICULE', $matricule, PDO::PARAM_STR);//matricule
+    
+    //execution
+    $req->execute();
+    return $req->fetchAll(PDo::FETCH_ASSOC);
+}
+
+/**
+ * Permet de mettre à jour l'etat d'un rapport de visite en fonction d'un matricule et d'un numero de rapport
+ *
+ * @param string $COL_MATRICULE le matricule deu collaborateur
+ * @param integer $RAP_NUM le numero du rapport
+ * @param string $ETAT_ID un identifiant d'etat
+ * @return bool true si bien mise à jour
+ */
+function updateUnRapportEtat(string $COL_MATRICULE, int $RAP_NUM, string $ETAT_ID): bool
+{   
+    //requet de base
+    $req = connexionPDO()->prepare('
+        UPDATE 
+            rapport_visite 
+        SET
+            ETAT_ID=:ETAT_ID
+        WHERE
+            COL_MATRICULE=:COL_MATRICULE
+            AND
+            RAP_NUM=:RAP_NUM
+        ;
+    ');
+
+    //parametre
+    $req->bindValue(':COL_MATRICULE', $COL_MATRICULE, PDO::PARAM_STR);
+    $req->bindValue(':RAP_NUM', $RAP_NUM, PDO::PARAM_INT);
+    $req->bindValue(':ETAT_ID', $ETAT_ID, PDO::PARAM_STR);
+    
+    //check de la requet
+    return $req->execute();
 }

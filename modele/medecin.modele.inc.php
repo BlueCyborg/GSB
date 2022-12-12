@@ -16,8 +16,7 @@ function getAllNomMedecins(): array
         $result = $res->fetchAll(PDO::FETCH_ASSOC);
         return $result;
     } catch (PDOException $e) {
-        print "Erreur !: " . $e->getMessage();
-        die();
+        throw $e;
     }
 }
 
@@ -36,8 +35,7 @@ function getAllInformationsMedecin(int $med): mixed
         $req->execute();
         return $req->fetch(PDO::FETCH_ASSOC);
     } catch (PDOException $e) {
-        print "Erreur !: " . $e->getMessage();
-        die();
+        throw $e;
     }
 }
 /**
@@ -56,8 +54,7 @@ function getMedecinRegion(String $codeRegion): mixed
         $region = $req->fetchAll();
         return $region;
     } catch (PDOException $e) {
-        print "Erreur !: " . $e->getMessage();
-        die();
+        throw $e;
     }
 }
 /**
@@ -92,8 +89,7 @@ function updateUnMedecin(int $numero, String $nom, String $prenom, String $adres
         $region = $req->fetch();
         return $region;
     } catch (PDOException $e) {
-        print "Erreur !: " . $e->getMessage();
-        die();
+        throw $e;
     }
 }
 /**
@@ -110,8 +106,7 @@ function getTypePraticien(): mixed
         $result = $res->fetchAll(PDO::FETCH_ASSOC);
         return $result;
     } catch (PDOException $e) {
-        print "Erreur !: " . $e->getMessage();
-        die();
+        throw $e;
     }
 }
 /**
@@ -169,8 +164,7 @@ function creerUnMedecin(
             $req->execute();
         }
     } catch (PDOException $e) {
-        print "Erreur !: " . $e->getMessage();
-        die();
+        throw $e;
     }
 }
 
@@ -202,7 +196,6 @@ function getLesSpecialites(): mixed
         $result = $res->fetchAll(PDO::FETCH_ASSOC);
         return $result;
     } catch (PDOException $e) {
-        print "Erreur !: " . $e->getMessage();
-        die();
+        throw $e;
     }
 }

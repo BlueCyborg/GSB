@@ -54,7 +54,7 @@
                                     </li>
                                     <?php if ($_SESSION['habilitation'] >= 2) { ?>
                                             <li>
-                                                <a class="dropdown-item" href="index.php?uc=rapport&action=rapportregion">Rapport de ma région</a>
+                                                <a class="dropdown-item" href="index.php?uc=rapport&action=newRapportRegion">Nouveaux rapports de ma région</a>
                                             </li>
                                     <?php } ?>
                                 </ul>

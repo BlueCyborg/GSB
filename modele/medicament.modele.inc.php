@@ -16,8 +16,7 @@ function getAllNomMedicaments(): mixed
         $result = $res->fetchAll(PDO::FETCH_ASSOC);
         return $result;
     } catch (PDOException $e) {
-        print "Erreur !: " . $e->getMessage();
-        die();
+        throw $e;
     }
 }
 
@@ -36,8 +35,7 @@ function getAllInformationMedicamentDepot($depot): mixed
         $result = $req->fetch(PDO::FETCH_ASSOC);
         return $result;
     } catch (PDOException $e) {
-        print "Erreur !: " . $e->getMessage();
-        die();
+        throw $e;
     }
 }
 
@@ -56,8 +54,7 @@ function getAllInformationMedicamentNom($nom): mixed
         $result = $req->fetch(PDO::FETCH_ASSOC);
         return $result;
     } catch (PDOException $e) {
-        print "Erreur !: " . $e->getMessage();
-        die();
+        throw $e;
     }
 }
 
@@ -76,8 +73,7 @@ function getDepotMedoc($depot): mixed
         $result = $req->fetch(PDO::FETCH_ASSOC);
         return $result;
     } catch (PDOException $e) {
-        print "Erreur !: " . $e->getMessage();
-        die();
+        throw $e;
     }
 }
 
@@ -95,7 +91,6 @@ function getNbMedicament(): int
         $result = $res->fetch(PDO::FETCH_ASSOC);
         return $result;
     } catch (PDOException $e) {
-        print "Erreur !: " . $e->getMessage();
-        die();
+        throw $e;
     }
 }
