@@ -11,7 +11,7 @@ switch ($action) {
 	case 'newRapportRegion': {
 		if ($_SESSION['habilitation'] >= 2) {
 			//recherche
-			$rapports = getNewRapportRegions($_SESSION['matricule']);
+			$rapports = getRapportRegions($_SESSION['matricule'], true, true);
 			$nbRapports = count($rapports);
 	
 			//affichage des resulats
@@ -49,7 +49,7 @@ switch ($action) {
 				showErrors($msgErrs);
 			} else {
 				//recherche
-				$rapports = [];//getSesRapports($_SESSION['matricule'], $startDate, $endDate, $praID);
+				$rapports = getRapportRegions($_SESSION['matricule'], false, false, $startDate, $endDate, $colMat);
 			}
 
 			//parametre pour la vue
@@ -69,7 +69,7 @@ switch ($action) {
 				$messageBody = 'Aucun rapport de visite a été trouvé pour ces critères de recherche !';
 				include('vues/v_message.php');
 			} else {
-				$actionCheck= 'regarderRapport';
+				$actionCheck= 'consulterRapport';
 				$titrePage = '';
 				$descPage = ($nbRapports == 1) ? 'Un seul rapport de visite trouvé !' : 'Liste des ' . $nbRapports . ' rapports de visites trouvés !';
 				$showCol = true;
@@ -99,7 +99,7 @@ switch ($action) {
 					}
 				} else {
 					$messageType = 'danger';
-					$messageBody = 'Numéro de rapport introuvable pour votre matricule !';
+					$messageBody = 'Numéro de rapport introuvable pour le matricule !';
 					include('vues/v_message.php');
 				}
 			} else {

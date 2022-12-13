@@ -118,7 +118,7 @@
                                 <td class="text-nowrap">
                                     <?= htmlspecialchars(
                                         !empty($rapport['RAP_DATE_VISITE'])
-                                            ? date('Y-m-d', strtotime($rapport['RAP_DATE_VISITE']))
+                                            ? date('d-m-Y', strtotime($rapport['RAP_DATE_VISITE']))
                                             : 'Non définie'
                                     ) ?>
                                 </td>

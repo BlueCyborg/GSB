@@ -363,13 +363,73 @@ function getSesRapports(string $matricule, ?string $startDate = null, ?string $e
 }
 
 /**
- * Permet d'obtenir la liste des nouveaux rapports de visite de la region d'un délégué (rapport avec l'etat = V)
+ * Permet de mettre à jour l'etat d'un rapport de visite en fonction d'un matricule et d'un numero de rapport
  *
- * @param string $matricule le matricule d'un collaborateur
+ * @param string $COL_MATRICULE le matricule deu collaborateur
+ * @param integer $RAP_NUM le numero du rapport
+ * @param string $ETAT_ID un identifiant d'etat
+ * @return bool true si bien mise à jour
+ */
+function updateUnRapportEtat(string $COL_MATRICULE, int $RAP_NUM, string $ETAT_ID): bool
+{   
+    //requet de base
+    $req = connexionPDO()->prepare('
+        UPDATE 
+            rapport_visite 
+        SET
+            ETAT_ID=:ETAT_ID
+        WHERE
+            COL_MATRICULE=:COL_MATRICULE
+            AND
+            RAP_NUM=:RAP_NUM
+        ;
+    ');
+
+    //parametre
+    $req->bindValue(':COL_MATRICULE', $COL_MATRICULE, PDO::PARAM_STR);
+    $req->bindValue(':RAP_NUM', $RAP_NUM, PDO::PARAM_INT);
+    $req->bindValue(':ETAT_ID', $ETAT_ID, PDO::PARAM_STR);
+    
+    //check de la requet
+    return $req->execute();
+}
+
+/**
+ * Permet d'obtenir la liste des rapports de visite de la region d'un délégué en fonction de son matricule et de l'etat des rapports
+ *
+ * @param string $matricule le matricule d'un collaborateur de la même region que les rapports souhaiter
+ * @param bool $sortByMatricule si les rapport doivent etre trier par collaborateur
+ * @param bool $etatNew true si on ne montre que les nouveau rapports
+ * @param string|null $startDate date de debut de l'interval de date rechercher
+ * @param string|null $endDate date de fin de l'interval de date rechercher
+ * @param string|null $colMat matricule du collaborateur des rapports
  * @return array|false tableau de tableau associtif contenant les informations d'un rapport, ou false en cas d'erreur
  */
-function getNewRapportRegions(string $matricule): mixed
+function getRapportRegions(string $degMat, bool $sortByMatricule, bool $etatNew, ?string $startDate = null, ?string $endDate = null, ?string $colMat = null): mixed
 {
+    //constitution du where suplementaire
+    $whereSup = '';
+    if (!empty($startDate) && !empty($endDate)) {
+        $whereSup .= ' AND r.RAP_DATE_VISITE BETWEEN :START_DATE AND :END_DATE';
+    }
+
+    if (!empty($colMat)) {
+        $whereSup .= ' AND r.COL_MATRICULE=:colMat';
+    }
+
+    if ($etatNew) {
+        $whereSup .= ' AND r.ETAT_ID = \'V\'';
+    } else {
+        $whereSup .= ' AND r.ETAT_ID IN (\'V\', \'D\')';
+    }
+
+    //trie
+    if ($sortByMatricule) {
+        $sort = 'r.COL_MATRICULE ASC, r.RAP_DATE_VISITE ASC';
+    } else {
+        $sort = 'r.RAP_DATE_VISITE ASC';
+    }
+
     //requet principal
     $req = connexionPDO()->prepare('
         SELECT
@@ -417,50 +477,25 @@ function getNewRapportRegions(string $matricule): mixed
             ON
             cr.REG_CODE=cd.REG_CODE
         WHERE
-            cd.COL_MATRICULE=:MATRICULE
-            AND
-            r.ETAT_ID=\'V\'
+            cd.COL_MATRICULE=:degMat
+            '.$whereSup.'
         ORDER BY
-            r.COL_MATRICULE ASC,
-            r.RAP_DATE_VISITE ASC
+            '.$sort.'
         ;');
 
     //parametre
-    $req->bindValue(':MATRICULE', $matricule, PDO::PARAM_STR);//matricule
+    $req->bindValue(':degMat', $degMat, PDO::PARAM_STR);
+
+    if (!empty($startDate) && !empty($endDate)) {//interval de date
+        $req->bindValue(':START_DATE', $startDate, PDO::PARAM_STR);
+        $req->bindValue(':END_DATE', $endDate, PDO::PARAM_STR);
+    }
+
+    if (!empty($colMat)) {//visiteur
+        $req->bindValue(':colMat', $colMat, PDO::PARAM_STR);
+    }
     
     //execution
     $req->execute();
     return $req->fetchAll(PDo::FETCH_ASSOC);
-}
-
-/**
- * Permet de mettre à jour l'etat d'un rapport de visite en fonction d'un matricule et d'un numero de rapport
- *
- * @param string $COL_MATRICULE le matricule deu collaborateur
- * @param integer $RAP_NUM le numero du rapport
- * @param string $ETAT_ID un identifiant d'etat
- * @return bool true si bien mise à jour
- */
-function updateUnRapportEtat(string $COL_MATRICULE, int $RAP_NUM, string $ETAT_ID): bool
-{   
-    //requet de base
-    $req = connexionPDO()->prepare('
-        UPDATE 
-            rapport_visite 
-        SET
-            ETAT_ID=:ETAT_ID
-        WHERE
-            COL_MATRICULE=:COL_MATRICULE
-            AND
-            RAP_NUM=:RAP_NUM
-        ;
-    ');
-
-    //parametre
-    $req->bindValue(':COL_MATRICULE', $COL_MATRICULE, PDO::PARAM_STR);
-    $req->bindValue(':RAP_NUM', $RAP_NUM, PDO::PARAM_INT);
-    $req->bindValue(':ETAT_ID', $ETAT_ID, PDO::PARAM_STR);
-    
-    //check de la requet
-    return $req->execute();
 }
