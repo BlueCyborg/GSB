@@ -28,7 +28,7 @@ function checkIdMed($idMed, bool $canNull = true) : array
     $err = array();
 
     if (moinsDe($idMed, 10)) {
-        if (!((empty($idMed1) && $canNull) || getAllInformationMedicamentDepot($idMed))) {
+        if (!((empty($idMed1) && $canNull) || existMedicamentDepot($idMed))) {
             $err[] = "Identifiant de médicament n'existe pas !";
         }
     } else {
@@ -94,11 +94,11 @@ function checkFormRapport($matricule, $rapNum, $idPraticien, $unRemplacant, $bil
         $msgErr[] = "Le numéro du rapport est inexistant !";
     }
 
-    if (!empty($idPraticien) && (!estUnNombre($idPraticien) || !getAllInformationsMedecin((int) $idPraticien))) {
+    if (!empty($idPraticien) && (!estUnNombre($idPraticien) || !existMedecin((int) $idPraticien))) {
         $msgErr[] = "L'identifiant du praticien est inexistant !";
     }
 
-    if (!empty($unRemplacant) && (!estUnNombre($unRemplacant) || !getAllInformationsMedecin((int) $unRemplacant))) {
+    if (!empty($unRemplacant) && (!estUnNombre($unRemplacant) || !existMedecin((int) $unRemplacant))) {
         $msgErr[] = "L'identifiant du remplacent praticien est inexistant !";
     }
 
@@ -215,15 +215,13 @@ function checkFormRapportEchs(mixed $lesEchantillions): array
 }
 
 /**
- * Permet de tester si les paramètres du formulaire de recherche de ses rapport
+ * Permet de tester si des paramètres de fourchette de date sont valides
  *
  * @param mixed $startDate une date
  * @param mixed $endDate une date
- * @param mixed $idPraticien un identifiant de praticien
  * @return array tableau de message d'erreur pour les champs
  */
-function checkFormulaireRechercheMesRapport($startDate, $endDate, $idPraticien): array
-{
+function checkFourchetteDate($startDate, $endDate) {
     $msgErr = array();
 
     if (!empty($startDate) == empty($endDate)) {
@@ -238,8 +236,43 @@ function checkFormulaireRechercheMesRapport($startDate, $endDate, $idPraticien):
         $msgErr[] = "Le format de la date de fin est incorrecte !";
     }
 
-    if (!empty($idPraticien) && (!estUnNombre($idPraticien) || !getAllInformationsMedecin((int) $idPraticien))) {
+    return $msgErr;
+}
+
+/**
+ * Permet de tester si les paramètres du formulaire de recherche de ses rapport
+ *
+ * @param mixed $startDate une date
+ * @param mixed $endDate une date
+ * @param mixed $idPraticien un identifiant de praticien
+ * @return array tableau de message d'erreur pour les champs
+ */
+function checkFormulaireRechercheMesRapport($startDate, $endDate, $idPraticien): array
+{
+    $msgErr = checkFourchetteDate($startDate, $endDate);
+
+    if (!empty($idPraticien) && (!estUnNombre($idPraticien) || !existMedecin((int) $idPraticien))) {
         $msgErr[] = "L'identifiant du praticien est inexistant !";
+    }
+
+    return $msgErr;
+}
+
+/**
+ * Permet de tester si les paramètres du formulaire de recherche de l'historique des rapport de region
+ *
+ * @param mixed $startDate une date
+ * @param mixed $endDate une date
+ * @param mixed $colMat matricule d'un collaborateur
+ * @param mixed $degMat matricule du délegué du collaborateur
+ * @return array tableau de message d'erreur pour les champs
+ */
+function checkFormulaireRechercheHistoryRapportRegion($startDate, $endDate, $colMat, $degMat): array
+{
+    $msgErr = checkFourchetteDate($startDate, $endDate);
+
+    if (!empty($colMat) && !memeRegion($colMat, $degMat)) {
+        $msgErr[] = "Le matricule du visteur ne fait pas partie de votre region !";
     }
 
     return $msgErr;

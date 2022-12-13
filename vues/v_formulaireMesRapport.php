@@ -38,7 +38,7 @@
                             <?php
                             foreach ($lesPraticiens as $praticien) {
                             ?>
-                                <option value="<?= htmlspecialchars($praticien['PRA_NUM']) ?>" class="form-control">
+                                <option value="<?= htmlspecialchars($praticien['PRA_NUM']) ?>">
                                     <?= htmlspecialchars($praticien['PRA_NOM'] . ' ' . $praticien['PRA_PRENOM']) ?>
                                 </option>
                             <?php

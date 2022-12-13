@@ -32,6 +32,55 @@ switch ($action) {
 		break;
 	}
 
+	case 'historyRapportRegion': {
+		if ($_SESSION['habilitation'] >= 2) {
+			//j'ai choissie la method=get pour le formulaire car cela permet de faire "précédante page" sans erreur 
+			//et parsceque aucune information sensible n'est presente dans l'url
+			$startDate = isset($_GET['startDate']) ? $_GET['startDate'] : '';
+			$endDate = isset($_GET['endDate']) ? $_GET['endDate'] : '';
+			$colMat = isset($_GET['colMat']) ? $_GET['colMat'] : null;
+
+			//validation du fomulaire
+			$msgErrs = checkFormulaireRechercheHistoryRapportRegion($startDate, $endDate, $colMat, $_SESSION['matricule']);
+			$error = count($msgErrs) >= 1;
+			$rapports = array();
+
+			if ($error) {
+				showErrors($msgErrs);
+			} else {
+				//recherche
+				$rapports = [];//getSesRapports($_SESSION['matricule'], $startDate, $endDate, $praID);
+			}
+
+			//parametre pour la vue
+			$nbRapports = count($rapports);
+			$lesVisiteurs = getNomCollaborateursMemeRegion($_SESSION['matricule']);
+
+			if (!empty($colMat)) {
+				$unVisiteur = getNomCollaborateur($colMat);
+			}
+
+			//affichage du formulaire
+			include('vues/v_formulaireHisRapport.php');
+
+			//affichage des resulats
+			if ($nbRapports <= 0) {
+				$messageType = 'secondary';
+				$messageBody = 'Aucun rapport de visite a été trouvé pour ces critères de recherche !';
+				include('vues/v_message.php');
+			} else {
+				$actionCheck= 'regarderRapport';
+				$titrePage = '';
+				$descPage = ($nbRapports == 1) ? 'Un seul rapport de visite trouvé !' : 'Liste des ' . $nbRapports . ' rapports de visites trouvés !';
+				$showCol = true;
+				include('vues/v_listeRapports.php');
+			}
+		} else {
+			include("vues/v_accesInterdit.php");
+		}
+		break;
+	}
+
 	case 'consulterRapport': {
 		if ($_SESSION['habilitation'] >= 2) {
 			if (!empty($_REQUEST['rapNum']) && !empty($_REQUEST['colMat']) && is_numeric($_REQUEST['rapNum'])) {

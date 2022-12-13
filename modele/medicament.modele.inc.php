@@ -40,6 +40,20 @@ function getAllInformationMedicamentDepot($depot): mixed
 }
 
 /**
+ * Retourne si un medicament existe pour un depot
+ *
+ * @param String $depot Le nom de la référence du médicament
+ * @return bool retourne true si le depot existe
+ */
+function existMedicamentDepot(string $depot): bool
+{
+    $req = connexionPDO()->prepare('SELECT MED_DEPOTLEGAL FROM medicament WHERE MED_DEPOTLEGAL = :depot');
+    $req->bindValue(':depot', $depot);
+    $req->execute();
+    return boolVal($req->fetch(PDO::FETCH_ASSOC));
+}
+
+/**
  * Retourne toutes les informations concernant un médicament ainsi que son libellé de famille en fonction de son nom
  *
  * @param String $depot Le nom de la référence du médicament

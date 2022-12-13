@@ -37,7 +37,12 @@
                                         <li><a class="dropdown-item" href="index.php?uc=rapport&action=redigerRapport">Rédiger un rapport</a></li>
                                         <li><a class="dropdown-item" href="index.php?uc=rapport&action=mesRapports">Mes rapports</a></li>
                                         <?php if ($_SESSION['habilitation'] >= 2) { ?>
-                                            <li><a class="dropdown-item" href="index.php?uc=rapport&action=newRapportRegion">Nouveaux rapports de ma région</a>
+                                            <li>
+                                                <a class="dropdown-item" href="index.php?uc=rapport&action=newRapportRegion">Nouveaux rapports</a>
+                                            </li>
+                                            <li>
+                                                <a class="dropdown-item" href="index.php?uc=rapport&action=historyRapportRegion">Historique des rapports</a>
+                                            </li>
                                         <?php }?>
                                     </ul>
                                 </li>

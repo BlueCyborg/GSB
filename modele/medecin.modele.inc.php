@@ -38,8 +38,23 @@ function getAllInformationsMedecin(int $med): mixed
         throw $e;
     }
 }
+
 /**
- * Fournie toutes les praticiens en fonction de la région du visiteur délégué
+ * Permet de savoir si l'id d'un médecin est contenue dans la bd
+ *
+ * @param integer $med identifiant du médecin
+ * @return bool retourne true si le medecin existe
+ */
+function existMedecin(int $med): bool
+{
+    $req = connexionPDO()->prepare('SELECT PRA_NUM FROM praticien WHERE PRA_NUM=:med');
+    $req->bindValue(':med', $med, PDO::PARAM_INT);
+    $req->execute();
+    return boolVal($req->fetch(PDO::FETCH_ASSOC));
+}
+
+/**
+ * Fournie toutes les praticiens en fonction d'une région
  *
  * @param string $codeRegion Le nom de la région du visiteur délégué
  * @return array|false si des médecins existent, renvoie un tableau sinon faux
@@ -51,12 +66,51 @@ function getMedecinRegion(String $codeRegion): mixed
         $req = $monPdo->prepare('SELECT PRA_NUM,PRA_NOM,PRA_PRENOM FROM praticien WHERE SUBSTRING(PRA_CP, 1, 2) IN ( SELECT DEP_NUM FROM departement WHERE REG_CODE = ( SELECT REG_CODE FROM region WHERE REG_NOM = :regNom )); ');
         $req->bindValue(':regNom', $codeRegion, PDO::PARAM_STR);
         $req->execute();
-        $region = $req->fetchAll();
+        $region = $req->fetchAll(PDO::FETCH_ASSOC);
         return $region;
     } catch (PDOException $e) {
         throw $e;
     }
 }
+
+/**
+ * Fournie toutes les praticiens en fonction de la région d'un collaborateur
+ *
+ * @param string $matricule le matricule d'un collaborateur
+ * @return array|false si des médecins existent, renvoie un tableau sinon faux
+ */
+function getMedecinRegionCol(String $matricule): mixed
+{
+    $req = connexionPDO()->prepare('
+        SELECT 
+            PRA_NUM,
+            PRA_NOM,
+            PRA_PRENOM
+        FROM 
+            praticien 
+        WHERE 
+            SUBSTRING(PRA_CP, 1, 2) IN ( 
+                                    SELECT 
+                                        DEP_NUM 
+                                    FROM 
+                                        departement
+                                    WHERE
+                                        REG_CODE = ( 
+                                                SELECT 
+                                                    REG_CODE
+                                                FROM 
+                                                    collaborateur 
+                                                WHERE 
+                                                    COL_MATRICULE=:matricule
+                                                )
+                                    )
+    ;');
+    $req->bindValue(':matricule', $matricule, PDO::PARAM_STR);
+    $req->execute();
+    $region = $req->fetchAll(PDO::FETCH_ASSOC);
+    return $region;
+}
+
 /**
  * Fonction permettant de mettre à jour les informations d'un médecin
  *
@@ -86,12 +140,13 @@ function updateUnMedecin(int $numero, String $nom, String $prenom, String $adres
         $req->bindValue(':typeCode', $typeCode, PDO::PARAM_STR);
         $req->bindValue(':coeff_confiance', $coeffConfiance, PDO::PARAM_INT);
         $req->execute();
-        $region = $req->fetch();
+        $region = $req->fetch(PDO::FETCH_ASSOC);
         return $region;
     } catch (PDOException $e) {
         throw $e;
     }
 }
+
 /**
  * Retourne tous les types de praticiens
  *
@@ -182,6 +237,7 @@ function updateCoefConfMedecin(int $num, string $coefConf)
     $req->bindValue(':coefConf', $coefConf, PDO::PARAM_STR);
     $req->execute();
 }
+
 /**
  * Retourne toutes les spécialités
  *
