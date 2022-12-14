@@ -193,7 +193,6 @@ function creerUnMedecin(
     String $diplome,
     float $coeffPrescription
 ) {
-    try {
         $monPdo = connexionPDO();
         $req = $monPdo->prepare("INSERT INTO praticien (PRA_NOM, PRA_PRENOM, PRA_ADRESSE, PRA_CP, PRA_VILLE, PRA_COEFNOTORIETE, TYP_CODE, PRA_COEFCONFIANCE)
         VALUES(:med_nom, :med_prenom, :med_adresse, :med_cp, :med_ville, :coeff_notoriete, :typeCode, :coeff_confiance)");
@@ -218,9 +217,6 @@ function creerUnMedecin(
             $req->bindValue(':coeff_prescription', $coeffPrescription, PDO::PARAM_STR);
             $req->execute();
         }
-    } catch (PDOException $e) {
-        throw $e;
-    }
 }
 
 /**

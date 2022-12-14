@@ -29,7 +29,16 @@ switch ($action) {
         }
     case 'creerMedecin': {
             if (isset($_POST['submit'])) {
-                creerUnMedecin($_POST['nom_medecin'], $_POST['prenom_medecin'], $_POST['adresse_medecin'], $_POST['cp_medecin'], $_POST['ville_medecin'], $_POST['coefficient_notoriete'], $_POST['type_medecin'], $_POST['coefficient_confiance'], $_POST['select'], $_POST['diplome_medecin'], $_POST['coefficient_prescription']);
+                //Vérification de l'unicité des spécialités
+                if (!isset(checkUniciteSpecialite($_POST['select'])[1]) == true) { // S'il n'y a pas d'erreur stocké dans le tableau
+
+                    var_dump(creerUnMedecin($_POST['nom_medecin'], $_POST['prenom_medecin'], $_POST['adresse_medecin'], $_POST['cp_medecin'], $_POST['ville_medecin'], $_POST['coefficient_notoriete'], $_POST['type_medecin'], $_POST['coefficient_confiance'], $_POST['select'], $_POST['diplome_medecin'], $_POST['coefficient_prescription']));
+
+
+                    echo 'Médecin crée avec succès';
+                } else {
+                    echo checkUniciteSpecialite($_POST['select'])[1];
+                }
             } else {
                 $types = getTypePraticien();
                 $specialites = getLesSpecialites();

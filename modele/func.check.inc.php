@@ -23,7 +23,7 @@ function moinsDe(string $str, int $taille): bool
  * @param bool $canNull si l'id peut etre non définie, par default true
  * @return array message d'erreur pour l'identifiant 
  */
-function checkIdMed($idMed, bool $canNull = true) : array
+function checkIdMed($idMed, bool $canNull = true): array
 {
     $err = array();
 
@@ -86,7 +86,7 @@ function estUnNombreSup0($nombre): bool
  * @param mixed $coefConf coefficiant de conficance du medecin
  * @return array tableau des erreur avec les champs
  */
-function checkFormRapport($matricule, $rapNum, $idPraticien, $unRemplacant, $bilan, $dateDeVisite, $idMotif, $autreMotif, $idMed1, $idMed2, $coefConf) : array
+function checkFormRapport($matricule, $rapNum, $idPraticien, $unRemplacant, $bilan, $dateDeVisite, $idMotif, $autreMotif, $idMed1, $idMed2, $coefConf): array
 {
     $msgErr = array();
 
@@ -153,7 +153,7 @@ function checkFormRapportDef($idPraticien, $bilan, $dateDeVisite, $idMotif, $aut
     if ($idMotif === 'OTH' && empty($autreMotif)) {
         $msgErr[] = 'Veuillez saisir le motif autre !';
     }
-    
+
     if (empty($idPraticien)) {
         $msgErr[] = 'Veuillez saisir le praticien !';
     }
@@ -187,7 +187,7 @@ function checkFormRapportEchs(mixed $lesEchantillions): array
 
     if (is_array($lesEchantillions)) {
         $meds = array();
-        foreach ($lesEchantillions as $ech) {//pour chaque les echantillions
+        foreach ($lesEchantillions as $ech) { //pour chaque les echantillions
             if (is_array($ech)) {
                 $med = $ech['med'];
 
@@ -199,7 +199,7 @@ function checkFormRapportEchs(mixed $lesEchantillions): array
 
                 //test doublon medicament
                 if (in_array($med, $meds)) {
-                    $msgErr[] = 'Vous devez reunir en une seul ligne les échantillions du même médicament ! ('.$med.')';
+                    $msgErr[] = 'Vous devez reunir en une seul ligne les échantillions du même médicament ! (' . $med . ')';
                 } else {
                     $meds[] = $med;
                 }
@@ -221,7 +221,8 @@ function checkFormRapportEchs(mixed $lesEchantillions): array
  * @param mixed $endDate une date
  * @return array tableau de message d'erreur pour les champs
  */
-function checkFourchetteDate($startDate, $endDate) {
+function checkFourchetteDate($startDate, $endDate)
+{
     $msgErr = array();
 
     if (!empty($startDate) == empty($endDate)) {
@@ -275,5 +276,31 @@ function checkFormulaireRechercheHistoryRapportRegion($startDate, $endDate, $col
         $msgErr[] = "Le matricule du visteur ne fait pas partie de votre region !";
     }
 
+    return $msgErr;
+}
+
+/**
+ * Fonction qui permet de vérifier si une spécialitée est unique
+ * @param array $tableau Les spécialités que l'utilisateur aura choisi
+ * @return String Retourne un String si toutes les spécialités sont différentes
+ */
+function checkUniciteSpecialite(array $tableau): mixed
+{
+    $msgErr[] = "";
+    $check = null;
+    $length = count($tableau);
+    for ($i = 1; $i <= $length; $i++) {
+        $check = $tableau[$i];
+        $count = 0;
+        foreach ($tableau as $uneSpecialite) {
+            if ($check == $uneSpecialite) {
+                $count++;
+            }
+            if ($count == 2) { // Si la valeur comparée existe deux fois
+                $msgErr[] = "Veuillez choisir une spécialitée différente à chaque fois !";
+                $i = $length; // Sortie de boucle
+            }
+        }
+    }
     return $msgErr;
 }

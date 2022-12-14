@@ -67,7 +67,7 @@
                             © Copyright 2022 Randy Durelle | Tristan Da Silva
                         </p>
                         <p class="text-center text-light light-300">
-                            Modifier par Autréaux Denis & Ferre Mathys
+                            Modifié par Autréaux Denis & Ferre Mathys
                         </p>
                     </div>
                 </div>
