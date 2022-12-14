@@ -13,8 +13,8 @@
 </head>
 
 <body>
-    <nav id="main_nav" class="navbar navbar-expand-lg navbar-light bg-white shadow">
-        <div class="menuCont container">
+    <nav id="main_nav" class="navbar navbar-expand-lg bg-white shadow">
+        <div class="container">
             <a class="navbar-brand h1 my-2" href="index.php?uc=accueil">
                 <span class="text-dark h4 fw-bold">Projet</span> <span class="text-info h4 fw-bold">GSB</span>
             </a>

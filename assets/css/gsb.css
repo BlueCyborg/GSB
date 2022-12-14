@@ -39,7 +39,8 @@ a {
 }
 /* Main Nav */
 #main_nav .nav-item .nav-link:hover {
-	color: #fff;
+	color: var(--bs-light);
+	background-color: var(--bs-info);
 }
 /* Home */
 #index_banner {
