@@ -79,25 +79,22 @@
                     <label class="form-label" for="coefficient_confiance">Coefficient confiance :</label>
                     <input class="form-control" id="coefficient_confiance" type="number" min="0" name="coefficient_confiance" value="0" required />
                 </div>
-                <div class="d-flex flex-column justify-content-end gap-3">
-                    <label>Spécialitée : </label>
-                    <div id="selection" class="d-flex flex-column gap-3">
-                    </div>
-                    <div class="d-flex flex-row gap-3">
-                        <button type="button" class="btn btn-outline-success flex-fill" onClick="addList()">Ajouter</button>
-                        <button type="button" class="btn btn-outline-danger flex-fill" onClick="suppList()">Enlever</button>
-                    </div>
-                    <div>
-                        <label class="form-label" for="diplome_medecin">Diplome :</label>
-                        <input class="form-control" type="text" id="diplome_medecin" name="diplome_medecin" maxlength="10" value="" required />
-                    </div>
-                    <div>
-                        <label class="form-label" for="coefficient_prescription">Coefficient prescription :</label>
-                        <input class="form-control" type="number" id="coefficient_prescription" name="coefficient_prescription" step="0.01" min="0" value="0.00" required />
-                    </div>
-                    <button type="submit" name="submit" class="btn btn-outline-primary">Créer</button>
+                <label>Spécialitée : </label>
+                <div id="selection" class="d-flex flex-column gap-3">
                 </div>
-                </p>
+                <div class="d-flex flex-row gap-3">
+                    <button type="button" class="btn btn-outline-success flex-fill" onClick="addList()">Ajouter</button>
+                    <button type="button" class="btn btn-outline-danger flex-fill" onClick="suppList()">Enlever</button>
+                </div>
+                <div>
+                    <label class="form-label" for="diplome_medecin">Diplome :</label>
+                    <input class="form-control" type="text" id="diplome_medecin" name="diplome_medecin" maxlength="10" value="" required />
+                </div>
+                <div>
+                    <label class="form-label" for="coefficient_prescription">Coefficient prescription :</label>
+                    <input class="form-control" type="number" id="coefficient_prescription" name="coefficient_prescription" step="0.01" min="0" value="0.00" required />
+                </div>
+                <button type="submit" name="submit" class="btn btn-outline-primary">Créer</button>
             </div>
         </form>
     </div>

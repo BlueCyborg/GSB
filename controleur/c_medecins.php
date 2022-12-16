@@ -22,6 +22,12 @@ switch ($action) {
                 if (isset($_REQUEST['medecin'])) {
                     $idMedecin = $_POST['medecin'];
                     $medecin = getAllInformationsMedecin($_REQUEST['medecin']);
+                    array_push($medecin, getLibelleType($medecin['TYP_CODE']));
+                    $types = getTypePraticien();
+                    unset($types[array_search($medecin['TYP_CODE'], $types)]); //Ici l'on enlève le type du médecin par défaut dans la liste afin d'éviter un doublon
+                    $specialites = getLesSpecialites();
+                    $specialitesMedecin = getLesSpecialitesFromMedecin($medecin['PRA_NUM']);
+                    var_dump($specialitesMedecin);
                     include("vues/v_gererMedecin.php");
                     break;
                 }
@@ -31,10 +37,7 @@ switch ($action) {
             if (isset($_POST['submit'])) {
                 //Vérification de l'unicité des spécialités
                 if (!isset(checkUniciteSpecialite($_POST['select'])[1]) == true) { // S'il n'y a pas d'erreur stocké dans le tableau
-
-                    var_dump(creerUnMedecin($_POST['nom_medecin'], $_POST['prenom_medecin'], $_POST['adresse_medecin'], $_POST['cp_medecin'], $_POST['ville_medecin'], $_POST['coefficient_notoriete'], $_POST['type_medecin'], $_POST['coefficient_confiance'], $_POST['select'], $_POST['diplome_medecin'], $_POST['coefficient_prescription']));
-
-
+                    creerUnMedecin($_POST['nom_medecin'], $_POST['prenom_medecin'], $_POST['adresse_medecin'], $_POST['cp_medecin'], $_POST['ville_medecin'], $_POST['coefficient_notoriete'], $_POST['type_medecin'], $_POST['coefficient_confiance'], $_POST['select'], $_POST['diplome_medecin'], $_POST['coefficient_prescription']);
                     echo 'Médecin crée avec succès';
                 } else {
                     echo checkUniciteSpecialite($_POST['select'])[1];

@@ -193,30 +193,30 @@ function creerUnMedecin(
     String $diplome,
     float $coeffPrescription
 ) {
-        $monPdo = connexionPDO();
-        $req = $monPdo->prepare("INSERT INTO praticien (PRA_NOM, PRA_PRENOM, PRA_ADRESSE, PRA_CP, PRA_VILLE, PRA_COEFNOTORIETE, TYP_CODE, PRA_COEFCONFIANCE)
+    $monPdo = connexionPDO();
+    $req = $monPdo->prepare("INSERT INTO praticien (PRA_NOM, PRA_PRENOM, PRA_ADRESSE, PRA_CP, PRA_VILLE, PRA_COEFNOTORIETE, TYP_CODE, PRA_COEFCONFIANCE)
         VALUES(:med_nom, :med_prenom, :med_adresse, :med_cp, :med_ville, :coeff_notoriete, :typeCode, :coeff_confiance)");
-        $req->bindValue(':med_nom', $nom, PDO::PARAM_STR);
-        $req->bindValue(':med_prenom', $prenom, PDO::PARAM_STR);
-        $req->bindValue(':med_adresse', $adresse, PDO::PARAM_STR);
-        $req->bindValue(':med_cp', $cp, PDO::PARAM_STR);
-        $req->bindValue(':med_ville', $ville, PDO::PARAM_STR);
-        $req->bindValue(':coeff_notoriete', $coeffNotoriete, PDO::PARAM_STR);
-        $req->bindValue(':typeCode', $typeCode, PDO::PARAM_STR);
-        $req->bindValue(':coeff_confiance', $coeffConfiance, PDO::PARAM_INT);
-        $req->execute();
+    $req->bindValue(':med_nom', $nom, PDO::PARAM_STR);
+    $req->bindValue(':med_prenom', $prenom, PDO::PARAM_STR);
+    $req->bindValue(':med_adresse', $adresse, PDO::PARAM_STR);
+    $req->bindValue(':med_cp', $cp, PDO::PARAM_STR);
+    $req->bindValue(':med_ville', $ville, PDO::PARAM_STR);
+    $req->bindValue(':coeff_notoriete', $coeffNotoriete, PDO::PARAM_STR);
+    $req->bindValue(':typeCode', $typeCode, PDO::PARAM_STR);
+    $req->bindValue(':coeff_confiance', $coeffConfiance, PDO::PARAM_INT);
+    $req->execute();
 
-        $numMedecin = $monPdo->lastInsertId();
+    $numMedecin = $monPdo->lastInsertId();
 
-        foreach ($specialites as $uneSpecialite) {
-            $req = $monPdo->prepare("INSERT INTO posseder(PRA_NUM, SPE_CODE, POS_DIPLOME, POS_COEFPRESCRIPTION)
+    foreach ($specialites as $uneSpecialite) {
+        $req = $monPdo->prepare("INSERT INTO posseder(PRA_NUM, SPE_CODE, POS_DIPLOME, POS_COEFPRESCRIPTION)
             VALUES (:med_num, :spe_code, :med_diplome, :coeff_prescription)");
-            $req->bindValue(':med_num', $numMedecin, PDO::PARAM_INT);
-            $req->bindValue(':spe_code', $uneSpecialite, PDO::PARAM_STR);
-            $req->bindValue(':med_diplome', $diplome, PDO::PARAM_STR);
-            $req->bindValue(':coeff_prescription', $coeffPrescription, PDO::PARAM_STR);
-            $req->execute();
-        }
+        $req->bindValue(':med_num', $numMedecin, PDO::PARAM_INT);
+        $req->bindValue(':spe_code', $uneSpecialite, PDO::PARAM_STR);
+        $req->bindValue(':med_diplome', $diplome, PDO::PARAM_STR);
+        $req->bindValue(':coeff_prescription', $coeffPrescription, PDO::PARAM_STR);
+        $req->execute();
+    }
 }
 
 /**
@@ -250,4 +250,37 @@ function getLesSpecialites(): mixed
     } catch (PDOException $e) {
         throw $e;
     }
+}
+
+/**
+ * Récupère le libellé d'un type de médecin en fonction de son code type
+ *
+ * @param String $unCode Le type de code du médecin
+ * @return String Le Libelle du type de médecin en fonction de son code passé en paramètre
+ */
+function getLibelleType(String $unCode)
+{
+    $req = connexionPDO()->prepare("SELECT `TYP_LIBELLE` FROM `type_praticien` WHERE `TYP_CODE` = :typeCode");
+    $req->bindValue(':typeCode', $unCode, PDO::PARAM_STR);
+    $req->execute();
+    $res = $req->fetch(PDO::FETCH_ASSOC);
+    return $res;
+}
+
+/**
+ * Retourne toutes les spécialités d'un médecin en fonction de son ID
+ *
+ * @return array|false Retourne un tableau contenant les différentes spécialités d'un médecin
+ */
+function getLesSpecialitesFromMedecin($idMedecin): mixed
+{
+    $req = connexionPDO()->prepare('SELECT `SPE_CODE` FROM `posseder` WHERE `PRA_NUM` = :med_id');
+    $req->bindValue(':med_id', $idMedecin, PDO::PARAM_INT);
+    $req->execute();
+    foreach ($req as $unResultat) {
+        $req = "SELECT SPE_CODE,SPE_LIBELLE FROM specialite WHERE `SPE_CODE` = :spe_code";
+    }
+    $req = connexionPDO()->query($req);
+    $res = $req->fetchAll(PDO::FETCH_ASSOC);
+    return $res;
 }
