@@ -33,14 +33,22 @@
                         <li class="nav-item ">
                             <a class="nav-link btn-outline-info rounded-pill px-3 fw-bold" href="index.php?uc=praticiens&action=formulairepraticien">Praticiens</a>
                         </li>
-                        <?php 
-                            if (isset($_SESSION['habilitation']) && $_SESSION['habilitation'] >= 1) {
-                                if ($_SESSION['habilitation'] >= 2) {
+                        <?php
+                        if (isset($_SESSION['habilitation']) && $_SESSION['habilitation'] >= 1) {
+                            if ($_SESSION['habilitation'] >= 2) {
                         ?>
-                            <li class="nav-item ">
-                                <a class="nav-link btn-outline-info rounded-pill px-3 fw-bold" href="index.php?uc=medecin&action=formulaireMedecin">Gérer médecin</a>
-                            </li>
-                        <?php }?>
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link btn-outline-info rounded-pill px-3 fw-bold dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Gérer médecin
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li>
+                                            <a class="dropdown-item" href="index.php?uc=medecin&action=formulaireMedecin">Choisir un médecin</a>
+                                            <a class="dropdown-item" href="index.php?uc=medecin&action=creerMedecin">Créer un médecin</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            <?php } ?>
                             <li class="nav-item dropdown">
                                 <a class="nav-link btn-outline-info rounded-pill px-3 fw-bold dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     Rapport de visite
@@ -53,21 +61,21 @@
                                         <a class="dropdown-item" href="index.php?uc=rapport&action=mesRapports">Mes rapports</a>
                                     </li>
                                     <?php if ($_SESSION['habilitation'] >= 2) { ?>
-                                            <li>
-                                                <a class="dropdown-item" href="index.php?uc=rapport&action=newRapportRegion">Nouveaux rapports</a>
-                                            </li>
-                                            <li>
-                                                <a class="dropdown-item" href="index.php?uc=rapport&action=historyRapportRegion">Historique des rapports</a>
-                                            </li>
+                                        <li>
+                                            <a class="dropdown-item" href="index.php?uc=rapport&action=newRapportRegion">Nouveaux rapports</a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" href="index.php?uc=rapport&action=historyRapportRegion">Historique des rapports</a>
+                                        </li>
                                     <?php } ?>
                                 </ul>
                             </li>
-                        <li class="nav-item ">
-                            <a class="nav-link btn-outline-info rounded-pill px-3 fw-bold" href="index.php?uc=connexion&action=profil">Profil</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link btn-outline-info rounded-pill px-3 fw-bold" href="index.php?uc=connexion&action=deconnexion" onclick="return confirm('Voulez-vous vraiment vous déconnecter ?');">Déconnexion</a>
-                        </li>
+                            <li class="nav-item ">
+                                <a class="nav-link btn-outline-info rounded-pill px-3 fw-bold" href="index.php?uc=connexion&action=profil">Profil</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link btn-outline-info rounded-pill px-3 fw-bold" href="index.php?uc=connexion&action=deconnexion" onclick="return confirm('Voulez-vous vraiment vous déconnecter ?');">Déconnexion</a>
+                            </li>
                         <?php } ?>
                     </ul>
                 </div>

@@ -14,9 +14,11 @@ switch ($action) {
         }
     case 'gererMedecin': {
             if (isset($_POST['formulaire_medecin'])) { //Si le délégué visiteur à changé les valeurs d'un médecin
-                updateUnMedecin($_POST['id_medecin'], $_POST['nom_medecin'], $_POST['prenom_medecin'], $_POST['adresse_medecin'], $_POST['cp_medecin'], $_POST['ville_medecin'], $_POST['coeffNotoriete'], $_POST['type_code'], $_POST['coeffConfiance'], $_POST['formulaire_medecin']);
-                if (!isset($e)) { // S'il n'y a pas d'erreurs lors de l'éxécution de la fonction gererUnMedecin
-                    echo 'Modifications effectués';
+                updateUnMedecin($_POST['id_medecin'], $_POST['nom_medecin'], $_POST['prenom_medecin'], $_POST['adresse_medecin'], $_POST['cp_medecin'], $_POST['ville_medecin'], $_POST['coeffNotoriete'], $_POST['type_medecin'], $_POST['coeffConfiance'], $_POST['select'], $_POST['diplome_medecin'], $_POST['coefficient_prescription']);
+                if (!isset($e)) { // S'il n'y a pas d'erreurs lors de l'éxécution de la fonction updateUnMedecin
+                    echo '<div class="alert alert-success" role="alert">Modofications effectués</div>';
+                    //Après affichage du message, rediriger vers la page maitre
+                    header("refresh:2; url=index.php?uc=medecin&action=formulaireMedecin");
                 };
             } else {
                 if (isset($_REQUEST['medecin'])) {
@@ -26,8 +28,7 @@ switch ($action) {
                     $types = getTypePraticien();
                     unset($types[array_search($medecin['TYP_CODE'], $types)]); //Ici l'on enlève le type du médecin par défaut dans la liste afin d'éviter un doublon
                     $specialites = getLesSpecialites();
-                    $specialitesMedecin = getLesSpecialitesFromMedecin($medecin['PRA_NUM']);
-                    var_dump($specialitesMedecin);
+                    $specialitesMedecin = getLesSpecialitesFromMedecin($idMedecin);
                     include("vues/v_gererMedecin.php");
                     break;
                 }
@@ -38,7 +39,9 @@ switch ($action) {
                 //Vérification de l'unicité des spécialités
                 if (!isset(checkUniciteSpecialite($_POST['select'])[1]) == true) { // S'il n'y a pas d'erreur stocké dans le tableau
                     creerUnMedecin($_POST['nom_medecin'], $_POST['prenom_medecin'], $_POST['adresse_medecin'], $_POST['cp_medecin'], $_POST['ville_medecin'], $_POST['coefficient_notoriete'], $_POST['type_medecin'], $_POST['coefficient_confiance'], $_POST['select'], $_POST['diplome_medecin'], $_POST['coefficient_prescription']);
-                    echo 'Médecin crée avec succès';
+                    echo '<div class="alert alert-success" role="alert">Médecin crée avec succès</div>';
+                    //Après affichage du message, rediriger vers la page maitre
+                    header("refresh:2; url=index.php?uc=medecin&action=formulaireMedecin");
                 } else {
                     echo checkUniciteSpecialite($_POST['select'])[1];
                 }

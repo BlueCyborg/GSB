@@ -19,7 +19,7 @@ function moinsDe(string $str, int $taille): bool
 /**
  * Permet de vérifier si un identifiant de médicament est correct
  *
- * @param mixed $idMed
+ * @param array $idMed
  * @param bool $canNull si l'id peut etre non définie, par default true
  * @return array message d'erreur pour l'identifiant 
  */
@@ -41,7 +41,7 @@ function checkIdMed($idMed, bool $canNull = true): array
 /**
  * Permet de vérifier si une date est corecte
  *
- * @param mixed $date chaine de texte verifié
+ * @param array $date chaine de texte verifié
  * @return boolean true si la date est valide
  */
 function dateValid($date): bool
@@ -52,7 +52,7 @@ function dateValid($date): bool
 /**
  * Permet de vérifier si une chaine est un nombre
  *
- * @param mixed $nombre chaine de texte verifié
+ * @param array $nombre chaine de texte verifié
  * @return boolean true si c'est un nombre
  */
 function estUnNombre($nombre): bool
@@ -63,7 +63,7 @@ function estUnNombre($nombre): bool
 /**
  * Permet de vérifier si une chaine est un nombre positif et supérieur à 0
  *
- * @param mixed $nombre chaine de texte verifié
+ * @param array $nombre chaine de texte verifié
  * @return boolean true si c'est un nombre
  */
 function estUnNombreSup0($nombre): bool
@@ -74,16 +74,16 @@ function estUnNombreSup0($nombre): bool
 /**
  * Permet de vérifier la validiter d'un formulaire de rapport
  *
- * @param mixed $matricule matricule du collaborateur
- * @param mixed $rapNum un numéro du rapport
- * @param mixed $idPratiecien un identifiant de praticien
- * @param mixed $bilan un texte de bilan
- * @param mixed $dateDeVisite une date
- * @param mixed $idMotif un identifiant de motif
- * @param mixed $autreMotif un text pour représenter le motif
- * @param mixed $idMed1 le premier un identifiant de médicament
- * @param mixed $idMed2 le premier deuxième identifiant de médicament
- * @param mixed $coefConf coefficiant de conficance du medecin
+ * @param array $matricule matricule du collaborateur
+ * @param array $rapNum un numéro du rapport
+ * @param array $idPratiecien un identifiant de praticien
+ * @param array $bilan un texte de bilan
+ * @param array $dateDeVisite une date
+ * @param array $idMotif un identifiant de motif
+ * @param array $autreMotif un text pour représenter le motif
+ * @param array $idMed1 le premier un identifiant de médicament
+ * @param array $idMed2 le premier deuxième identifiant de médicament
+ * @param array $coefConf coefficiant de conficance du medecin
  * @return array tableau des erreur avec les champs
  */
 function checkFormRapport($matricule, $rapNum, $idPraticien, $unRemplacant, $bilan, $dateDeVisite, $idMotif, $autreMotif, $idMed1, $idMed2, $coefConf): array
@@ -131,15 +131,15 @@ function checkFormRapport($matricule, $rapNum, $idPraticien, $unRemplacant, $bil
 /**
  * Permet de vérifier la validiter d'un formulaire de rapport lors de la saisie definitive
  *
- * @param mixed $matricule matricule du collaborateur
- * @param mixed $rapNum un numéro du rapport
- * @param mixed $idPratiecien un identifiant de praticien
- * @param mixed $bilan un texte de bilan
- * @param mixed $dateDeVisite une date
- * @param mixed $idMotif un identifiant de motif
- * @param mixed $autreMotif un text pour représenter le motif
- * @param mixed $idMed1 le premier un identifiant de médicament
- * @param mixed $idMed2 le premier deuxième identifiant de médicament
+ * @param array $matricule matricule du collaborateur
+ * @param array $rapNum un numéro du rapport
+ * @param array $idPratiecien un identifiant de praticien
+ * @param array $bilan un texte de bilan
+ * @param array $dateDeVisite une date
+ * @param array $idMotif un identifiant de motif
+ * @param array $autreMotif un text pour représenter le motif
+ * @param array $idMed1 le premier un identifiant de médicament
+ * @param array $idMed2 le premier deuxième identifiant de médicament
  * @return array tableau des erreur avec les champs
  */
 function checkFormRapportDef($idPraticien, $bilan, $dateDeVisite, $idMotif, $autreMotif): array
@@ -178,10 +178,10 @@ function checkFormRapportDef($idPraticien, $bilan, $dateDeVisite, $idMotif, $aut
 /**
  * Permet de vérifier la validiter d'un ensemble de formulaire d'echantillions
  *
- * @param mixed $lesEchantillions tableau des échantillions du rapport
+ * @param array $lesEchantillions tableau des échantillions du rapport
  * @return array tableau des erreur avec les champs
  */
-function checkFormRapportEchs(mixed $lesEchantillions): array
+function checkFormRapportEchs(array $lesEchantillions): array
 {
     $msgErr = array();
 
@@ -217,8 +217,8 @@ function checkFormRapportEchs(mixed $lesEchantillions): array
 /**
  * Permet de tester si des paramètres de fourchette de date sont valides
  *
- * @param mixed $startDate une date
- * @param mixed $endDate une date
+ * @param array $startDate une date
+ * @param array $endDate une date
  * @return array tableau de message d'erreur pour les champs
  */
 function checkFourchetteDate($startDate, $endDate)
@@ -243,9 +243,9 @@ function checkFourchetteDate($startDate, $endDate)
 /**
  * Permet de tester si les paramètres du formulaire de recherche de ses rapport
  *
- * @param mixed $startDate une date
- * @param mixed $endDate une date
- * @param mixed $idPraticien un identifiant de praticien
+ * @param array $startDate une date
+ * @param array $endDate une date
+ * @param array $idPraticien un identifiant de praticien
  * @return array tableau de message d'erreur pour les champs
  */
 function checkFormulaireRechercheMesRapport($startDate, $endDate, $idPraticien): array
@@ -262,10 +262,10 @@ function checkFormulaireRechercheMesRapport($startDate, $endDate, $idPraticien):
 /**
  * Permet de tester si les paramètres du formulaire de recherche de l'historique des rapport de region
  *
- * @param mixed $startDate une date
- * @param mixed $endDate une date
- * @param mixed $colMat matricule d'un collaborateur
- * @param mixed $degMat matricule du délegué du collaborateur
+ * @param array $startDate une date
+ * @param array $endDate une date
+ * @param array $colMat matricule d'un collaborateur
+ * @param array $degMat matricule du délegué du collaborateur
  * @return array tableau de message d'erreur pour les champs
  */
 function checkFormulaireRechercheHistoryRapportRegion($startDate, $endDate, $colMat, $degMat): array
@@ -284,7 +284,7 @@ function checkFormulaireRechercheHistoryRapportRegion($startDate, $endDate, $col
  * @param array $tableau Les spécialités que l'utilisateur aura choisi
  * @return String Retourne un String si toutes les spécialités sont différentes
  */
-function checkUniciteSpecialite(array $tableau): mixed
+function checkUniciteSpecialite(array $tableau): array
 {
     $msgErr[] = "";
     $check = null;

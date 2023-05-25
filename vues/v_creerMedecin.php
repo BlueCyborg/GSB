@@ -39,23 +39,23 @@
             <div class="d-flex flex-column gap-3 justify-content-center align-content-lg-stretch">
                 <div>
                     <label for="nom_medecin" class="form-label">Nom :</label>
-                    <input class="form-control" type="text" id="nom_medecin" name="nom_medecin" required />
+                    <input class="form-control" type="text" id="nom_medecin" name="nom_medecin" placeholder="Nom du médecin" required />
                 </div>
                 <div>
                     <label class="form-label" for="prenom_medecin">Prénom :</label>
-                    <input class="form-control" type="text" id="prenom_medecin" name="prenom_medecin" required />
+                    <input class="form-control" type="text" id="prenom_medecin" name="prenom_medecin" placeholder="Prénom du médecin" required />
                 </div>
                 <div>
                     <label class="form-label" for="adresse_medecin">Adresse :</label>
-                    <input class="form-control" type="text" id="adresse_medecin" name="adresse_medecin" required />
+                    <input class="form-control" type="text" id="adresse_medecin" name="adresse_medecin" placeholder="Adresse du médecin" required />
                 </div>
                 <div>
                     <label class="form-label" for="cp_medecin">Code postal :</label>
-                    <input class="form-control" type="text" id="cp_medecin" name="cp_medecin" required />
+                    <input class="form-control" type="text" maxlength="5" id="cp_medecin" name="cp_medecin" placeholder="Code postal du médecin, ex : 45000" required />
                 </div>
                 <div>
                     <label class="form-label" for="ville_medecin">Ville :</label>
-                    <input class="form-control" type="text" id="ville_medecin" name="ville_medecin" required />
+                    <input class="form-control" type="text" id="ville_medecin" name="ville_medecin" placeholder="Ville du médecin" required />
                 </div>
                 <div>
                     <label class="form-label" for="coefficient_notoriete">Coefficient notoriété :</label>
@@ -88,11 +88,11 @@
                 </div>
                 <div>
                     <label class="form-label" for="diplome_medecin">Diplome :</label>
-                    <input class="form-control" type="text" id="diplome_medecin" name="diplome_medecin" maxlength="10" value="" required />
+                    <input class="form-control" type="text" id="diplome_medecin" name="diplome_medecin" maxlength="10" value="" placeholder="Diplome du médecin" />
                 </div>
                 <div>
                     <label class="form-label" for="coefficient_prescription">Coefficient prescription :</label>
-                    <input class="form-control" type="number" id="coefficient_prescription" name="coefficient_prescription" step="0.01" min="0" value="0.00" required />
+                    <input class="form-control" type="number" id="coefficient_prescription" name="coefficient_prescription" step="0.01" min="0" value="0.00"/>
                 </div>
                 <button type="submit" name="submit" class="btn btn-outline-primary">Créer</button>
             </div>

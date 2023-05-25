@@ -76,7 +76,7 @@ function newRapport(string $matricule): int
  * @param integer $rapNum le numéro d'un rapport d'un collaborateur
  * @return array|false les informations d'un rapport sous forme d'un tableau associatif, ou false si pas trouvé
  */
-function getUnRapport(string $matricule, int $rapNum): mixed
+function getUnRapport(string $matricule, int $rapNum): array
 {
     $req = connexionPDO()->prepare('
         SELECT
@@ -102,7 +102,7 @@ function getUnRapport(string $matricule, int $rapNum): mixed
  *
  * @return array|false les informations des motifs sous forme d'un tableau de tableau associatif, ou false si pas trouvé
  */
-function getLesMotifs(): mixed {
+function getLesMotifs(): array {
     $req = connexionPDO()->query('SELECT MOT_ID, MOT_LIB FROM motif_visite');
     $req->execute();
     $motifs = $req->fetchAll(PDO::FETCH_ASSOC);
@@ -115,7 +115,7 @@ function getLesMotifs(): mixed {
  * @param string $id identifiant du motif
  * @return array|false les informations du motif sous forme d'un tableau associatif, ou false si pas trouvé
  */
-function getUnMotifById(string $id): mixed {
+function getUnMotifById(string $id): array {
     $req = connexionPDO()->prepare('SELECT MOT_ID, MOT_LIB FROM motif_visite WHERE MOT_ID = :id');
     $req->bindValue(':id', $id, PDO::PARAM_STR);
     $req->execute();
@@ -129,7 +129,7 @@ function getUnMotifById(string $id): mixed {
  * @param string $id identifiant de l'etat
  * @return array|false les informations de l'etat sous forme d'un tableau associatif, ou false si pas trouvé
  */
-function getUnEtatById(string $id): mixed {
+function getUnEtatById(string $id): array {
     $req = connexionPDO()->prepare('SELECT ETAT_ID, ETAT_LIB FROM etat_rapport WHERE ETAT_ID = :id');
     $req->bindValue(':id', $id, PDO::PARAM_STR);
     $req->execute();
@@ -291,7 +291,7 @@ function updateLesEchantillions(string $COL_MATRICULE, int $RAP_NUM, array $echs
  * @param integer|null $idPraticien identifiant du praticien concerner par le rapport
  * @return array|false tableau de tableau associtif contenant les informations d'un rapport, ou false en cas d'erreur
  */
-function getSesRapports(string $matricule, ?string $startDate = null, ?string $endDate = null, mixed $idPraticien = null): mixed
+function getSesRapports(string $matricule, ?string $startDate = null, ?string $endDate = null, array $idPraticien = null): array
 {
     //constitution du where suplementaire
     $whereSup = '';
@@ -405,7 +405,7 @@ function updateUnRapportEtat(string $COL_MATRICULE, int $RAP_NUM, string $ETAT_I
  * @param string|null $colMat matricule du collaborateur des rapports
  * @return array|false tableau de tableau associtif contenant les informations d'un rapport, ou false en cas d'erreur
  */
-function getRapportRegions(string $degMat, bool $sortByMatricule, bool $etatNew, ?string $startDate = null, ?string $endDate = null, ?string $colMat = null): mixed
+function getRapportRegions(string $degMat, bool $sortByMatricule, bool $etatNew, ?string $startDate = null, ?string $endDate = null, ?string $colMat = null): array
 {
     //constitution du where suplementaire
     $whereSup = '';

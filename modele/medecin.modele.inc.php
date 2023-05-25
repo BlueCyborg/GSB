@@ -26,11 +26,27 @@ function getAllNomMedecins(): array
  * @param integer $med identifiant du médecin
  * @return array|false si le médecin existe, renvoie un tableau sinon faux
  */
-function getAllInformationsMedecin(int $med): mixed
+function getAllInformationsMedecin($med): array
 {
     try {
         $monPdo = connexionPDO();
-        $req = $monPdo->prepare('SELECT * FROM praticien WHERE PRA_NUM = :med');
+        $req = $monPdo->prepare('SELECT
+        pr.`PRA_NUM`,
+        pr.`PRA_NOM`,
+        pr.`PRA_PRENOM`,
+        pr.`PRA_ADRESSE`,
+        pr.`PRA_CP`,
+        pr.`PRA_VILLE`,
+        pr.`TYP_CODE`,
+        pr.`PRA_COEFNOTORIETE`,
+        pr.`PRA_COEFCONFIANCE`,
+        po.`POS_DIPLOME`,
+        po.`POS_COEFPRESCRIPTION`
+    FROM `praticien` pr
+    LEFT JOIN posseder po ON
+        pr.`PRA_NUM` = po.`PRA_NUM` AND
+        (po.`POS_DIPLOME` IS NOT NULL OR po.`POS_COEFPRESCRIPTION` IS NOT NULL)
+    WHERE pr.`PRA_NUM` = :med');
         $req->bindValue(':med', $med, PDO::PARAM_INT);
         $req->execute();
         return $req->fetch(PDO::FETCH_ASSOC);
@@ -59,7 +75,7 @@ function existMedecin(int $med): bool
  * @param string $codeRegion Le nom de la région du visiteur délégué
  * @return array|false si des médecins existent, renvoie un tableau sinon faux
  */
-function getMedecinRegion(String $codeRegion): mixed
+function getMedecinRegion(String $codeRegion): array
 {
     try {
         $monPdo = connexionPDO();
@@ -79,7 +95,7 @@ function getMedecinRegion(String $codeRegion): mixed
  * @param string $matricule le matricule d'un collaborateur
  * @return array|false si des médecins existent, renvoie un tableau sinon faux
  */
-function getMedecinRegionCol(String $matricule): mixed
+function getMedecinRegionCol(String $matricule): array
 {
     $req = connexionPDO()->prepare('
         SELECT 
@@ -123,9 +139,12 @@ function getMedecinRegionCol(String $matricule): mixed
  * @param float $coeffNotoriete Coefficien de notoriete du praticien
  * @param String $typeCode Type code du praticien
  * @param integer $coeffConfiance Coefficien de confiance du praticien
+ * @param array $specialites Les spécialités du médecin
+ * @param String $diplome Le diplome du médecin
+ * @param float $coeffPrescription Le coefficient de prescription du médecin
  * @return void
  */
-function updateUnMedecin(int $numero, String $nom, String $prenom, String $adresse, String $cp, String $ville, float $coeffNotoriete, String $typeCode, int $coeffConfiance)
+function updateUnMedecin($numero, $nom, $prenom, $adresse, $cp, $ville, $coeffNotoriete, $typeCode, $coeffConfiance, $specialites, $diplome, $coeffPrescription)
 {
     try {
         $monPdo = connexionPDO();
@@ -140,8 +159,22 @@ function updateUnMedecin(int $numero, String $nom, String $prenom, String $adres
         $req->bindValue(':typeCode', $typeCode, PDO::PARAM_STR);
         $req->bindValue(':coeff_confiance', $coeffConfiance, PDO::PARAM_INT);
         $req->execute();
-        $region = $req->fetch(PDO::FETCH_ASSOC);
-        return $region;
+
+        //Suppression des anciennes spécialités
+        $req = $monPdo->prepare("DELETE FROM `posseder` WHERE `PRA_NUM` = :pra_num");
+        $req->bindValue(':pra_num', $numero, PDO::PARAM_INT);
+        $req->execute();
+
+        //Ajout des nouvelles spécialités
+        foreach ($specialites as $uneSpecialite) {
+            $req = $monPdo->prepare("INSERT INTO posseder(PRA_NUM, SPE_CODE, POS_DIPLOME, POS_COEFPRESCRIPTION)
+                VALUES (:med_num, :spe_code, :med_diplome, :coeff_prescription)");
+            $req->bindValue(':med_num', $numero, PDO::PARAM_INT);
+            $req->bindValue(':spe_code', $uneSpecialite, PDO::PARAM_STR);
+            $req->bindValue(':med_diplome', $diplome, PDO::PARAM_STR);
+            $req->bindValue(':coeff_prescription', $coeffPrescription, PDO::PARAM_STR);
+            $req->execute();
+        }
     } catch (PDOException $e) {
         throw $e;
     }
@@ -152,7 +185,7 @@ function updateUnMedecin(int $numero, String $nom, String $prenom, String $adres
  *
  * @return array|false Le résultat des types de praticiens
  */
-function getTypePraticien(): mixed
+function getTypePraticien(): array
 {
     try {
         $monPdo = connexionPDO();
@@ -239,7 +272,7 @@ function updateCoefConfMedecin(int $num, string $coefConf)
  *
  * @return array|false Le résultat des différentes spécialités
  */
-function getLesSpecialites(): mixed
+function getLesSpecialites(): array
 {
     try {
         $monPdo = connexionPDO();
@@ -272,15 +305,51 @@ function getLibelleType(String $unCode)
  *
  * @return array|false Retourne un tableau contenant les différentes spécialités d'un médecin
  */
-function getLesSpecialitesFromMedecin($idMedecin): mixed
+function getLesSpecialitesFromMedecin($idMedecin): array
 {
-    $req = connexionPDO()->prepare('SELECT `SPE_CODE` FROM `posseder` WHERE `PRA_NUM` = :med_id');
+    $req = connexionPDO()->prepare('SELECT
+    p.SPE_CODE,
+    s.SPE_LIBELLE
+FROM
+    `posseder` p
+INNER JOIN specialite s ON
+    p.SPE_CODE = s.SPE_CODE
+WHERE
+    `PRA_NUM` = :med_id;');
     $req->bindValue(':med_id', $idMedecin, PDO::PARAM_INT);
     $req->execute();
-    foreach ($req as $unResultat) {
-        $req = "SELECT SPE_CODE,SPE_LIBELLE FROM specialite WHERE `SPE_CODE` = :spe_code";
-    }
-    $req = connexionPDO()->query($req);
     $res = $req->fetchAll(PDO::FETCH_ASSOC);
+
+    // if (!empty($res)) {
+    //     foreach ($res as $unRes) {
+    //         $tab[] = $unRes['SPE_CODE'];
+    //     }
+    //     //On enlève la valeur NULL au tableau
+    //     unset($tab[array_search('NULL', $tab)]);
+
+    //     $resultat = null;
+
+    //     if (!is_null($tab)) {
+    //         $finalValue = '';
+    //         //L'on met toutes les valeurs du tableau dans une seule chaine de caractère formaté pour MySql
+    //         for ($i = 1; $i <= count($tab); $i++) {
+    //             if ($i == count($tab)) { //Permet d'enlever la virgule à la dernière valeur
+    //                 $finalValue = $finalValue . "'" . $tab[$i] . "'";
+    //             } else {
+    //                 $finalValue = $finalValue . "'" . $tab[$i] . "'" . ', ';
+    //             }
+    //         }
+    //         $req = 'SELECT SPE_CODE, SPE_LIBELLE FROM specialite WHERE `SPE_CODE` IN (' . $finalValue . ');';
+    //         $res = connexionPDO()->query($req);
+    //         $resultat = $res->fetchAll(PDO::FETCH_ASSOC);
+    //     }
+    // } else {
+    //     $req = 'SELECT SPE_CODE, SPE_LIBELLE FROM `specialite` ORDER BY `SPE_CODE` ASC LIMIT 1; ';
+    //     $res = connexionPDO()->query($req);
+    //     $resultat = $res->fetchAll(PDO::FETCH_ASSOC);
+    // }
+    //
+    //return $resultat;
+
     return $res;
 }

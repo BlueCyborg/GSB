@@ -8,7 +8,7 @@ include_once 'bd.inc.php';
  * @param $matricule matricule d'un colborateur
  * @return array|false tabelau associatif contenant les informations ou false si matricule pas trouvé
  */
-function getAllInformationCompte($matricule): mixed
+function getAllInformationCompte($matricule): array
 {
     $monPdo = connexionPDO();
     $req = $monPdo->prepare('SELECT c.`COL_MATRICULE` as `matricule`,c.`COL_NOM` as `nom`,`COL_PRENOM` as `prenom`,c.`COL_ADRESSE` as `adresse`,c.`COL_CP` as `cp`,c.`COL_VILLE` as `ville`, concat(DAY(COL_DATEEMBAUCHE),\'/\',MONTH(`COL_DATEEMBAUCHE`),\'/\',YEAR(`COL_DATEEMBAUCHE`)) as `date_embauche`, h.HAB_LIB as `habilitation` ,s.SEC_LIBELLE as `secteur`, r.REG_NOM as `region` FROM collaborateur c LEFT JOIN secteur s ON s.`SEC_CODE`=c.`SEC_CODE` LEFT JOIN habilitation h ON h.HAB_ID=c.HAB_ID LEFT JOIN region r ON r.REG_CODE=c.REG_CODE WHERE c.COL_MATRICULE = :matricule');
@@ -24,7 +24,7 @@ function getAllInformationCompte($matricule): mixed
  * @param $matricule matricule d'un colborateur
  * @return array|false tabelau associatif contenant les informations ou false si matricule pas trouvé
  */
-function getNomCollaborateur($matricule): mixed
+function getNomCollaborateur($matricule): array
 {
     $req = connexionPDO()->prepare('
         SELECT 
@@ -48,7 +48,7 @@ function getNomCollaborateur($matricule): mixed
  * @param string $pass mot de passe de l'utilisateur
  * @return array|false tableau associtif avec les informations du collacorateur (matricule, habilitation, log_id), ou false si mauvaise identification
  */
-function checkConnexion(string $username, string $pass): mixed
+function checkConnexion(string $username, string $pass)
 {
     $monPdo = connexionPDO();
     $req = $monPdo->prepare('SELECT l.LOG_ID as \'id_log\', l.COL_MATRICULE as \'matricule\', c.HAB_ID as \'habilitation\' FROM login l INNER JOIN collaborateur c ON l.COL_MATRICULE = c.COL_MATRICULE WHERE l.LOG_LOGIN = :identifiant AND l.LOG_MOTDEPASSE = :password');
@@ -110,7 +110,7 @@ function checkUserInscription(string $username): bool
  *
  * @return array tableau de tableau associtif contenue les matricule ou false
  */
-function getAllMatriculeCollaborateur(): mixed
+function getAllMatriculeCollaborateur(): array
 {
     $monPdo = connexionPDO();
     $req = 'SELECT COL_MATRICULE FROM collaborateur ORDER BY COL_MATRICULE';
@@ -123,9 +123,9 @@ function getAllMatriculeCollaborateur(): mixed
 /**
  * Permet de connaitre le nombre de collaborateur
  *
- * @return mixed le nombre de collaborateur
+ * @return array le nombre de collaborateur
  */
-function getCountMatricule(): mixed
+function getCountMatricule(): array
 {
     $monPdo = connexionPDO();
     $req = 'SELECT COUNT(COL_MATRICULE) as \'nb\' FROM collaborateur';
@@ -171,7 +171,7 @@ function memeRegion(string $colMat, string $degMat): bool
  * @param string $degMat un matricule d'un collaborateur
  * @return array|false tableau de tabelau associf ayant les informaions (nom, prenom, matricule), sinon false si erreur
  */
-function getNomCollaborateursMemeRegion(string $degMat): mixed
+function getNomCollaborateursMemeRegion(string $degMat): array
 {
     $req = connexionPDO()->prepare('
         SELECT

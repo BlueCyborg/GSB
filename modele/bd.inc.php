@@ -29,11 +29,11 @@ function connexionPDO(): PDO
  *
  * @param PDOStatement $req requet sur laquelle on bind la valeur
  * @param string $name nom du paramètre bind
- * @param mixed $value valeur bind (peut être null)
+ * @param array $value valeur bind (peut être null)
  * @param integer $type type de valeur si non null
  * @return void
  */
-function bindValueCanBeNull(PDOStatement $req, string $name, mixed $value, int $type) {
+function bindValueCanBeNull(PDOStatement $req, string $name, array $value, int $type) {
     if (is_null($value)) {
         $req->bindValue($name, NULL, PDO::PARAM_NULL);
     } else {
@@ -44,10 +44,10 @@ function bindValueCanBeNull(PDOStatement $req, string $name, mixed $value, int $
 /**
  * Permet de renvoie la valeur null si une variable est vide ou null
  *
- * @param mixed $value la valeur testé 
- * @return mixed la valeur $value ou null si empty($value) est vrais
+ * @param array $value la valeur testé 
+ * @return array la valeur $value ou null si empty($value) est vrais
  */
-function ifEmptyThenNull(mixed $value): mixed
+function ifEmptyThenNull(array $value): array
 {
     if (empty($value)) {
         $r = NULL;
